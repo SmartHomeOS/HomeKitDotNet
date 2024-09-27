@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<Authors>jdomnitz</Authors>
+	<Company>SmartHomeOS and Contributors</Company>
+	<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
+	<Title>HomeKitDotNet</Title>
+	<Description>A C# implementation of a HomeKit Controller</Description>
+	<Copyright>Copyright HomeKitDotNet Contributors</Copyright>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<RepositoryUrl>https://github.com/SmartHomeOS/HomeKitDotNet/</RepositoryUrl>
+	<PackageTags>homekit; homekit-controller; smarthome; dotnet;</PackageTags>
+	<PackageReleaseNotes>First Release</PackageReleaseNotes>
+  </PropertyGroup>
+
+</Project>
