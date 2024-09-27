@@ -14,6 +14,15 @@
 	<RepositoryUrl>https://github.com/SmartHomeOS/HomeKitDotNet/</RepositoryUrl>
 	<PackageTags>homekit; homekit-controller; smarthome; dotnet;</PackageTags>
 	<PackageReleaseNotes>First Release</PackageReleaseNotes>
+	<Version>0.5</Version>
+	<PackageIcon>logo.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
