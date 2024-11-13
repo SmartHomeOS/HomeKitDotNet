@@ -3,16 +3,11 @@ using System.Text.Json;
 
 namespace HomeKitDotNet.Models
 {
-    public class StringCharacteristic : ICharacteristic
+    public class StringCharacteristic : CharacteristicBase
     {
-        private Service service;
-        private CharacteristicJSON _json;
-        protected StringCharacteristic(Service service, CharacteristicJSON json)
+        protected StringCharacteristic(Service service, CharacteristicJSON json) : base(service, json)
         {
-            this._json = json;
-            this.Type = json.Type;
             MapValue(json.Value);
-            this.service = service;
         }
 
         protected async Task<bool> Write(string value)
@@ -40,11 +35,6 @@ namespace HomeKitDotNet.Models
             return LastValue;
         }
 
-        protected async Task Subscribe()
-        {
-            //TODO
-        }
-
         protected void MapValue(JsonElement? value)
         {
             if (value.HasValue)
@@ -58,18 +48,8 @@ namespace HomeKitDotNet.Models
                 LastValue = null;
         }
 
-        public string Type { get; init; }
         public string? LastValue { get; set; }
-        public int InstanceID => _json.InstanceID;
-        public CharacteristicPermission[] Permissions => _json.Permissions;
-
-        public string? Description => _json.Description;
-        public string? Unit => _json.Description;
         public float? MaxLength => _json.MaxLength;
         public float? MaxDataLength => _json.MaxDataLength;
-
-        public bool CanRead { get { return Permissions.Contains(CharacteristicPermission.pr); } }
-        public bool CanWrite { get { return Permissions.Contains(CharacteristicPermission.pw); } }
-        public bool CanSubscribe { get { return Permissions.Contains(CharacteristicPermission.ev); } }
     }
 }

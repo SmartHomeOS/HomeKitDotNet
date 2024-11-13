@@ -25,7 +25,7 @@ namespace HomeKitDotNet.Models
         public string Type { get; init; }
         public Accessory Accessory { get; init; }
 
-        protected ICharacteristic? GetCharacteristic(string type, ServiceJSON service)
+        protected CharacteristicBase? GetCharacteristic(string type, ServiceJSON service)
         {
             CharacteristicJSON? json = service.Characteristics.FirstOrDefault(c => c.Type == type);
             switch (type)

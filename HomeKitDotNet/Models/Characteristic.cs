@@ -15,15 +15,10 @@ using System.Text.Json;
 
 namespace HomeKitDotNet.Models
 {
-    public class Characteristic<T> : ICharacteristic where T : struct
+    public class Characteristic<T> : CharacteristicBase where T : struct
     {
-        private Service service;
-        private CharacteristicJSON _json;
-        protected Characteristic(Service service, CharacteristicJSON json)
+        protected Characteristic(Service service, CharacteristicJSON json) : base(service, json)
         {
-            this.service = service;
-            this._json = json;
-            this.Type = json.Type;
             MapValue(json.Value);
         }
 
@@ -50,13 +45,6 @@ namespace HomeKitDotNet.Models
                 return null;
             MapValue(chars.Characteristics[0].Value);
             return LastValue;
-        }
-
-        protected async Task Subscribe()
-        {
-            if (!CanSubscribe)
-                throw new InvalidOperationException("Subscriptions are prohibited");
-            //TODO
         }
 
         protected void MapValue(JsonElement? value)
@@ -88,21 +76,11 @@ namespace HomeKitDotNet.Models
                 LastValue = null;
         }
 
-        public string Type { get; init; }
         public T? LastValue { get; private set; }
-        public int InstanceID => _json.InstanceID;
-        public CharacteristicPermission[] Permissions => _json.Permissions;
-        public string? Description => _json.Description;
-        public string? Unit => _json.Description;
         public float? MinValue => _json.MinValue;
         public float? MaxValue => _json.MaxValue;
         public float? MinStep => _json.MinStep;
         public float[]? ValidValues => _json.ValidValues;
         public float[]? ValidValuesRange => _json.ValidValuesRange;
-
-
-        public bool CanRead { get { return Permissions.Contains(CharacteristicPermission.pr); } }
-        public bool CanWrite { get { return Permissions.Contains(CharacteristicPermission.pw); } }
-        public bool CanSubscribe { get { return Permissions.Contains(CharacteristicPermission.ev); } }
     }
 }
