@@ -36,7 +36,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<ushort?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(ushort value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum AccessoryFlagsType : uint { REQUIRES_ADDITIONAL_SETUP_BIT_MASK = 1, }
     // 
@@ -45,7 +45,7 @@ namespace HomeKitDotNet.Models
     public class AccessoryFlags(Service service, CharacteristicJSON json) : Characteristic<uint>(service, json), IService
     {
         public async Task<AccessoryFlagsType?> GetValue() { return (AccessoryFlagsType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Accessory Identifier
@@ -62,7 +62,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<ActiveType?> GetValue() { return (ActiveType?)(await Read()); }
         public async Task<bool> SetValue(ActiveType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Active Identifier
@@ -71,7 +71,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<uint?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(uint value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Activity Interval
@@ -79,7 +79,7 @@ namespace HomeKitDotNet.Models
     public class ActivityInterval(Service service, CharacteristicJSON json) : Characteristic<uint>(service, json), IService
     {
         public async Task<uint?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Administrator Only Access
@@ -88,7 +88,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<bool?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(bool value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Air Particulate Density
@@ -96,7 +96,7 @@ namespace HomeKitDotNet.Models
     public class AirParticulateDensity(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum AirParticulateSizeType : byte { _2_5_M = 0, _10_M = 1, }
     // 
@@ -105,7 +105,7 @@ namespace HomeKitDotNet.Models
     public class AirParticulateSize(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<AirParticulateSizeType?> GetValue() { return (AirParticulateSizeType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // AirPlay Enable
@@ -114,7 +114,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<byte?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(byte value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum AirQualityType : byte { UNKNOWN = 0, EXCELLENT = 1, GOOD = 2, FAIR = 3, INFERIOR = 4, POOR = 5, }
     // 
@@ -123,7 +123,7 @@ namespace HomeKitDotNet.Models
     public class AirQuality(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<AirQualityType?> GetValue() { return (AirQualityType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // App Matching Identifier
@@ -138,7 +138,7 @@ namespace HomeKitDotNet.Models
     public class AssetUpdateReadiness(Service service, CharacteristicJSON json) : Characteristic<uint>(service, json), IService
     {
         public async Task<uint?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Audio Feedback
@@ -147,7 +147,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<bool?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(bool value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Battery Level
@@ -155,7 +155,7 @@ namespace HomeKitDotNet.Models
     public class BatteryLevel(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<byte?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Brightness
@@ -164,7 +164,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<int?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(int value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Button Event
@@ -172,7 +172,7 @@ namespace HomeKitDotNet.Models
     public class ButtonEvent(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Camera Operating Mode Indicator
@@ -181,7 +181,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<bool?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(bool value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CarbonDioxideDetectedType : byte { CO2_LEVELS_NORMAL = 0, CO2_LEVELS_ABNORMAL = 1, }
     // 
@@ -190,7 +190,7 @@ namespace HomeKitDotNet.Models
     public class CarbonDioxideDetected(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<CarbonDioxideDetectedType?> GetValue() { return (CarbonDioxideDetectedType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Carbon Dioxide Level
@@ -198,7 +198,7 @@ namespace HomeKitDotNet.Models
     public class CarbonDioxideLevel(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Carbon Dioxide Peak Level
@@ -206,7 +206,7 @@ namespace HomeKitDotNet.Models
     public class CarbonDioxidePeakLevel(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CarbonMonoxideDetectedType : byte { CO_LEVELS_NORMAL = 0, CO_LEVELS_ABNORMAL = 1, }
     // 
@@ -215,7 +215,7 @@ namespace HomeKitDotNet.Models
     public class CarbonMonoxideDetected(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<CarbonMonoxideDetectedType?> GetValue() { return (CarbonMonoxideDetectedType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Carbon Monoxide Level
@@ -223,7 +223,7 @@ namespace HomeKitDotNet.Models
     public class CarbonMonoxideLevel(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Carbon Monoxide Peak Level
@@ -231,7 +231,7 @@ namespace HomeKitDotNet.Models
     public class CarbonMonoxidePeakLevel(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // CCA Energy Detect Threshold
@@ -253,7 +253,7 @@ namespace HomeKitDotNet.Models
     public class CharacteristicValueActiveTransitionCount(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<byte?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Characteristic Value Transition Control
@@ -270,7 +270,7 @@ namespace HomeKitDotNet.Models
     public class ChargingState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<ChargingStateType?> GetValue() { return (ChargingStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum ClosedCaptionsType : byte { DISABLED = 0, ENABLED = 1, }
     // 
@@ -280,7 +280,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<ClosedCaptionsType?> GetValue() { return (ClosedCaptionsType?)(await Read()); }
         public async Task<bool> SetValue(ClosedCaptionsType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Color Temperature
@@ -289,7 +289,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<int?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(int value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Configuration State
@@ -297,7 +297,7 @@ namespace HomeKitDotNet.Models
     public class ConfigurationState(Service service, CharacteristicJSON json) : Characteristic<ushort>(service, json), IService
     {
         public async Task<ushort?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Configured Name
@@ -306,7 +306,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<string?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(string value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum ContactSensorStateType : byte { CONTACT_DETECTED = 0, CONTACT_NOT_DETECTED = 1, }
     // 
@@ -315,7 +315,7 @@ namespace HomeKitDotNet.Models
     public class ContactSensorState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<ContactSensorStateType?> GetValue() { return (ContactSensorStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Cooling Threshold Temperature
@@ -324,7 +324,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<float?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(float value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Crypto Hash
@@ -340,7 +340,7 @@ namespace HomeKitDotNet.Models
     public class CurrentAirPurifierState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<CurrentAirPurifierStateType?> GetValue() { return (CurrentAirPurifierStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Current Ambient Light Level
@@ -348,7 +348,7 @@ namespace HomeKitDotNet.Models
     public class CurrentAmbientLightLevel(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CurrentDoorStateType : byte { OPEN = 0, CLOSED = 1, OPENING = 2, CLOSING = 3, STOPPED = 4, }
     // 
@@ -357,7 +357,7 @@ namespace HomeKitDotNet.Models
     public class CurrentDoorState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<CurrentDoorStateType?> GetValue() { return (CurrentDoorStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CurrentFanStateType : byte { INACTIVE = 0, IDLE = 1, BLOWING_AIR = 2, }
     // 
@@ -366,7 +366,7 @@ namespace HomeKitDotNet.Models
     public class CurrentFanState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<CurrentFanStateType?> GetValue() { return (CurrentFanStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CurrentHeaterCoolerStateType : byte { INACTIVE = 0, IDLE = 1, HEATING = 2, COOLING = 3, }
     // 
@@ -375,7 +375,7 @@ namespace HomeKitDotNet.Models
     public class CurrentHeaterCoolerState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<CurrentHeaterCoolerStateType?> GetValue() { return (CurrentHeaterCoolerStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CurrentHeatingCoolingStateType : byte { OFF = 0, HEAT = 1, COOL = 2, }
     // 
@@ -384,7 +384,7 @@ namespace HomeKitDotNet.Models
     public class CurrentHeatingCoolingState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<CurrentHeatingCoolingStateType?> GetValue() { return (CurrentHeatingCoolingStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Current Horizontal Tilt Angle
@@ -392,7 +392,7 @@ namespace HomeKitDotNet.Models
     public class CurrentHorizontalTiltAngle(Service service, CharacteristicJSON json) : Characteristic<int>(service, json), IService
     {
         public async Task<int?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CurrentHumidifierDehumidifierStateType : byte { INACTIVE = 0, IDLE = 1, HUMIDIFYING = 2, DEHUMIDIFYING = 3, }
     // 
@@ -401,7 +401,7 @@ namespace HomeKitDotNet.Models
     public class CurrentHumidifierDehumidifierState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<CurrentHumidifierDehumidifierStateType?> GetValue() { return (CurrentHumidifierDehumidifierStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CurrentMediaStateType : byte { PLAY = 0, PAUSE = 1, STOP = 2, LOADING = 4, INTERRUPTED = 5, }
     // 
@@ -410,7 +410,7 @@ namespace HomeKitDotNet.Models
     public class CurrentMediaState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<CurrentMediaStateType?> GetValue() { return (CurrentMediaStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Current Position
@@ -418,7 +418,7 @@ namespace HomeKitDotNet.Models
     public class CurrentPosition(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<byte?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Current Relative Humidity
@@ -426,7 +426,7 @@ namespace HomeKitDotNet.Models
     public class CurrentRelativeHumidity(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CurrentSlatStateType : byte { FIXED = 0, JAMMED = 1, SWINGING = 2, }
     // 
@@ -435,7 +435,7 @@ namespace HomeKitDotNet.Models
     public class CurrentSlatState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<CurrentSlatStateType?> GetValue() { return (CurrentSlatStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Current Temperature
@@ -443,7 +443,7 @@ namespace HomeKitDotNet.Models
     public class CurrentTemperature(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Current Tilt Angle
@@ -451,7 +451,7 @@ namespace HomeKitDotNet.Models
     public class CurrentTiltAngle(Service service, CharacteristicJSON json) : Characteristic<int>(service, json), IService
     {
         public async Task<int?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Current Transport
@@ -466,7 +466,7 @@ namespace HomeKitDotNet.Models
     public class CurrentVerticalTiltAngle(Service service, CharacteristicJSON json) : Characteristic<int>(service, json), IService
     {
         public async Task<int?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CurrentVisibilityStateType : byte { SHOWN = 0, HIDDEN = 1, }
     // 
@@ -475,7 +475,7 @@ namespace HomeKitDotNet.Models
     public class CurrentVisibilityState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<CurrentVisibilityStateType?> GetValue() { return (CurrentVisibilityStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Data Stream HAP Transport
@@ -491,7 +491,7 @@ namespace HomeKitDotNet.Models
     public class DataStreamHAPTransportInterrupt(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Diagonal Field Of View
@@ -499,7 +499,7 @@ namespace HomeKitDotNet.Models
     public class DiagonalFieldOfView(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Digital Zoom
@@ -508,7 +508,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<float?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(float value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Display Order
@@ -517,7 +517,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<string?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(string value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Event Retransmission Maximum
@@ -534,7 +534,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<EventSnapshotsActiveType?> GetValue() { return (EventSnapshotsActiveType?)(await Read()); }
         public async Task<bool> SetValue(EventSnapshotsActiveType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Event Transmission Counters
@@ -550,7 +550,7 @@ namespace HomeKitDotNet.Models
     public class FilterChangeIndication(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<FilterChangeIndicationType?> GetValue() { return (FilterChangeIndicationType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Filter Life Level
@@ -558,7 +558,7 @@ namespace HomeKitDotNet.Models
     public class FilterLifeLevel(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Firmware Revision
@@ -573,7 +573,7 @@ namespace HomeKitDotNet.Models
     public class FirmwareUpdateReadiness(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Firmware Update Status
@@ -581,7 +581,7 @@ namespace HomeKitDotNet.Models
     public class FirmwareUpdateStatus(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Hardware Finish
@@ -603,7 +603,7 @@ namespace HomeKitDotNet.Models
     public class HeartBeat(Service service, CharacteristicJSON json) : Characteristic<uint>(service, json), IService
     {
         public async Task<uint?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Heating Threshold Temperature
@@ -612,7 +612,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<float?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(float value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Hold Position
@@ -629,7 +629,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<HomeKitCameraActiveType?> GetValue() { return (HomeKitCameraActiveType?)(await Read()); }
         public async Task<bool> SetValue(HomeKitCameraActiveType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Hue
@@ -638,7 +638,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<float?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(float value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Identifier
@@ -661,7 +661,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<bool?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(bool value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Image Rotation
@@ -670,7 +670,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<int?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(int value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum InputDeviceTypeType : byte { OTHER = 0, TV = 1, RECORDING = 2, TUNER = 3, PLAYBACK = 4, AUDIO_SYSTEM = 5, }
     // 
@@ -679,7 +679,7 @@ namespace HomeKitDotNet.Models
     public class InputDeviceType(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<InputDeviceTypeType?> GetValue() { return (InputDeviceTypeType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum InputSourceTypeType : byte { OTHER = 0, HOME_SCREEN = 1, TUNER = 2, HDMI = 3, COMPOSITE_VIDEO = 4, S_VIDEO = 5, COMPONENT_VIDEO = 6, DVI = 7, AIRPLAY = 8, USB = 9, APPLICATION = 10, }
     // 
@@ -688,7 +688,7 @@ namespace HomeKitDotNet.Models
     public class InputSourceType(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<InputSourceTypeType?> GetValue() { return (InputSourceTypeType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum InUseType : byte { NOT_IN_USE = 0, IN_USE = 1, }
     // 
@@ -697,7 +697,7 @@ namespace HomeKitDotNet.Models
     public class InUse(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<InUseType?> GetValue() { return (InUseType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum IsConfiguredType : byte { NOT_CONFIGURED = 0, CONFIGURED = 1, }
     // 
@@ -707,7 +707,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<IsConfiguredType?> GetValue() { return (IsConfiguredType?)(await Read()); }
         public async Task<bool> SetValue(IsConfiguredType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum LeakDetectedType : byte { LEAK_NOT_DETECTED = 0, LEAK_DETECTED = 1, }
     // 
@@ -716,7 +716,7 @@ namespace HomeKitDotNet.Models
     public class LeakDetected(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<LeakDetectedType?> GetValue() { return (LeakDetectedType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // List Pairings
@@ -740,7 +740,7 @@ namespace HomeKitDotNet.Models
     public class LockCurrentState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<LockCurrentStateType?> GetValue() { return (LockCurrentStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum LockLastKnownActionType : byte { SECURED_PHYSICALLY_INTERIOR = 0, UNSECURED_PHYSICALLY_INTERIOR = 1, SECURED_PHYSICALLY_EXTERIOR = 2, UNSECURED_PHYSICALLY_EXTERIOR = 3, SECURED_BY_KEYPAD = 4, UNSECURED_BY_KEYPAD = 5, SECURED_REMOTELY = 6, UNSECURED_REMOTELY = 7, SECURED_BY_AUTO_SECURE_TIMEOUT = 8, SECURED_PHYSICALLY = 9, UNSECURED_PHYSICALLY = 10, }
     // 
@@ -749,7 +749,7 @@ namespace HomeKitDotNet.Models
     public class LockLastKnownAction(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<LockLastKnownActionType?> GetValue() { return (LockLastKnownActionType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Lock Management Auto Security Timeout
@@ -758,7 +758,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<uint?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(uint value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum LockPhysicalControlsType : byte { CONTROL_LOCK_DISABLED = 0, CONTROL_LOCK_ENABLED = 1, }
     // 
@@ -768,7 +768,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<LockPhysicalControlsType?> GetValue() { return (LockPhysicalControlsType?)(await Read()); }
         public async Task<bool> SetValue(LockPhysicalControlsType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum LockTargetStateType : byte { UNSECURED = 0, SECURED = 1, }
     // 
@@ -778,7 +778,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<LockTargetStateType?> GetValue() { return (LockTargetStateType?)(await Read()); }
         public async Task<bool> SetValue(LockTargetStateType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Logs
@@ -786,7 +786,7 @@ namespace HomeKitDotNet.Models
     public class Logs(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // MAC Retransmission Maximum
@@ -810,7 +810,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<ManagedNetworkEnableType?> GetValue() { return (ManagedNetworkEnableType?)(await Read()); }
         public async Task<bool> SetValue(ManagedNetworkEnableType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Manually Disabled
@@ -818,7 +818,7 @@ namespace HomeKitDotNet.Models
     public class ManuallyDisabled(Service service, CharacteristicJSON json) : Characteristic<bool>(service, json), IService
     {
         public async Task<bool?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Manufacturer
@@ -840,7 +840,7 @@ namespace HomeKitDotNet.Models
     public class MetricsBufferFullState(Service service, CharacteristicJSON json) : Characteristic<bool>(service, json), IService
     {
         public async Task<bool?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Model
@@ -855,7 +855,7 @@ namespace HomeKitDotNet.Models
     public class MotionDetected(Service service, CharacteristicJSON json) : Characteristic<bool>(service, json), IService
     {
         public async Task<bool?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Multifunction Button
@@ -863,7 +863,7 @@ namespace HomeKitDotNet.Models
     public class MultifunctionButton(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<byte?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Mute
@@ -872,7 +872,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<bool?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(bool value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Name
@@ -888,7 +888,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<string?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(string value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Network Client Profile Control
@@ -897,7 +897,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<string?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(string value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Network Client Status Control
@@ -929,7 +929,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<bool?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(bool value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Nitrogen Dioxide Density
@@ -937,7 +937,7 @@ namespace HomeKitDotNet.Models
     public class NitrogenDioxideDensity(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Obstruction Detected
@@ -945,7 +945,7 @@ namespace HomeKitDotNet.Models
     public class ObstructionDetected(Service service, CharacteristicJSON json) : Characteristic<bool>(service, json), IService
     {
         public async Task<bool?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum OccupancyDetectedType : byte { OCCUPANCY_NOT_DETECTED = 0, OCCUPANCY_DETECTED = 1, }
     // 
@@ -954,7 +954,7 @@ namespace HomeKitDotNet.Models
     public class OccupancyDetected(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<OccupancyDetectedType?> GetValue() { return (OccupancyDetectedType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // On
@@ -963,7 +963,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<bool?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(bool value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Operating State Response
@@ -971,7 +971,7 @@ namespace HomeKitDotNet.Models
     public class OperatingStateResponse(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Optical Zoom
@@ -980,7 +980,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<float?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(float value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Outlet In Use
@@ -988,7 +988,7 @@ namespace HomeKitDotNet.Models
     public class OutletInUse(Service service, CharacteristicJSON json) : Characteristic<bool>(service, json), IService
     {
         public async Task<bool?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Ozone Density
@@ -996,7 +996,7 @@ namespace HomeKitDotNet.Models
     public class OzoneDensity(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Pairing Features
@@ -1028,7 +1028,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<string?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(string value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum PeriodicSnapshotsActiveType : byte { DISABLE = 0, ENABLE = 1, }
     // 
@@ -1038,7 +1038,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<PeriodicSnapshotsActiveType?> GetValue() { return (PeriodicSnapshotsActiveType?)(await Read()); }
         public async Task<bool> SetValue(PeriodicSnapshotsActiveType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum PictureModeType : byte { OTHER = 0, STANDARD = 1, CALIBRATED = 2, CALIBRATED_DARK = 3, VIVID = 4, GAME = 5, COMPUTER = 6, CUSTOM = 7, }
     // 
@@ -1048,7 +1048,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<PictureModeType?> GetValue() { return (PictureModeType?)(await Read()); }
         public async Task<bool> SetValue(PictureModeType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Ping
@@ -1063,7 +1063,7 @@ namespace HomeKitDotNet.Models
     public class PM10Density(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // PM2.5 Density
@@ -1071,7 +1071,7 @@ namespace HomeKitDotNet.Models
     public class PM2_5Density(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum PositionStateType : byte { DECREASING = 0, INCREASING = 1, STOPPED = 2, }
     // 
@@ -1080,7 +1080,7 @@ namespace HomeKitDotNet.Models
     public class PositionState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<PositionStateType?> GetValue() { return (PositionStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum PowerModeSelectionType : byte { SHOW = 0, HIDE = 1, }
     // 
@@ -1104,7 +1104,7 @@ namespace HomeKitDotNet.Models
     public class ProgrammableSwitchEvent(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<ProgrammableSwitchEventType?> GetValue() { return (ProgrammableSwitchEventType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Programmable Switch Output State
@@ -1113,7 +1113,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<byte?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(byte value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum ProgramModeType : byte { NO_PROGRAM_SCHEDULED = 0, PROGRAM_SCHEDULED = 1, PROGRAM_SCHEDULED_MANUAL_MODE = 2, }
     // 
@@ -1122,7 +1122,7 @@ namespace HomeKitDotNet.Models
     public class ProgramMode(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<ProgramModeType?> GetValue() { return (ProgramModeType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Received Signal Strength Indication
@@ -1146,7 +1146,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<RecordingAudioActiveType?> GetValue() { return (RecordingAudioActiveType?)(await Read()); }
         public async Task<bool> SetValue(RecordingAudioActiveType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Relative Humidity Dehumidifier Threshold
@@ -1155,7 +1155,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<float?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(float value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Relative Humidity Humidifier Threshold
@@ -1164,7 +1164,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<float?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(float value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Relay Control Point
@@ -1173,7 +1173,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<string?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(string value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Relay Enabled
@@ -1182,7 +1182,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<bool?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(bool value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Relay State
@@ -1190,7 +1190,7 @@ namespace HomeKitDotNet.Models
     public class RelayState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<byte?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Remaining Duration
@@ -1198,7 +1198,7 @@ namespace HomeKitDotNet.Models
     public class RemainingDuration(Service service, CharacteristicJSON json) : Characteristic<uint>(service, json), IService
     {
         public async Task<uint?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum RemoteKeyType : byte { REWIND = 0, FAST_FORWARD = 1, NEXT_TRACK = 2, PREVIOUS_TRACK = 3, ARROW_UP = 4, ARROW_DOWN = 5, ARROW_LEFT = 6, ARROW_RIGHT = 7, SELECT = 8, BACK = 9, EXIT = 10, PLAY_PAUSE = 11, INFORMATION = 15, }
     // 
@@ -1223,7 +1223,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<RotationDirectionType?> GetValue() { return (RotationDirectionType?)(await Read()); }
         public async Task<bool> SetValue(RotationDirectionType value) { return await Write((int)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Rotation Speed
@@ -1232,7 +1232,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<float?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(float value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum RouterStatusType : byte { READY = 0, NOT_READY = 1, }
     // 
@@ -1241,7 +1241,7 @@ namespace HomeKitDotNet.Models
     public class RouterStatus(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<RouterStatusType?> GetValue() { return (RouterStatusType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Saturation
@@ -1250,7 +1250,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<float?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(float value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Security System Alarm Type
@@ -1258,7 +1258,7 @@ namespace HomeKitDotNet.Models
     public class SecuritySystemAlarmType(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<byte?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum SecuritySystemCurrentStateType : byte { STAY_ARM = 0, AWAY_ARM = 1, NIGHT_ARM = 2, DISARMED = 3, ALARM_TRIGGERED = 4, }
     // 
@@ -1267,7 +1267,7 @@ namespace HomeKitDotNet.Models
     public class SecuritySystemCurrentState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<SecuritySystemCurrentStateType?> GetValue() { return (SecuritySystemCurrentStateType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum SecuritySystemTargetStateType : byte { STAY_ARM = 0, AWAY_ARM = 1, NIGHT_ARM = 2, DISARM = 3, }
     // 
@@ -1277,7 +1277,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<SecuritySystemTargetStateType?> GetValue() { return (SecuritySystemTargetStateType?)(await Read()); }
         public async Task<bool> SetValue(SecuritySystemTargetStateType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Selected Audio Stream Configuration
@@ -1294,7 +1294,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<string?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(string value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Selected Diagnostics Modes
@@ -1319,7 +1319,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<string?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(string value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Serial Number
@@ -1350,7 +1350,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<uint?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(uint value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Setup Data Stream Transport
@@ -1389,7 +1389,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<byte?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(byte value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Siri Endpoint Session Status
@@ -1397,7 +1397,7 @@ namespace HomeKitDotNet.Models
     public class SiriEndpointSessionStatus(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Siri Engine Version
@@ -1421,7 +1421,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<byte?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(byte value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Siri Listening
@@ -1430,7 +1430,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<byte?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(byte value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Siri Touch To Use
@@ -1439,7 +1439,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<byte?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(byte value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum SlatTypeType : byte { HORIZONTAL = 0, VERTICAL = 1, }
     // 
@@ -1456,7 +1456,7 @@ namespace HomeKitDotNet.Models
     public class SleepDiscoveryMode(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<SleepDiscoveryModeType?> GetValue() { return (SleepDiscoveryModeType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Sleep Interval
@@ -1464,7 +1464,7 @@ namespace HomeKitDotNet.Models
     public class SleepInterval(Service service, CharacteristicJSON json) : Characteristic<uint>(service, json), IService
     {
         public async Task<uint?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum SmokeDetectedType : byte { SMOKE_NOT_DETECTED = 0, SMOKE_DETECTED = 1, }
     // 
@@ -1473,7 +1473,7 @@ namespace HomeKitDotNet.Models
     public class SmokeDetected(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<SmokeDetectedType?> GetValue() { return (SmokeDetectedType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Software Revision
@@ -1488,7 +1488,7 @@ namespace HomeKitDotNet.Models
     public class StagedFirmwareVersion(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Status Active
@@ -1496,7 +1496,7 @@ namespace HomeKitDotNet.Models
     public class StatusActive(Service service, CharacteristicJSON json) : Characteristic<bool>(service, json), IService
     {
         public async Task<bool?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum StatusFaultType : byte { NO_FAULT = 0, GENERAL_FAULT = 1, }
     // 
@@ -1505,7 +1505,7 @@ namespace HomeKitDotNet.Models
     public class StatusFault(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<StatusFaultType?> GetValue() { return (StatusFaultType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum StatusJammedType : byte { NOT_JAMMED = 0, JAMMED = 1, }
     // 
@@ -1514,7 +1514,7 @@ namespace HomeKitDotNet.Models
     public class StatusJammed(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<StatusJammedType?> GetValue() { return (StatusJammedType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum StatusLowBatteryType : byte { BATTERY_LEVEL_NORMAL = 0, BATTERY_LEVEL_LOW = 1, }
     // 
@@ -1523,7 +1523,7 @@ namespace HomeKitDotNet.Models
     public class StatusLowBattery(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<StatusLowBatteryType?> GetValue() { return (StatusLowBatteryType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum StatusTamperedType : byte { NOT_TAMPERED = 0, TAMPERED = 1, }
     // 
@@ -1532,7 +1532,7 @@ namespace HomeKitDotNet.Models
     public class StatusTampered(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<StatusTamperedType?> GetValue() { return (StatusTamperedType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Streaming Status
@@ -1540,7 +1540,7 @@ namespace HomeKitDotNet.Models
     public class StreamingStatus(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Sulphur Dioxide Density
@@ -1548,7 +1548,7 @@ namespace HomeKitDotNet.Models
     public class SulphurDioxideDensity(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Supported Asset Types
@@ -1563,7 +1563,7 @@ namespace HomeKitDotNet.Models
     public class SupportedAudioRecordingConfiguration(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Supported Audio Stream Configuration
@@ -1578,7 +1578,7 @@ namespace HomeKitDotNet.Models
     public class SupportedCameraRecordingConfiguration(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Supported Characteristic Value Transition Configuration
@@ -1657,7 +1657,7 @@ namespace HomeKitDotNet.Models
     public class SupportedVideoRecordingConfiguration(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Supported Video Stream Configuration
@@ -1674,7 +1674,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<SwingModeType?> GetValue() { return (SwingModeType?)(await Read()); }
         public async Task<bool> SetValue(SwingModeType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Tap Type
@@ -1691,7 +1691,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<TargetAirPurifierStateType?> GetValue() { return (TargetAirPurifierStateType?)(await Read()); }
         public async Task<bool> SetValue(TargetAirPurifierStateType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Target Control List
@@ -1716,7 +1716,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<TargetDoorStateType?> GetValue() { return (TargetDoorStateType?)(await Read()); }
         public async Task<bool> SetValue(TargetDoorStateType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum TargetFanStateType : byte { MANUAL = 0, AUTO = 1, }
     // 
@@ -1726,7 +1726,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<TargetFanStateType?> GetValue() { return (TargetFanStateType?)(await Read()); }
         public async Task<bool> SetValue(TargetFanStateType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum TargetHeaterCoolerStateType : byte { AUTO = 0, HEAT = 1, COOL = 2, }
     // 
@@ -1736,7 +1736,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<TargetHeaterCoolerStateType?> GetValue() { return (TargetHeaterCoolerStateType?)(await Read()); }
         public async Task<bool> SetValue(TargetHeaterCoolerStateType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum TargetHeatingCoolingStateType : byte { OFF = 0, HEAT = 1, COOL = 2, AUTO = 3, }
     // 
@@ -1746,7 +1746,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<TargetHeatingCoolingStateType?> GetValue() { return (TargetHeatingCoolingStateType?)(await Read()); }
         public async Task<bool> SetValue(TargetHeatingCoolingStateType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Target Horizontal Tilt Angle
@@ -1755,7 +1755,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<int?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(int value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum TargetHumidifierDehumidifierStateType : byte { HUMIDIFIER_OR_DEHUMIDIFIER = 0, HUMIDIFIER = 1, DEHUMIDIFIER = 2, }
     // 
@@ -1765,7 +1765,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<TargetHumidifierDehumidifierStateType?> GetValue() { return (TargetHumidifierDehumidifierStateType?)(await Read()); }
         public async Task<bool> SetValue(TargetHumidifierDehumidifierStateType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum TargetMediaStateType : byte { PLAY = 0, PAUSE = 1, STOP = 2, }
     // 
@@ -1775,7 +1775,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<TargetMediaStateType?> GetValue() { return (TargetMediaStateType?)(await Read()); }
         public async Task<bool> SetValue(TargetMediaStateType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Target Position
@@ -1784,7 +1784,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<byte?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(byte value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Target Relative Humidity
@@ -1793,7 +1793,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<float?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(float value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Target Temperature
@@ -1802,7 +1802,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<float?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(float value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Target Tilt Angle
@@ -1811,7 +1811,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<int?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(int value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Target Vertical Tilt Angle
@@ -1820,7 +1820,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<int?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(int value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum TargetVisibilityStateType : byte { SHOWN = 0, HIDDEN = 1, }
     // 
@@ -1830,7 +1830,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<TargetVisibilityStateType?> GetValue() { return (TargetVisibilityStateType?)(await Read()); }
         public async Task<bool> SetValue(TargetVisibilityStateType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum TemperatureDisplayUnitsType : byte { CELSIUS = 0, FAHRENHEIT = 1, }
     // 
@@ -1840,7 +1840,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<TemperatureDisplayUnitsType?> GetValue() { return (TemperatureDisplayUnitsType?)(await Read()); }
         public async Task<bool> SetValue(TemperatureDisplayUnitsType value) { return await Write((byte)value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum ThirdPartyCameraActiveType : byte { OFF = 0, ON = 1, }
     // 
@@ -1849,7 +1849,7 @@ namespace HomeKitDotNet.Models
     public class ThirdPartyCameraActive(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<ThirdPartyCameraActiveType?> GetValue() { return (ThirdPartyCameraActiveType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Thread Control Point
@@ -1878,7 +1878,7 @@ namespace HomeKitDotNet.Models
     public class ThreadStatus(Service service, CharacteristicJSON json) : Characteristic<ushort>(service, json), IService
     {
         public async Task<ushort?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Token
@@ -1901,7 +1901,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<int?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(int value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Tunneled Accessory Advertising
@@ -1910,7 +1910,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<bool?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(bool value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Tunneled Accessory Connected
@@ -1919,7 +1919,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<bool?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(bool value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Tunneled Accessory State Number
@@ -1927,7 +1927,7 @@ namespace HomeKitDotNet.Models
     public class TunneledAccessoryStateNumber(Service service, CharacteristicJSON json) : Characteristic<int>(service, json), IService
     {
         public async Task<int?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum ValveTypeType : byte { GENERIC_VALVE = 0, IRRIGATION = 1, SHOWER_HEAD = 2, WATER_FAUCET = 3, }
     // 
@@ -1936,7 +1936,7 @@ namespace HomeKitDotNet.Models
     public class ValveType(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<ValveTypeType?> GetValue() { return (ValveTypeType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Version
@@ -1952,7 +1952,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<byte?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(byte value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // VOC Density
@@ -1960,7 +1960,7 @@ namespace HomeKitDotNet.Models
     public class VOCDensity(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Volume
@@ -1969,7 +1969,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<byte?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(byte value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum VolumeControlTypeType : byte { NONE = 0, RELATIVE = 1, RELATIVE_WITH_CURRENT = 2, ABSOLUTE = 3, }
     // 
@@ -1978,7 +1978,7 @@ namespace HomeKitDotNet.Models
     public class VolumeControlType(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<VolumeControlTypeType?> GetValue() { return (VolumeControlTypeType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum VolumeSelectorType : byte { INCREMENT = 0, DECREMENT = 1, }
     // 
@@ -2001,7 +2001,7 @@ namespace HomeKitDotNet.Models
     public class WANConfigurationList(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // WAN Status List
@@ -2009,7 +2009,7 @@ namespace HomeKitDotNet.Models
     public class WANStatusList(Service service, CharacteristicJSON json) : StringCharacteristic(service, json), IService
     {
         public async Task<string?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Water Level
@@ -2017,7 +2017,7 @@ namespace HomeKitDotNet.Models
     public class WaterLevel(Service service, CharacteristicJSON json) : Characteristic<float>(service, json), IService
     {
         public async Task<float?> GetValue() { return await Read(); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
     // Wi-Fi Capabilities
@@ -2033,7 +2033,7 @@ namespace HomeKitDotNet.Models
     {
         public async Task<string?> GetValue() { return await Read(); }
         public async Task<bool> SetValue(string value) { return await Write(value); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum WiFiSatelliteStatusType : byte { UNKNOWN = 0, CONNECTED = 1, NOT_CONNECTED = 2, }
     // 
@@ -2042,6 +2042,6 @@ namespace HomeKitDotNet.Models
     public class WiFiSatelliteStatus(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
         public async Task<WiFiSatelliteStatusType?> GetValue() { return (WiFiSatelliteStatusType?)(await Read()); }
-        public async Task<bool> Subscribe() { return await Subscribe(); }
+        public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
 }
