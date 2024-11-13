@@ -18,6 +18,8 @@ namespace HomeKitDotNet.JSON
     public record AccessoriesJSON
     {
         [JsonPropertyName("accessories")]
+        #pragma warning disable CS8618
         public AccessoryJSON[] Accessories { get; init; }
+        #pragma warning restore CS8618
     }
 }

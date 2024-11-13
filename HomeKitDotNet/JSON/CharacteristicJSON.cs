@@ -17,6 +17,7 @@ namespace HomeKitDotNet.JSON
 {
     public record CharacteristicJSON
     {
+        #pragma warning disable CS8618
         [JsonPropertyName("type")]
         public string Type { get; init; }
         [JsonPropertyName("iid")]
@@ -50,5 +51,6 @@ namespace HomeKitDotNet.JSON
         public long? TTL {  get; init; }
         [JsonPropertyName("pid")]
         public ulong? PID { get; init; }
+        #pragma warning restore CS8618
     }
 }

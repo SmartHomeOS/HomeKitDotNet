@@ -16,6 +16,7 @@ namespace HomeKitDotNet.JSON
 {
     public record ServiceJSON
     {
+        #pragma warning disable CS8618
         [JsonPropertyName("type")]
         public string Type { get; init; }
         [JsonPropertyName("iid")]
@@ -28,5 +29,6 @@ namespace HomeKitDotNet.JSON
         public bool PrimaryService { get; init; }
         [JsonPropertyName("linked")]
         public int[] LinkedServices { get; init; }
+        #pragma warning restore CS8618
     }
 }

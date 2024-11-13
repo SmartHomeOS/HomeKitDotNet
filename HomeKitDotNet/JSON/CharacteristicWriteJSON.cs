@@ -28,6 +28,8 @@ namespace HomeKitDotNet.JSON
         [JsonPropertyName("iid")]
         public int InstanceID { get; init; }
         [JsonPropertyName("value")]
-        public JsonElement Value { get; set; }
+        public JsonElement? Value { get; set; }
+        [JsonPropertyName("ev")]
+        public bool? EventNotifications { get; set; }
     }
 }

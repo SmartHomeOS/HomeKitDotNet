@@ -17,7 +17,9 @@ namespace HomeKitDotNet.JSON
 {
     public record CharacteristicsJSON
     {
+        #pragma warning disable CS8618
         [JsonPropertyName("characteristics")]
         public CharacteristicJSON[] Characteristics { get; init; }
+        #pragma warning restore CS8618
     }
 }
