@@ -23,7 +23,7 @@ using System.Text.Json;
 
 namespace HomeKitDotNet
 {
-    public class Controller
+    public class Controller : IDisposable
     {
         private byte[] LTPK;
         private byte[] LTSK;
@@ -120,6 +120,19 @@ namespace HomeKitDotNet
             throw new Exception("Failed to Connect - Cause Unknown");
         }
 
+        public async Task<bool> UnPair(HomeKitEndPoint endpoint)
+        {
+            HttpResponseMessage msg = await endpoint.Connection.Post("/pair-setup", 
+                                                                      new TLVInt(TLVType.kTLVType_State, (byte)PairingState.M1), 
+                                                                      new TLVInt(TLVType.kTLVType_Method, (byte)Method.RemovePairing),
+                                                                      new TLVBytes(TLVType.kTLVType_Identifier, DeviceID));
+            if (!msg.IsSuccessStatusCode)
+                return false;
+            endpoints.Remove(endpoint);
+            endpoint.Connection.Dispose();
+            return true;
+        }
+
         public async Task<AccessoryInfo> Pair(long setupPin, IPEndPoint destination)
         {
             string I = "Pair-Setup";
@@ -209,6 +222,15 @@ namespace HomeKitDotNet
             Console.WriteLine("Accessory LTPK: " + BitConverter.ToString(AccessoryLTPK));
 
             return new AccessoryInfo(accessoryPairingID, AccessoryLTPK);
+        }
+
+        public void Dispose()
+        {
+            foreach (HomeKitEndPoint endPoint in EndPoints)
+                endPoint.Connection.Dispose();
+            endpoints.Clear();
+            LTPK = new byte[0];
+            LTSK = new byte[0];
         }
 
         public HomeKitEndPoint[] EndPoints {get { return endpoints.ToArray(); } }

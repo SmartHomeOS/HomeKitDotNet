@@ -19,7 +19,7 @@ using System.Text;
 
 namespace HomeKitDotNet
 {
-    public class Connection
+    public class Connection : IDisposable
     {
         TcpClient client;
         EncryptedStreamWriter writer;
@@ -35,6 +35,11 @@ namespace HomeKitDotNet
             client.Connect(ep.Address, ep.Port);
             writer = new EncryptedStreamWriter(client.GetStream());
             reader = new EncryptedStreamReader(client.GetStream());
+        }
+
+        public void Dispose()
+        {
+            client.Dispose();
         }
 
         public void EnableEncryption(byte[] writeKey, byte[] readKey)
