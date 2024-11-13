@@ -27,21 +27,25 @@ namespace HomeKitDotNet
     {
         private byte[] LTPK;
         private byte[] LTSK;
-        private byte[] DeviceID;
+        private byte[] deviceID;
         private List<HomeKitEndPoint> endpoints = new List<HomeKitEndPoint>();
 
-        public Controller()
+        public Controller(out byte[] publicKey, out byte[] privateKey)
         {
             byte[] seed = RandomNumberGenerator.GetBytes(32);
             Ed25519.KeyPairFromSeed(out LTPK, out LTSK, seed);
-            DeviceID = RandomNumberGenerator.GetBytes(16);
+            deviceID = RandomNumberGenerator.GetBytes(16);
+            publicKey = LTPK;
+            privateKey = LTSK;
         }
         public Controller(byte[] privateKey, byte[] publicKey, byte[] deviceID)
         {
             LTPK = publicKey;
             LTSK = privateKey;
-            DeviceID = deviceID;
+            this.deviceID = deviceID;
         }
+
+        public byte[] DeviceID { get { return deviceID; } }
 
         public async Task<HomeKitEndPoint> Connect(IPEndPoint destination, byte[] accessoryID, byte[] accessoryLTPK)
         {
