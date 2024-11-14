@@ -10,9 +10,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System;
 using System.Buffers.Binary;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -31,11 +29,11 @@ namespace HomeKitDotNet
             this.stream = stream;
         }
 
-        public async Task<string> ReadLineAsync()
+        public async Task<string> ReadLineAsync(CancellationToken token)
         {
             int newLine = -1;
             if (decrypter != null && buffEnd <= readPos)
-                await ReadEncrypted();
+                await ReadEncrypted(token);
             if (buffEnd > 0)
                 newLine = FindReturn(buffer.Slice(readPos, buffEnd - readPos).Span);
             if (decrypter == null)
@@ -49,7 +47,7 @@ namespace HomeKitDotNet
                         buffEnd -= readPos;
                         readPos = 0;
                     }
-                    buffEnd += await stream.ReadAsync(buffer.Slice(buffEnd));
+                    buffEnd += await stream.ReadAsync(buffer.Slice(buffEnd), token);
                     newLine = FindReturn(buffer.Slice(readPos, buffEnd - readPos).Span);
                 }
             }
@@ -62,10 +60,10 @@ namespace HomeKitDotNet
             return ret;
         }
 
-        public async Task ReadBytesAsync(byte[] bytes)
+        public async Task ReadBytesAsync(byte[] bytes, CancellationToken token)
         {
             if (decrypter == null)
-                await ReadBytesStream(bytes);
+                await ReadBytesStream(bytes, token);
             else
             {
                 int len, writePos = 0;
@@ -78,7 +76,7 @@ namespace HomeKitDotNet
                 }
                 while (writePos < bytes.Length)
                 {
-                    await ReadEncrypted();
+                    await ReadEncrypted(token);
                     len = Math.Min(bytes.Length - writePos, buffEnd);
                     buffer.Slice(0, buffEnd).Span.CopyTo(bytes.AsSpan().Slice(writePos));
                     writePos += len;
@@ -87,7 +85,7 @@ namespace HomeKitDotNet
             }
         }
 
-        private async Task ReadBytesStream(byte[] bytes)
+        private async Task ReadBytesStream(byte[] bytes, CancellationToken token)
         {
             int pos = 0;
             if (readPos != buffEnd)
@@ -98,18 +96,17 @@ namespace HomeKitDotNet
                 readPos = 0;
             }
             while (pos < bytes.Length - 1)
-                pos += await stream.ReadAsync(bytes, pos, bytes.Length - pos);
+                pos += await stream.ReadAsync(bytes, pos, bytes.Length - pos, token);
         }
 
-        private async Task ReadEncrypted() //read line
+        private async Task ReadEncrypted(CancellationToken token) //read line
         {
-            await stream.ReadExactlyAsync(buffer.Slice(0, 2));
+            await stream.ReadExactlyAsync(buffer.Slice(0, 2), token);
             ushort len = BinaryPrimitives.ReadUInt16LittleEndian(buffer.Slice(0, 2).Span);
-            await stream.ReadExactlyAsync(buffer.Slice(2, len + 16));
+            await stream.ReadExactlyAsync(buffer.Slice(2, len + 16), token);
             byte[] nonce = new byte[12];
             BinaryPrimitives.WriteUInt64LittleEndian(nonce.AsSpan().Slice(4), counter++);
             decrypter!.Decrypt(nonce.AsSpan(), buffer.Slice(2, len).Span, buffer.Slice(2 + len, 16).Span, buffer.Slice(0, len).Span, buffer.Slice(0, 2).Span);
-            Console.WriteLine("Decrypted " + len);
             buffEnd = len;
             readPos = 0;
         }

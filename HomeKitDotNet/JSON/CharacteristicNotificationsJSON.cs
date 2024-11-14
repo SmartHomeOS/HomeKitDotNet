@@ -10,14 +10,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace HomeKitDotNet.JSON
 {
-    public record CharacteristicWriteJSON
+    public record CharacteristicNotificationsJSON
     {
-        public CharacteristicWriteJSON(int aid, int iid)
+        public CharacteristicNotificationsJSON(int aid, int iid)
         {
             this.AccessoryID = aid;
             this.InstanceID = iid;
@@ -27,9 +26,7 @@ namespace HomeKitDotNet.JSON
         public int AccessoryID { get; init; }
         [JsonPropertyName("iid")]
         public int InstanceID { get; init; }
-        [JsonPropertyName("value")]
-        public JsonElement? Value { get; set; }
         [JsonPropertyName("ev")]
-        public bool? EventNotifications { get; set; }
+        public bool EventNotifications { get; set; }
     }
 }

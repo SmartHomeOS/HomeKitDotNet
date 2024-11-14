@@ -17,18 +17,19 @@ namespace HomeKitDotNet.Models
 {
     public class Characteristic<T> : CharacteristicBase where T : struct
     {
+        public event EventHandler<T?>? Updated;
         protected Characteristic(Service service, CharacteristicJSON json) : base(service, json)
         {
-            MapValue(json.Value);
+            this.LastValue = MapValue(json.Value);
         }
 
         protected async Task<bool> Write(T value)
         {
             if (!CanWrite)
                 throw new InvalidOperationException("Writing is prohibited");
-            CharacteristicWriteJSON write = new CharacteristicWriteJSON(service.Accessory.ID, InstanceID);
+            CharacteristicValueJSON write = new CharacteristicValueJSON(service.Accessory.ID, InstanceID);
             write.Value = JsonSerializer.SerializeToElement(LastValue);
-            Dictionary<string, CharacteristicWriteJSON[]> dict = new Dictionary<string, CharacteristicWriteJSON[]>();
+            Dictionary<string, CharacteristicValueJSON[]> dict = new Dictionary<string, CharacteristicValueJSON[]>();
             dict.Add("characteristics", [write]);
             return (await service.Accessory.EndPoint.Connection.Put("/characteristics", JsonSerializer.SerializeToUtf8Bytes(dict))).StatusCode == System.Net.HttpStatusCode.NoContent;
         }
@@ -43,37 +44,45 @@ namespace HomeKitDotNet.Models
             CharacteristicsJSON? chars = JsonSerializer.Deserialize<CharacteristicsJSON>(msg.Content.ReadAsStream());
             if (chars == null || chars.Characteristics.Length == 0)
                 return null;
-            MapValue(chars.Characteristics[0].Value);
+            this.LastValue = MapValue(chars.Characteristics[0].Value);
             return LastValue;
         }
 
-        protected void MapValue(JsonElement? value)
+        protected T? MapValue(JsonElement? value)
         {
             if (value.HasValue)
             {
                 if (typeof(T) == typeof(float) && value.Value.ValueKind == JsonValueKind.Number)
-                    this.LastValue = (T)(object)value.Value.GetSingle();
+                    return (T)(object)value.Value.GetSingle();
                 else if (typeof(T) == typeof(int) && value.Value.ValueKind == JsonValueKind.Number)
-                    this.LastValue = (T)(object)value.Value.GetInt32();
+                    return (T)(object)value.Value.GetInt32();
                 else if (typeof(T) == typeof(string) && value.Value.ValueKind == JsonValueKind.String)
-                    this.LastValue = (T?)(object?)value.Value.GetString();
+                    return (T?)(object?)value.Value.GetString();
                 else if (typeof(T) == typeof(byte) && value.Value.ValueKind == JsonValueKind.Number)
-                    this.LastValue = (T)(object)value.Value.GetByte();
+                    return (T)(object)value.Value.GetByte();
                 else if (typeof(T) == typeof(ushort) && value.Value.ValueKind == JsonValueKind.Number)
-                    this.LastValue = (T)(object)value.Value.GetUInt16();
+                    return (T)(object)value.Value.GetUInt16();
                 else if (typeof(T) == typeof(uint) && value.Value.ValueKind == JsonValueKind.Number)
-                    this.LastValue = (T)(object)value.Value.GetUInt32();
+                    return   (T)(object)value.Value.GetUInt32();
                 else if (typeof(T) == typeof(ulong) && value.Value.ValueKind == JsonValueKind.Number)
-                    this.LastValue = (T)(object)value.Value.GetUInt64();
+                    return (T)(object)value.Value.GetUInt64();
                 else if (typeof(T) == typeof(bool) && (value.Value.ValueKind == JsonValueKind.True || value.Value.ValueKind == JsonValueKind.False))
-                    this.LastValue = (T)(object)value.Value.GetBoolean();
+                    return (T)(object)value.Value.GetBoolean();
                 else if (typeof(T) == typeof(Enum) && value.Value.ValueKind == JsonValueKind.Number)
-                    this.LastValue = (T)(object)value.Value.GetUInt32();
+                    return (T)(object)value.Value.GetUInt32();
                 else
                     throw new ArgumentException("Value Mismatch " + value);
             }
             else
-                LastValue = null;
+                return null;
+        }
+
+        internal override void FireUpdate(JsonElement? value)
+        {
+            T? newVal = MapValue(value);
+            if (Updated != null)
+                Updated.Invoke(this, newVal);
+            LastValue = newVal;
         }
 
         public T? LastValue { get; private set; }

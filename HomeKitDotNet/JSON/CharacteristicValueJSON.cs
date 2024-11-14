@@ -10,16 +10,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace HomeKitDotNet
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace HomeKitDotNet.JSON
 {
-    public struct AccessoryInfo
+    public record CharacteristicValueJSON
     {
-        public AccessoryInfo(byte[] id, byte[] ltpk)
+        public CharacteristicValueJSON(int aid, int iid)
         {
-            ID = id;
-            LTPK = ltpk;
+            this.AccessoryID = aid;
+            this.InstanceID = iid;
         }
-        public byte[] ID { get; set; }
-        public byte[] LTPK { get; set; }
+        [JsonPropertyName("aid")]
+        public int AccessoryID { get; init; }
+        [JsonPropertyName("iid")]
+        public int InstanceID { get; init; }
+        [JsonPropertyName("value")]
+        public JsonElement? Value { get; set; }
     }
 }

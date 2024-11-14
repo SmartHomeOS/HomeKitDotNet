@@ -16,6 +16,7 @@ namespace HomeKitDotNet.Models
 {
     public class Accessory
     {
+        private Dictionary<int, CharacteristicBase> instanceTable = new Dictionary<int, CharacteristicBase>();
         internal Accessory(HomeKitEndPoint endPoint, AccessoryJSON json)
         {
             this.EndPoint = endPoint;
@@ -31,7 +32,7 @@ namespace HomeKitDotNet.Models
         }
 
         public Service[] Services { get; init; }
-        public int ID { get; init;}
+        public int ID { get; init; }
         public HomeKitEndPoint EndPoint { get; init; }
 
         protected IService? GetService(string type, ServiceJSON service)
@@ -186,6 +187,17 @@ namespace HomeKitDotNet.Models
 
             }
             return null;
+        }
+
+        internal void RegisterCharacteristic(int instance, CharacteristicBase characteristic)
+        {
+            instanceTable.TryAdd(instance, characteristic);
+        }
+
+        internal void InvokeEvent(CharacteristicEventJSON json)
+        {
+            if (instanceTable.TryGetValue(json.InstanceID, out CharacteristicBase? characteristic))
+                characteristic.FireUpdate(json.Value);
         }
     }
 }

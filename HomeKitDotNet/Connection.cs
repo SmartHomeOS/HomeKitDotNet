@@ -16,6 +16,7 @@ using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Channels;
 
 namespace HomeKitDotNet
 {
@@ -26,6 +27,9 @@ namespace HomeKitDotNet
         EncryptedStreamReader reader;
         readonly string host;
         SemaphoreSlim semaphore = new SemaphoreSlim(1);
+        CancellationTokenSource token = new CancellationTokenSource();
+        Channel<HttpResponseMessage> responses = Channel.CreateUnbounded<HttpResponseMessage>();
+        public event EventHandler<HttpResponseMessage>? EventReceived;
 
         public Connection(IPEndPoint ep)
         {
@@ -35,18 +39,26 @@ namespace HomeKitDotNet
             client.Connect(ep.Address, ep.Port);
             writer = new EncryptedStreamWriter(client.GetStream());
             reader = new EncryptedStreamReader(client.GetStream());
+            Task.Factory.StartNew(ReceiveLoop, token.Token);
         }
 
         public void Dispose()
         {
+            token.Cancel();
+            token.Dispose();
             client.Dispose();
         }
 
         public void EnableEncryption(byte[] writeKey, byte[] readKey)
         {
+            token.Cancel();
+            token.Dispose();
 
             writer.EnableEncryption(new ChaCha20Poly1305(writeKey));
             reader.EnableDecryption(new ChaCha20Poly1305(readKey));
+
+            token = new CancellationTokenSource();
+            Task.Factory.StartNew(ReceiveLoop, token.Token);
         }
 
         public async Task<HttpResponseMessage> Get(string path)
@@ -57,7 +69,7 @@ namespace HomeKitDotNet
         public async Task<HttpResponseMessage> Put(string path, byte[] json)
         {
             ByteArrayContent content = new ByteArrayContent(json);
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/hap+json\r\n");
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/hap+json");
             return await SendAsync(HttpMethod.Put, path, content);
         }
 
@@ -71,6 +83,54 @@ namespace HomeKitDotNet
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/pairing+tlv8");
             }
             return await SendAsync(HttpMethod.Post, path, content);
+        }
+
+        public async Task ReceiveLoop()
+        {
+            try
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    string? line = await reader.ReadLineAsync(token.Token);
+                    if (line == null)
+                        throw new EndOfStreamException();
+                    string[] parts = line.Split(' ', 3);
+                    if (parts.Length != 3 || !int.TryParse(parts[1], out int status))
+                        throw new HttpRequestException("Invalid Response: " + line);
+                    HttpResponseMessage response = new HttpResponseMessage((HttpStatusCode)status);
+                    response.ReasonPhrase = parts[2];
+                    string protocol = parts[0];
+                    int contentLen = 0;
+                    string type = "";
+                    while (line != "" && line != null)
+                    {
+                        parts = line.Split(':', StringSplitOptions.TrimEntries);
+                        if (parts.Length == 2 && parts[0].Equals("content-length", StringComparison.InvariantCultureIgnoreCase))
+                            contentLen = int.Parse(parts[1]);
+                        if (parts.Length == 2 && parts[0].Equals("content-type", StringComparison.InvariantCultureIgnoreCase))
+                            type = parts[1];
+                        line = await reader.ReadLineAsync(token.Token);
+                    }
+                    if (line == null)
+                        throw new EndOfStreamException();
+                    if (contentLen != 0)
+                    {
+                        byte[] contentBytes = new byte[contentLen];
+                        await reader.ReadBytesAsync(contentBytes, token.Token);
+                        response.Content = new ByteArrayContent(contentBytes);
+                        response.Content.Headers.ContentType = new MediaTypeHeaderValue(type);
+                    }
+                    if (protocol == "EVENT/1.0")
+                        EventReceived?.Invoke(this, response);
+                    else
+                        responses.Writer.TryWrite(response);
+                }
+            }
+            catch (OperationCanceledException) { } // Ignore
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.ToString());
+            }
         }
 
         protected async Task<HttpResponseMessage> SendAsync(HttpMethod method, string path, ByteArrayContent? content)
@@ -87,9 +147,7 @@ namespace HomeKitDotNet
             if (content != null)
             {
                 msg.Append($"Content-Length: {contentStream!.Length}\r\n");
-                msg.Append("Content-Type: ");
-                msg.Append(content.Headers.ContentType);
-                msg.Append("\r\n");
+                msg.Append($"Content-Type: {content.Headers.ContentType}\r\n");
             }
             msg.Append("\r\n");
             await semaphore.WaitAsync();
@@ -98,36 +156,7 @@ namespace HomeKitDotNet
                 if (contentStream != null)
                     await writer.WriteAsync(contentStream);
                 await writer.FlushAsync();
-
-                string? line = await reader.ReadLineAsync();
-                if (line == null)
-                    throw new EndOfStreamException();
-                string[] parts = line.Split(' ', 3);
-                if (parts.Length != 3 || !int.TryParse(parts[1], out int status))
-                    throw new HttpRequestException("Invalid Response: " + line);
-                HttpResponseMessage response = new HttpResponseMessage((HttpStatusCode)status);
-                response.ReasonPhrase = parts[2];
-                int contentLen = 0;
-                string type = "";
-                while (line != "" && line != null)
-                {
-                    parts = line.Split(':', StringSplitOptions.TrimEntries);
-                    if (parts.Length == 2 && parts[0].Equals("content-length", StringComparison.InvariantCultureIgnoreCase))
-                        contentLen = int.Parse(parts[1]);
-                    if (parts.Length == 2 && parts[0].Equals("content-type", StringComparison.InvariantCultureIgnoreCase))
-                        type = parts[1];
-                    line = await reader.ReadLineAsync();
-                }
-                if (line == null)
-                    throw new EndOfStreamException();
-                if (contentLen != 0)
-                {
-                    byte[] contentBytes = new byte[contentLen];
-                    await reader.ReadBytesAsync(contentBytes);
-                    response.Content = new ByteArrayContent(contentBytes);
-                    response.Content.Headers.ContentType = new MediaTypeHeaderValue(type);
-                }
-                return response;
+                return await responses.Reader.ReadAsync();
             }
             finally
             {

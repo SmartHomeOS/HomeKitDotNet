@@ -28,496 +28,509 @@ namespace HomeKitDotNet.Models
         protected CharacteristicBase? GetCharacteristic(string type, ServiceJSON service)
         {
             CharacteristicJSON? json = service.Characteristics.FirstOrDefault(c => c.Type == type);
+            if (json != null)
+            {
+                CharacteristicBase? charBase = MapCharacteristic(type, json);
+                if (charBase != null)
+                    Accessory.RegisterCharacteristic(json.InstanceID, charBase);
+                return charBase;
+            }
+            return null;
+        }
+
+        private CharacteristicBase? MapCharacteristic(string type, CharacteristicJSON json)
+        {
             switch (type)
             {
                 case "262":
-                    return (json != null) ? new AccessCodeControlPoint(this, json) : null;
+                    return new AccessCodeControlPoint(this, json);
                 case "261":
-                    return (json != null) ? new AccessCodeSupportedConfiguration(this, json) : null;
+                    return new AccessCodeSupportedConfiguration(this, json);
                 case "E5":
-                    return (json != null) ? new AccessControlLevel(this, json) : null;
+                    return new AccessControlLevel(this, json);
                 case "A6":
-                    return (json != null) ? new AccessoryFlags(this, json) : null;
+                    return new AccessoryFlags(this, json);
                 case "57":
-                    return (json != null) ? new AccessoryIdentifier(this, json) : null;
+                    return new AccessoryIdentifier(this, json);
                 case "B0":
-                    return (json != null) ? new Active(this, json) : null;
+                    return new Active(this, json);
                 case "E7":
-                    return (json != null) ? new ActiveIdentifier(this, json) : null;
+                    return new ActiveIdentifier(this, json);
                 case "23B":
-                    return (json != null) ? new ActivityInterval(this, json) : null;
+                    return new ActivityInterval(this, json);
                 case "1":
-                    return (json != null) ? new AdministratorOnlyAccess(this, json) : null;
+                    return new AdministratorOnlyAccess(this, json);
                 case "64":
-                    return (json != null) ? new AirParticulateDensity(this, json) : null;
+                    return new AirParticulateDensity(this, json);
                 case "65":
-                    return (json != null) ? new AirParticulateSize(this, json) : null;
+                    return new AirParticulateSize(this, json);
                 case "25B":
-                    return (json != null) ? new AirPlayEnable(this, json) : null;
+                    return new AirPlayEnable(this, json);
                 case "95":
-                    return (json != null) ? new AirQuality(this, json) : null;
+                    return new AirQuality(this, json);
                 case "A4":
-                    return (json != null) ? new AppMatchingIdentifier(this, json) : null;
+                    return new AppMatchingIdentifier(this, json);
                 case "269":
-                    return (json != null) ? new AssetUpdateReadiness(this, json) : null;
+                    return new AssetUpdateReadiness(this, json);
                 case "5":
-                    return (json != null) ? new AudioFeedback(this, json) : null;
+                    return new AudioFeedback(this, json);
                 case "68":
-                    return (json != null) ? new BatteryLevel(this, json) : null;
+                    return new BatteryLevel(this, json);
                 case "8":
-                    return (json != null) ? new Brightness(this, json) : null;
+                    return new Brightness(this, json);
                 case "126":
-                    return (json != null) ? new ButtonEvent(this, json) : null;
+                    return new ButtonEvent(this, json);
                 case "21D":
-                    return (json != null) ? new CameraOperatingModeIndicator(this, json) : null;
+                    return new CameraOperatingModeIndicator(this, json);
                 case "92":
-                    return (json != null) ? new CarbonDioxideDetected(this, json) : null;
+                    return new CarbonDioxideDetected(this, json);
                 case "93":
-                    return (json != null) ? new CarbonDioxideLevel(this, json) : null;
+                    return new CarbonDioxideLevel(this, json);
                 case "94":
-                    return (json != null) ? new CarbonDioxidePeakLevel(this, json) : null;
+                    return new CarbonDioxidePeakLevel(this, json);
                 case "69":
-                    return (json != null) ? new CarbonMonoxideDetected(this, json) : null;
+                    return new CarbonMonoxideDetected(this, json);
                 case "90":
-                    return (json != null) ? new CarbonMonoxideLevel(this, json) : null;
+                    return new CarbonMonoxideLevel(this, json);
                 case "91":
-                    return (json != null) ? new CarbonMonoxidePeakLevel(this, json) : null;
+                    return new CarbonMonoxidePeakLevel(this, json);
                 case "246":
-                    return (json != null) ? new CCAEnergyDetectThreshold(this, json) : null;
+                    return new CCAEnergyDetectThreshold(this, json);
                 case "245":
-                    return (json != null) ? new CCASignalDetectThreshold(this, json) : null;
+                    return new CCASignalDetectThreshold(this, json);
                 case "24B":
-                    return (json != null) ? new CharacteristicValueActiveTransitionCount(this, json) : null;
+                    return new CharacteristicValueActiveTransitionCount(this, json);
                 case "143":
-                    return (json != null) ? new CharacteristicValueTransitionControl(this, json) : null;
+                    return new CharacteristicValueTransitionControl(this, json);
                 case "8F":
-                    return (json != null) ? new ChargingState(this, json) : null;
+                    return new ChargingState(this, json);
                 case "DD":
-                    return (json != null) ? new ClosedCaptions(this, json) : null;
+                    return new ClosedCaptions(this, json);
                 case "CE":
-                    return (json != null) ? new ColorTemperature(this, json) : null;
+                    return new ColorTemperature(this, json);
                 case "263":
-                    return (json != null) ? new ConfigurationState(this, json) : null;
+                    return new ConfigurationState(this, json);
                 case "E3":
-                    return (json != null) ? new ConfiguredName(this, json) : null;
+                    return new ConfiguredName(this, json);
                 case "6A":
-                    return (json != null) ? new ContactSensorState(this, json) : null;
+                    return new ContactSensorState(this, json);
                 case "D":
-                    return (json != null) ? new CoolingThresholdTemperature(this, json) : null;
+                    return new CoolingThresholdTemperature(this, json);
                 case "250":
-                    return (json != null) ? new CryptoHash(this, json) : null;
+                    return new CryptoHash(this, json);
                 case "A9":
-                    return (json != null) ? new CurrentAirPurifierState(this, json) : null;
+                    return new CurrentAirPurifierState(this, json);
                 case "6B":
-                    return (json != null) ? new CurrentAmbientLightLevel(this, json) : null;
+                    return new CurrentAmbientLightLevel(this, json);
                 case "E":
-                    return (json != null) ? new CurrentDoorState(this, json) : null;
+                    return new CurrentDoorState(this, json);
                 case "AF":
-                    return (json != null) ? new CurrentFanState(this, json) : null;
+                    return new CurrentFanState(this, json);
                 case "B1":
-                    return (json != null) ? new CurrentHeaterCoolerState(this, json) : null;
+                    return new CurrentHeaterCoolerState(this, json);
                 case "F":
-                    return (json != null) ? new CurrentHeatingCoolingState(this, json) : null;
+                    return new CurrentHeatingCoolingState(this, json);
                 case "6C":
-                    return (json != null) ? new CurrentHorizontalTiltAngle(this, json) : null;
+                    return new CurrentHorizontalTiltAngle(this, json);
                 case "B3":
-                    return (json != null) ? new CurrentHumidifierDehumidifierState(this, json) : null;
+                    return new CurrentHumidifierDehumidifierState(this, json);
                 case "E0":
-                    return (json != null) ? new CurrentMediaState(this, json) : null;
+                    return new CurrentMediaState(this, json);
                 case "6D":
-                    return (json != null) ? new CurrentPosition(this, json) : null;
+                    return new CurrentPosition(this, json);
                 case "10":
-                    return (json != null) ? new CurrentRelativeHumidity(this, json) : null;
+                    return new CurrentRelativeHumidity(this, json);
                 case "AA":
-                    return (json != null) ? new CurrentSlatState(this, json) : null;
+                    return new CurrentSlatState(this, json);
                 case "11":
-                    return (json != null) ? new CurrentTemperature(this, json) : null;
+                    return new CurrentTemperature(this, json);
                 case "C1":
-                    return (json != null) ? new CurrentTiltAngle(this, json) : null;
+                    return new CurrentTiltAngle(this, json);
                 case "22B":
-                    return (json != null) ? new CurrentTransport(this, json) : null;
+                    return new CurrentTransport(this, json);
                 case "6E":
-                    return (json != null) ? new CurrentVerticalTiltAngle(this, json) : null;
+                    return new CurrentVerticalTiltAngle(this, json);
                 case "135":
-                    return (json != null) ? new CurrentVisibilityState(this, json) : null;
+                    return new CurrentVisibilityState(this, json);
                 case "138":
-                    return (json != null) ? new DataStreamHAPTransport(this, json) : null;
+                    return new DataStreamHAPTransport(this, json);
                 case "139":
-                    return (json != null) ? new DataStreamHAPTransportInterrupt(this, json) : null;
+                    return new DataStreamHAPTransportInterrupt(this, json);
                 case "224":
-                    return (json != null) ? new DiagonalFieldOfView(this, json) : null;
+                    return new DiagonalFieldOfView(this, json);
                 case "11D":
-                    return (json != null) ? new DigitalZoom(this, json) : null;
+                    return new DigitalZoom(this, json);
                 case "136":
-                    return (json != null) ? new DisplayOrder(this, json) : null;
+                    return new DisplayOrder(this, json);
                 case "23D":
-                    return (json != null) ? new EventRetransmissionMaximum(this, json) : null;
+                    return new EventRetransmissionMaximum(this, json);
                 case "223":
-                    return (json != null) ? new EventSnapshotsActive(this, json) : null;
+                    return new EventSnapshotsActive(this, json);
                 case "23E":
-                    return (json != null) ? new EventTransmissionCounters(this, json) : null;
+                    return new EventTransmissionCounters(this, json);
                 case "AC":
-                    return (json != null) ? new FilterChangeIndication(this, json) : null;
+                    return new FilterChangeIndication(this, json);
                 case "AB":
-                    return (json != null) ? new FilterLifeLevel(this, json) : null;
+                    return new FilterLifeLevel(this, json);
                 case "52":
-                    return (json != null) ? new FirmwareRevision(this, json) : null;
+                    return new FirmwareRevision(this, json);
                 case "234":
-                    return (json != null) ? new FirmwareUpdateReadiness(this, json) : null;
+                    return new FirmwareUpdateReadiness(this, json);
                 case "235":
-                    return (json != null) ? new FirmwareUpdateStatus(this, json) : null;
+                    return new FirmwareUpdateStatus(this, json);
                 case "26C":
-                    return (json != null) ? new HardwareFinish(this, json) : null;
+                    return new HardwareFinish(this, json);
                 case "53":
-                    return (json != null) ? new HardwareRevision(this, json) : null;
+                    return new HardwareRevision(this, json);
                 case "24A":
-                    return (json != null) ? new HeartBeat(this, json) : null;
+                    return new HeartBeat(this, json);
                 case "12":
-                    return (json != null) ? new HeatingThresholdTemperature(this, json) : null;
+                    return new HeatingThresholdTemperature(this, json);
                 case "6F":
-                    return (json != null) ? new HoldPosition(this, json) : null;
+                    return new HoldPosition(this, json);
                 case "21B":
-                    return (json != null) ? new HomeKitCameraActive(this, json) : null;
+                    return new HomeKitCameraActive(this, json);
                 case "13":
-                    return (json != null) ? new Hue(this, json) : null;
+                    return new Hue(this, json);
                 case "E6":
-                    return (json != null) ? new Identifier(this, json) : null;
+                    return new Identifier(this, json);
                 case "14":
-                    return (json != null) ? new Identify(this, json) : null;
+                    return new Identify(this, json);
                 case "11F":
-                    return (json != null) ? new ImageMirroring(this, json) : null;
+                    return new ImageMirroring(this, json);
                 case "11E":
-                    return (json != null) ? new ImageRotation(this, json) : null;
+                    return new ImageRotation(this, json);
                 case "DC":
-                    return (json != null) ? new InputDeviceType(this, json) : null;
+                    return new InputDeviceType(this, json);
                 case "DB":
-                    return (json != null) ? new InputSourceType(this, json) : null;
+                    return new InputSourceType(this, json);
                 case "D2":
-                    return (json != null) ? new InUse(this, json) : null;
+                    return new InUse(this, json);
                 case "D6":
-                    return (json != null) ? new IsConfigured(this, json) : null;
+                    return new IsConfigured(this, json);
                 case "70":
-                    return (json != null) ? new LeakDetected(this, json) : null;
+                    return new LeakDetected(this, json);
                 case "50":
-                    return (json != null) ? new ListPairings(this, json) : null;
+                    return new ListPairings(this, json);
                 case "19":
-                    return (json != null) ? new LockControlPoint(this, json) : null;
+                    return new LockControlPoint(this, json);
                 case "1D":
-                    return (json != null) ? new LockCurrentState(this, json) : null;
+                    return new LockCurrentState(this, json);
                 case "1C":
-                    return (json != null) ? new LockLastKnownAction(this, json) : null;
+                    return new LockLastKnownAction(this, json);
                 case "1A":
-                    return (json != null) ? new LockManagementAutoSecurityTimeout(this, json) : null;
+                    return new LockManagementAutoSecurityTimeout(this, json);
                 case "A7":
-                    return (json != null) ? new LockPhysicalControls(this, json) : null;
+                    return new LockPhysicalControls(this, json);
                 case "1E":
-                    return (json != null) ? new LockTargetState(this, json) : null;
+                    return new LockTargetState(this, json);
                 case "1F":
-                    return (json != null) ? new Logs(this, json) : null;
+                    return new Logs(this, json);
                 case "247":
-                    return (json != null) ? new MACRetransmissionMaximum(this, json) : null;
+                    return new MACRetransmissionMaximum(this, json);
                 case "248":
-                    return (json != null) ? new MACTransmissionCounters(this, json) : null;
+                    return new MACTransmissionCounters(this, json);
                 case "215":
-                    return (json != null) ? new ManagedNetworkEnable(this, json) : null;
+                    return new ManagedNetworkEnable(this, json);
                 case "227":
-                    return (json != null) ? new ManuallyDisabled(this, json) : null;
+                    return new ManuallyDisabled(this, json);
                 case "20":
-                    return (json != null) ? new Manufacturer(this, json) : null;
+                    return new Manufacturer(this, json);
                 case "243":
-                    return (json != null) ? new MaximumTransmitPower(this, json) : null;
+                    return new MaximumTransmitPower(this, json);
                 case "272":
-                    return (json != null) ? new MetricsBufferFullState(this, json) : null;
+                    return new MetricsBufferFullState(this, json);
                 case "21":
-                    return (json != null) ? new Model(this, json) : null;
+                    return new Model(this, json);
                 case "22":
-                    return (json != null) ? new MotionDetected(this, json) : null;
+                    return new MotionDetected(this, json);
                 case "26B":
-                    return (json != null) ? new MultifunctionButton(this, json) : null;
+                    return new MultifunctionButton(this, json);
                 case "11A":
-                    return (json != null) ? new Mute(this, json) : null;
+                    return new Mute(this, json);
                 case "23":
-                    return (json != null) ? new Name(this, json) : null;
+                    return new Name(this, json);
                 case "21F":
-                    return (json != null) ? new NetworkAccessViolationControl(this, json) : null;
+                    return new NetworkAccessViolationControl(this, json);
                 case "20C":
-                    return (json != null) ? new NetworkClientProfileControl(this, json) : null;
+                    return new NetworkClientProfileControl(this, json);
                 case "20D":
-                    return (json != null) ? new NetworkClientStatusControl(this, json) : null;
+                    return new NetworkClientStatusControl(this, json);
                 case "264":
-                    return (json != null) ? new NFCAccessControlPoint(this, json) : null;
+                    return new NFCAccessControlPoint(this, json);
                 case "265":
-                    return (json != null) ? new NFCAccessSupportedConfiguration(this, json) : null;
+                    return new NFCAccessSupportedConfiguration(this, json);
                 case "11B":
-                    return (json != null) ? new NightVision(this, json) : null;
+                    return new NightVision(this, json);
                 case "C4":
-                    return (json != null) ? new NitrogenDioxideDensity(this, json) : null;
+                    return new NitrogenDioxideDensity(this, json);
                 case "24":
-                    return (json != null) ? new ObstructionDetected(this, json) : null;
+                    return new ObstructionDetected(this, json);
                 case "71":
-                    return (json != null) ? new OccupancyDetected(this, json) : null;
+                    return new OccupancyDetected(this, json);
                 case "25":
-                    return (json != null) ? new On(this, json) : null;
+                    return new On(this, json);
                 case "232":
-                    return (json != null) ? new OperatingStateResponse(this, json) : null;
+                    return new OperatingStateResponse(this, json);
                 case "11C":
-                    return (json != null) ? new OpticalZoom(this, json) : null;
+                    return new OpticalZoom(this, json);
                 case "26":
-                    return (json != null) ? new OutletInUse(this, json) : null;
+                    return new OutletInUse(this, json);
                 case "C3":
-                    return (json != null) ? new OzoneDensity(this, json) : null;
+                    return new OzoneDensity(this, json);
                 case "4F":
-                    return (json != null) ? new PairingFeatures(this, json) : null;
+                    return new PairingFeatures(this, json);
                 case "4C":
-                    return (json != null) ? new PairSetup(this, json) : null;
+                    return new PairSetup(this, json);
                 case "4E":
-                    return (json != null) ? new PairVerify(this, json) : null;
+                    return new PairVerify(this, json);
                 case "E4":
-                    return (json != null) ? new PasswordSetting(this, json) : null;
+                    return new PasswordSetting(this, json);
                 case "225":
-                    return (json != null) ? new PeriodicSnapshotsActive(this, json) : null;
+                    return new PeriodicSnapshotsActive(this, json);
                 case "E2":
-                    return (json != null) ? new PictureMode(this, json) : null;
+                    return new PictureMode(this, json);
                 case "23C":
-                    return (json != null) ? new Ping(this, json) : null;
+                    return new Ping(this, json);
                 case "C7":
-                    return (json != null) ? new PM10Density(this, json) : null;
+                    return new PM10Density(this, json);
                 case "C6":
-                    return (json != null) ? new PM2_5Density(this, json) : null;
+                    return new PM2_5Density(this, json);
                 case "72":
-                    return (json != null) ? new PositionState(this, json) : null;
+                    return new PositionState(this, json);
                 case "DF":
-                    return (json != null) ? new PowerModeSelection(this, json) : null;
+                    return new PowerModeSelection(this, json);
                 case "220":
-                    return (json != null) ? new ProductData(this, json) : null;
+                    return new ProductData(this, json);
                 case "73":
-                    return (json != null) ? new ProgrammableSwitchEvent(this, json) : null;
+                    return new ProgrammableSwitchEvent(this, json);
                 case "74":
-                    return (json != null) ? new ProgrammableSwitchOutputState(this, json) : null;
+                    return new ProgrammableSwitchOutputState(this, json);
                 case "D1":
-                    return (json != null) ? new ProgramMode(this, json) : null;
+                    return new ProgramMode(this, json);
                 case "23F":
-                    return (json != null) ? new ReceivedSignalStrengthIndication(this, json) : null;
+                    return new ReceivedSignalStrengthIndication(this, json);
                 case "244":
-                    return (json != null) ? new ReceiverSensitivity(this, json) : null;
+                    return new ReceiverSensitivity(this, json);
                 case "226":
-                    return (json != null) ? new RecordingAudioActive(this, json) : null;
+                    return new RecordingAudioActive(this, json);
                 case "C9":
-                    return (json != null) ? new RelativeHumidityDehumidifierThreshold(this, json) : null;
+                    return new RelativeHumidityDehumidifierThreshold(this, json);
                 case "CA":
-                    return (json != null) ? new RelativeHumidityHumidifierThreshold(this, json) : null;
+                    return new RelativeHumidityHumidifierThreshold(this, json);
                 case "5E":
-                    return (json != null) ? new RelayControlPoint(this, json) : null;
+                    return new RelayControlPoint(this, json);
                 case "5B":
-                    return (json != null) ? new RelayEnabled(this, json) : null;
+                    return new RelayEnabled(this, json);
                 case "5C":
-                    return (json != null) ? new RelayState(this, json) : null;
+                    return new RelayState(this, json);
                 case "D4":
-                    return (json != null) ? new RemainingDuration(this, json) : null;
+                    return new RemainingDuration(this, json);
                 case "E1":
-                    return (json != null) ? new RemoteKey(this, json) : null;
+                    return new RemoteKey(this, json);
                 case "AD":
-                    return (json != null) ? new ResetFilterIndication(this, json) : null;
+                    return new ResetFilterIndication(this, json);
                 case "28":
-                    return (json != null) ? new RotationDirection(this, json) : null;
+                    return new RotationDirection(this, json);
                 case "29":
-                    return (json != null) ? new RotationSpeed(this, json) : null;
+                    return new RotationSpeed(this, json);
                 case "20E":
-                    return (json != null) ? new RouterStatus(this, json) : null;
+                    return new RouterStatus(this, json);
                 case "2F":
-                    return (json != null) ? new Saturation(this, json) : null;
+                    return new Saturation(this, json);
                 case "8E":
-                    return (json != null) ? new SecuritySystemAlarmType(this, json) : null;
+                    return new SecuritySystemAlarmType(this, json);
                 case "66":
-                    return (json != null) ? new SecuritySystemCurrentState(this, json) : null;
+                    return new SecuritySystemCurrentState(this, json);
                 case "67":
-                    return (json != null) ? new SecuritySystemTargetState(this, json) : null;
+                    return new SecuritySystemTargetState(this, json);
                 case "128":
-                    return (json != null) ? new SelectedAudioStreamConfiguration(this, json) : null;
+                    return new SelectedAudioStreamConfiguration(this, json);
                 case "209":
-                    return (json != null) ? new SelectedCameraRecordingConfiguration(this, json) : null;
+                    return new SelectedCameraRecordingConfiguration(this, json);
                 case "24D":
-                    return (json != null) ? new SelectedDiagnosticsModes(this, json) : null;
+                    return new SelectedDiagnosticsModes(this, json);
                 case "117":
-                    return (json != null) ? new SelectedRTPStreamConfiguration(this, json) : null;
+                    return new SelectedRTPStreamConfiguration(this, json);
                 case "252":
-                    return (json != null) ? new SelectedSleepConfiguration(this, json) : null;
+                    return new SelectedSleepConfiguration(this, json);
                 case "30":
-                    return (json != null) ? new SerialNumber(this, json) : null;
+                    return new SerialNumber(this, json);
                 case "CB":
-                    return (json != null) ? new ServiceLabelIndex(this, json) : null;
+                    return new ServiceLabelIndex(this, json);
                 case "CD":
-                    return (json != null) ? new ServiceLabelNamespace(this, json) : null;
+                    return new ServiceLabelNamespace(this, json);
                 case "D3":
-                    return (json != null) ? new SetDuration(this, json) : null;
+                    return new SetDuration(this, json);
                 case "131":
-                    return (json != null) ? new SetupDataStreamTransport(this, json) : null;
+                    return new SetupDataStreamTransport(this, json);
                 case "118":
-                    return (json != null) ? new SetupEndpoints(this, json) : null;
+                    return new SetupEndpoints(this, json);
                 case "201":
-                    return (json != null) ? new SetupTransferTransport(this, json) : null;
+                    return new SetupTransferTransport(this, json);
                 case "241":
-                    return (json != null) ? new SignalToNoiseRatio(this, json) : null;
+                    return new SignalToNoiseRatio(this, json);
                 case "255":
-                    return (json != null) ? new SiriEnable(this, json) : null;
+                    return new SiriEnable(this, json);
                 case "254":
-                    return (json != null) ? new SiriEndpointSessionStatus(this, json) : null;
+                    return new SiriEndpointSessionStatus(this, json);
                 case "25A":
-                    return (json != null) ? new SiriEngineVersion(this, json) : null;
+                    return new SiriEngineVersion(this, json);
                 case "132":
-                    return (json != null) ? new SiriInputType(this, json) : null;
+                    return new SiriInputType(this, json);
                 case "258":
-                    return (json != null) ? new SiriLightOnUse(this, json) : null;
+                    return new SiriLightOnUse(this, json);
                 case "256":
-                    return (json != null) ? new SiriListening(this, json) : null;
+                    return new SiriListening(this, json);
                 case "257":
-                    return (json != null) ? new SiriTouchToUse(this, json) : null;
+                    return new SiriTouchToUse(this, json);
                 case "C0":
-                    return (json != null) ? new SlatType(this, json) : null;
+                    return new SlatType(this, json);
                 case "E8":
-                    return (json != null) ? new SleepDiscoveryMode(this, json) : null;
+                    return new SleepDiscoveryMode(this, json);
                 case "23A":
-                    return (json != null) ? new SleepInterval(this, json) : null;
+                    return new SleepInterval(this, json);
                 case "76":
-                    return (json != null) ? new SmokeDetected(this, json) : null;
+                    return new SmokeDetected(this, json);
                 case "54":
-                    return (json != null) ? new SoftwareRevision(this, json) : null;
+                    return new SoftwareRevision(this, json);
                 case "249":
-                    return (json != null) ? new StagedFirmwareVersion(this, json) : null;
+                    return new StagedFirmwareVersion(this, json);
                 case "75":
-                    return (json != null) ? new StatusActive(this, json) : null;
+                    return new StatusActive(this, json);
                 case "77":
-                    return (json != null) ? new StatusFault(this, json) : null;
+                    return new StatusFault(this, json);
                 case "78":
-                    return (json != null) ? new StatusJammed(this, json) : null;
+                    return new StatusJammed(this, json);
                 case "79":
-                    return (json != null) ? new StatusLowBattery(this, json) : null;
+                    return new StatusLowBattery(this, json);
                 case "7A":
-                    return (json != null) ? new StatusTampered(this, json) : null;
+                    return new StatusTampered(this, json);
                 case "120":
-                    return (json != null) ? new StreamingStatus(this, json) : null;
+                    return new StreamingStatus(this, json);
                 case "C5":
-                    return (json != null) ? new SulphurDioxideDensity(this, json) : null;
+                    return new SulphurDioxideDensity(this, json);
                 case "268":
-                    return (json != null) ? new SupportedAssetTypes(this, json) : null;
+                    return new SupportedAssetTypes(this, json);
                 case "207":
-                    return (json != null) ? new SupportedAudioRecordingConfiguration(this, json) : null;
+                    return new SupportedAudioRecordingConfiguration(this, json);
                 case "115":
-                    return (json != null) ? new SupportedAudioStreamConfiguration(this, json) : null;
+                    return new SupportedAudioStreamConfiguration(this, json);
                 case "205":
-                    return (json != null) ? new SupportedCameraRecordingConfiguration(this, json) : null;
+                    return new SupportedCameraRecordingConfiguration(this, json);
                 case "144":
-                    return (json != null) ? new SupportedCharacteristicValueTransitionConfiguration(this, json) : null;
+                    return new SupportedCharacteristicValueTransitionConfiguration(this, json);
                 case "130":
-                    return (json != null) ? new SupportedDataStreamTransportConfiguration(this, json) : null;
+                    return new SupportedDataStreamTransportConfiguration(this, json);
                 case "24C":
-                    return (json != null) ? new SupportedDiagnosticsModes(this, json) : null;
+                    return new SupportedDiagnosticsModes(this, json);
                 case "238":
-                    return (json != null) ? new SupportedDiagnosticsSnapshot(this, json) : null;
+                    return new SupportedDiagnosticsSnapshot(this, json);
                 case "233":
-                    return (json != null) ? new SupportedFirmwareUpdateConfiguration(this, json) : null;
+                    return new SupportedFirmwareUpdateConfiguration(this, json);
                 case "271":
-                    return (json != null) ? new SupportedMetrics(this, json) : null;
+                    return new SupportedMetrics(this, json);
                 case "210":
-                    return (json != null) ? new SupportedRouterConfiguration(this, json) : null;
+                    return new SupportedRouterConfiguration(this, json);
                 case "116":
-                    return (json != null) ? new SupportedRTPConfiguration(this, json) : null;
+                    return new SupportedRTPConfiguration(this, json);
                 case "251":
-                    return (json != null) ? new SupportedSleepConfiguration(this, json) : null;
+                    return new SupportedSleepConfiguration(this, json);
                 case "202":
-                    return (json != null) ? new SupportedTransferTransportConfiguration(this, json) : null;
+                    return new SupportedTransferTransportConfiguration(this, json);
                 case "206":
-                    return (json != null) ? new SupportedVideoRecordingConfiguration(this, json) : null;
+                    return new SupportedVideoRecordingConfiguration(this, json);
                 case "114":
-                    return (json != null) ? new SupportedVideoStreamConfiguration(this, json) : null;
+                    return new SupportedVideoStreamConfiguration(this, json);
                 case "B6":
-                    return (json != null) ? new SwingMode(this, json) : null;
+                    return new SwingMode(this, json);
                 case "22F":
-                    return (json != null) ? new TapType(this, json) : null;
+                    return new TapType(this, json);
                 case "A8":
-                    return (json != null) ? new TargetAirPurifierState(this, json) : null;
+                    return new TargetAirPurifierState(this, json);
                 case "124":
-                    return (json != null) ? new TargetControlList(this, json) : null;
+                    return new TargetControlList(this, json);
                 case "123":
-                    return (json != null) ? new TargetControlSupportedConfiguration(this, json) : null;
+                    return new TargetControlSupportedConfiguration(this, json);
                 case "32":
-                    return (json != null) ? new TargetDoorState(this, json) : null;
+                    return new TargetDoorState(this, json);
                 case "BF":
-                    return (json != null) ? new TargetFanState(this, json) : null;
+                    return new TargetFanState(this, json);
                 case "B2":
-                    return (json != null) ? new TargetHeaterCoolerState(this, json) : null;
+                    return new TargetHeaterCoolerState(this, json);
                 case "33":
-                    return (json != null) ? new TargetHeatingCoolingState(this, json) : null;
+                    return new TargetHeatingCoolingState(this, json);
                 case "7B":
-                    return (json != null) ? new TargetHorizontalTiltAngle(this, json) : null;
+                    return new TargetHorizontalTiltAngle(this, json);
                 case "B4":
-                    return (json != null) ? new TargetHumidifierDehumidifierState(this, json) : null;
+                    return new TargetHumidifierDehumidifierState(this, json);
                 case "137":
-                    return (json != null) ? new TargetMediaState(this, json) : null;
+                    return new TargetMediaState(this, json);
                 case "7C":
-                    return (json != null) ? new TargetPosition(this, json) : null;
+                    return new TargetPosition(this, json);
                 case "34":
-                    return (json != null) ? new TargetRelativeHumidity(this, json) : null;
+                    return new TargetRelativeHumidity(this, json);
                 case "35":
-                    return (json != null) ? new TargetTemperature(this, json) : null;
+                    return new TargetTemperature(this, json);
                 case "C2":
-                    return (json != null) ? new TargetTiltAngle(this, json) : null;
+                    return new TargetTiltAngle(this, json);
                 case "7D":
-                    return (json != null) ? new TargetVerticalTiltAngle(this, json) : null;
+                    return new TargetVerticalTiltAngle(this, json);
                 case "134":
-                    return (json != null) ? new TargetVisibilityState(this, json) : null;
+                    return new TargetVisibilityState(this, json);
                 case "36":
-                    return (json != null) ? new TemperatureDisplayUnits(this, json) : null;
+                    return new TemperatureDisplayUnits(this, json);
                 case "21C":
-                    return (json != null) ? new ThirdPartyCameraActive(this, json) : null;
+                    return new ThirdPartyCameraActive(this, json);
                 case "704":
-                    return (json != null) ? new ThreadControlPoint(this, json) : null;
+                    return new ThreadControlPoint(this, json);
                 case "702":
-                    return (json != null) ? new ThreadNodeCapabilities(this, json) : null;
+                    return new ThreadNodeCapabilities(this, json);
                 case "706":
-                    return (json != null) ? new ThreadOpenThreadVersion(this, json) : null;
+                    return new ThreadOpenThreadVersion(this, json);
                 case "703":
-                    return (json != null) ? new ThreadStatus(this, json) : null;
+                    return new ThreadStatus(this, json);
                 case "231":
-                    return (json != null) ? new Token(this, json) : null;
+                    return new Token(this, json);
                 case "242":
-                    return (json != null) ? new TransmitPower(this, json) : null;
+                    return new TransmitPower(this, json);
                 case "61":
-                    return (json != null) ? new TunnelConnectionTimeout(this, json) : null;
+                    return new TunnelConnectionTimeout(this, json);
                 case "60":
-                    return (json != null) ? new TunneledAccessoryAdvertising(this, json) : null;
+                    return new TunneledAccessoryAdvertising(this, json);
                 case "59":
-                    return (json != null) ? new TunneledAccessoryConnected(this, json) : null;
+                    return new TunneledAccessoryConnected(this, json);
                 case "58":
-                    return (json != null) ? new TunneledAccessoryStateNumber(this, json) : null;
+                    return new TunneledAccessoryStateNumber(this, json);
                 case "D5":
-                    return (json != null) ? new ValveType(this, json) : null;
+                    return new ValveType(this, json);
                 case "37":
-                    return (json != null) ? new Version(this, json) : null;
+                    return new Version(this, json);
                 case "229":
-                    return (json != null) ? new VideoAnalysisActive(this, json) : null;
+                    return new VideoAnalysisActive(this, json);
                 case "C8":
-                    return (json != null) ? new VOCDensity(this, json) : null;
+                    return new VOCDensity(this, json);
                 case "119":
-                    return (json != null) ? new Volume(this, json) : null;
+                    return new Volume(this, json);
                 case "E9":
-                    return (json != null) ? new VolumeControlType(this, json) : null;
+                    return new VolumeControlType(this, json);
                 case "EA":
-                    return (json != null) ? new VolumeSelector(this, json) : null;
+                    return new VolumeSelector(this, json);
                 case "222":
-                    return (json != null) ? new WakeConfiguration(this, json) : null;
+                    return new WakeConfiguration(this, json);
                 case "211":
-                    return (json != null) ? new WANConfigurationList(this, json) : null;
+                    return new WANConfigurationList(this, json);
                 case "212":
-                    return (json != null) ? new WANStatusList(this, json) : null;
+                    return new WANStatusList(this, json);
                 case "B5":
-                    return (json != null) ? new WaterLevel(this, json) : null;
+                    return new WaterLevel(this, json);
                 case "22C":
-                    return (json != null) ? new WiFiCapabilities(this, json) : null;
+                    return new WiFiCapabilities(this, json);
                 case "22D":
-                    return (json != null) ? new WiFiConfigurationControl(this, json) : null;
+                    return new WiFiConfigurationControl(this, json);
                 case "21E":
-                    return (json != null) ? new WiFiSatelliteStatus(this, json) : null;
+                    return new WiFiSatelliteStatus(this, json);
+
             }
             return null;
         }

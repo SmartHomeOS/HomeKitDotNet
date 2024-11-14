@@ -5,18 +5,19 @@ namespace HomeKitDotNet.Models
 {
     public class StringCharacteristic : CharacteristicBase
     {
+        public event EventHandler<string?>? Updated;
         protected StringCharacteristic(Service service, CharacteristicJSON json) : base(service, json)
         {
-            MapValue(json.Value);
+            LastValue = MapValue(json.Value);
         }
 
         protected async Task<bool> Write(string value)
         {
             if (!CanWrite)
                 throw new InvalidOperationException("Writing is prohibited");
-            CharacteristicWriteJSON write = new CharacteristicWriteJSON(service.Accessory.ID, InstanceID);
+            CharacteristicValueJSON write = new CharacteristicValueJSON(service.Accessory.ID, InstanceID);
             write.Value = JsonSerializer.SerializeToElement(LastValue);
-            Dictionary<string, CharacteristicWriteJSON[]> dict = new Dictionary<string, CharacteristicWriteJSON[]>();
+            Dictionary<string, CharacteristicValueJSON[]> dict = new Dictionary<string, CharacteristicValueJSON[]>();
             dict.Add("characteristics", [write]);
             return (await service.Accessory.EndPoint.Connection.Put("/characteristics", JsonSerializer.SerializeToUtf8Bytes(dict))).StatusCode == System.Net.HttpStatusCode.NoContent;
         }
@@ -31,21 +32,29 @@ namespace HomeKitDotNet.Models
             CharacteristicsJSON? chars = JsonSerializer.Deserialize<CharacteristicsJSON>(msg.Content.ReadAsStream());
             if (chars == null || chars.Characteristics.Length == 0)
                 return null;
-            MapValue(chars.Characteristics[0].Value);
+            LastValue = MapValue(chars.Characteristics[0].Value);
             return LastValue;
         }
 
-        protected void MapValue(JsonElement? value)
+        protected string? MapValue(JsonElement? value)
         {
             if (value.HasValue)
             {
                 if (value.Value.ValueKind == JsonValueKind.String)
-                    this.LastValue = value.Value.GetString();
+                    return value.Value.GetString();
                 else
                     throw new ArgumentException("Value Mismatch " + value);
             }
             else
-                LastValue = null;
+                return null;
+        }
+
+        internal override void FireUpdate(JsonElement? value)
+        {
+            string? newVal = MapValue(value);
+            if (Updated != null)
+                Updated.Invoke(this, newVal);
+            LastValue = newVal;
         }
 
         public string? LastValue { get; set; }

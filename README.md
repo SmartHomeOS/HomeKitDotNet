@@ -6,10 +6,13 @@
 * Implements all 243 characteristics and 71 services
 
 #### Working:
-* Pairing, connections, reading and writing characteristics
+* Pairing
+* Connection Management
+* Reading and writing characteristics
+* Eventing
 
 #### TODO:
-* Documentation, Examples, Eventing, Connection Management
+* Documentation, Examples
 
 Note:
 This library is not affiliated with or endorsed by Apple
