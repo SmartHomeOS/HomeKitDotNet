@@ -12,7 +12,7 @@
 * Eventing
 
 #### TODO:
-* Documentation, Examples
+* More Examples
 
 Note:
 This library is not affiliated with or endorsed by Apple

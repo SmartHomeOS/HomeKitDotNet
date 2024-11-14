@@ -30,6 +30,11 @@ namespace HomeKitDotNet
         private byte[] deviceID;
         private List<HomeKitEndPoint> endpoints = new List<HomeKitEndPoint>();
 
+        /// <summary>
+        /// Create a controller with a randomly generated key
+        /// </summary>
+        /// <param name="publicKey"></param>
+        /// <param name="privateKey"></param>
         public Controller(out byte[] publicKey, out byte[] privateKey)
         {
             byte[] seed = RandomNumberGenerator.GetBytes(32);
@@ -38,6 +43,13 @@ namespace HomeKitDotNet
             publicKey = LTPK;
             privateKey = LTSK;
         }
+
+        /// <summary>
+        /// Create a controller using the provided device ID and keys
+        /// </summary>
+        /// <param name="privateKey"></param>
+        /// <param name="publicKey"></param>
+        /// <param name="deviceID"></param>
         public Controller(byte[] privateKey, byte[] publicKey, byte[] deviceID)
         {
             LTPK = publicKey;
@@ -47,6 +59,15 @@ namespace HomeKitDotNet
 
         public byte[] DeviceID { get { return deviceID; } }
 
+        /// <summary>
+        /// Connect to an already paired Accessory
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <param name="accessoryID"></param>
+        /// <param name="accessoryLTPK"></param>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="Exception"></exception>
         public async Task<HomeKitEndPoint> Connect(IPEndPoint destination, byte[] accessoryID, byte[] accessoryLTPK)
         {
             X25519 session = new X25519();
@@ -58,7 +79,6 @@ namespace HomeKitDotNet
             HttpResponseMessage msg = await con.Post("/pair-verify", new TLVInt(TLVType.kTLVType_State, (byte)PairingState.M1), new TLVBytes(TLVType.kTLVType_PublicKey, keyPair.Public));
             if (!msg.IsSuccessStatusCode)
                 throw new IOException($"Pair Step 1 Failed with {msg.StatusCode}: {msg.ReasonPhrase}");
-            Console.WriteLine("Step 1 Complete");
 
             List<TLVValue> responseTLVs = TLVValue.CollectionFromStream(msg.Content.ReadAsStream());
             byte[] AccessorySessionPK = TLVValue.Concat(TLVType.kTLVType_PublicKey, responseTLVs);
@@ -89,7 +109,7 @@ namespace HomeKitDotNet
                 encryptedPayload = new byte[encryptionPayload.Length + 16];
                 encrypter.Encrypt(Encoding.ASCII.GetBytes("\0\0\0\0PV-Msg03"), encryptionPayload.ToArray(), encryptedPayload.AsSpan().Slice(0, (int)encryptionPayload.Length), encryptedPayload.AsSpan().Slice((int)encryptionPayload.Length, 16));
             }
-            Console.WriteLine("Submitting Step 3");
+
             msg = await con.Post("/pair-verify", [
                 new TLVInt(TLVType.kTLVType_State, (byte)PairingState.M3),
                 new TLVBytes(TLVType.kTLVType_EncryptedData, encryptedPayload)
@@ -100,7 +120,6 @@ namespace HomeKitDotNet
                 throw new IOException($"Verify Step 3 Failed with {msg.StatusCode}: {msg.ReasonPhrase}: {content}");
             }
             responseTLVs = TLVValue.CollectionFromStream(msg.Content.ReadAsStream());
-            Console.WriteLine("Completed Step 3");
 
             bool complete = responseTLVs.Any(t => t.Type == TLVType.kTLVType_State);
 
@@ -124,6 +143,11 @@ namespace HomeKitDotNet
             throw new Exception("Failed to Connect - Cause Unknown");
         }
 
+        /// <summary>
+        /// Unpair from an already paired accessory
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <returns></returns>
         public async Task<bool> UnPair(HomeKitEndPoint endpoint)
         {
             HttpResponseMessage msg = await endpoint.Connection.Post("/pair-setup", 
@@ -137,6 +161,13 @@ namespace HomeKitDotNet
             return true;
         }
 
+        /// <summary>
+        /// Pair to an unpaired accessory
+        /// </summary>
+        /// <param name="setupPin"></param>
+        /// <param name="destination"></param>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
         public async Task<AccessoryInfo> Pair(long setupPin, IPEndPoint destination)
         {
             string I = "Pair-Setup";
