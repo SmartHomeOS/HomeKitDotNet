@@ -14,5 +14,8 @@
 #### TODO:
 * More Examples
 
+#### Other Projects:
+* Check out my other projects for [ZWave](https://github.com/SmartHomeOS/ZWaveDotNet)
+
 Note:
 This library is not affiliated with or endorsed by Apple
