@@ -29,7 +29,7 @@ namespace HomeKitDotNet.Models
             if (!CanWrite)
                 throw new InvalidOperationException("Writing is prohibited");
             CharacteristicValueJSON write = new CharacteristicValueJSON(service.Accessory.ID, InstanceID);
-            write.Value = JsonSerializer.SerializeToElement(LastValue);
+            write.Value = JsonSerializer.SerializeToElement(value);
             Dictionary<string, CharacteristicValueJSON[]> dict = new Dictionary<string, CharacteristicValueJSON[]>();
             dict.Add("characteristics", [write]);
             return (await service.Accessory.EndPoint.Connection.Put("/characteristics", JsonSerializer.SerializeToUtf8Bytes(dict))).StatusCode == System.Net.HttpStatusCode.NoContent;

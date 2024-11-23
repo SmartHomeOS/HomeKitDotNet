@@ -1,64 +1,65 @@
 ﻿using HomeKitDotNet.JSON;
+using System.Buffers.Text;
 using System.Text.Json;
 
 namespace HomeKitDotNet.Models
 {
-    public class StringCharacteristic : CharacteristicBase
+    public class BinaryCharacteristic : CharacteristicBase
     {
-        public delegate Task AsyncEventHandler(Service service, StringCharacteristic characteristic, string? newValue);
+        public delegate Task AsyncEventHandler(Service service, BinaryCharacteristic characteristic, byte[] newValue);
         public event AsyncEventHandler? Updated;
-        protected StringCharacteristic(Service service, CharacteristicJSON json) : base(service, json)
+        protected BinaryCharacteristic(Service service, CharacteristicJSON json) : base(service, json)
         {
             LastValue = MapValue(json.Value);
         }
 
-        protected async Task<bool> Write(string value)
+        protected async Task<bool> Write(byte[] value)
         {
             if (!CanWrite)
                 throw new InvalidOperationException("Writing is prohibited");
             CharacteristicValueJSON write = new CharacteristicValueJSON(service.Accessory.ID, InstanceID);
-            write.Value = JsonSerializer.SerializeToElement(value);
+            write.Value = JsonSerializer.SerializeToElement(Convert.ToBase64String(value));
             Dictionary<string, CharacteristicValueJSON[]> dict = new Dictionary<string, CharacteristicValueJSON[]>();
             dict.Add("characteristics", [write]);
             return (await service.Accessory.EndPoint.Connection.Put("/characteristics", JsonSerializer.SerializeToUtf8Bytes(dict))).StatusCode == System.Net.HttpStatusCode.NoContent;
         }
 
-        protected async Task<string?> Read()
+        protected async Task<byte[]> Read()
         {
             if (!CanRead)
                 throw new InvalidOperationException("Reading is prohibited");
             HttpResponseMessage msg = await service.Accessory.EndPoint.Connection.Get($"/characteristics?id={service.Accessory.ID}.{InstanceID}");
             if (!msg.IsSuccessStatusCode)
-                return null;
+                return Array.Empty<byte>();
             CharacteristicsJSON? chars = JsonSerializer.Deserialize<CharacteristicsJSON>(msg.Content.ReadAsStream());
             if (chars == null || chars.Characteristics.Length == 0)
-                return null;
+                return Array.Empty<byte>();
             LastValue = MapValue(chars.Characteristics[0].Value);
             return LastValue;
         }
 
-        protected string? MapValue(JsonElement? value)
+        protected byte[] MapValue(JsonElement? value)
         {
             if (value.HasValue)
             {
                 if (value.Value.ValueKind == JsonValueKind.String)
-                    return value.Value.GetString();
+                    return Convert.FromBase64String(value.Value.GetString() ?? string.Empty);
                 else
                     throw new ArgumentException("Value Mismatch " + value);
             }
             else
-                return null;
+                return Array.Empty<byte>();
         }
 
         internal override void FireUpdate(JsonElement? value)
         {
-            string? newVal = MapValue(value);
+            byte[] newVal = MapValue(value);
             if (Updated != null)
                 Updated.Invoke(service, this, newVal);
             LastValue = newVal;
         }
 
-        public string? LastValue { get; set; }
+        public byte[] LastValue { get; set; }
         public float? MaxLength => _json.MaxLength;
         public float? MaxDataLength => _json.MaxDataLength;
     }
