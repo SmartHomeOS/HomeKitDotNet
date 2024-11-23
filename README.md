@@ -15,7 +15,9 @@
 * More Examples
 
 #### Other Projects:
-* Check out my other projects for [ZWave](https://github.com/SmartHomeOS/ZWaveDotNet)
+* Check out my other projects for [ZWave](https://github.com/SmartHomeOS/ZWaveDotNet) and [Matter](https://github.com/SmartHomeOS/MatterDotNet).
+
+Support is always appreciated:<br/><a href="https://www.buymeacoffee.com/jdomnitz" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-red.png" alt="Buy Me A Pizza" style="height: 60px !important;width: 217px !important;" ></a>
 
 Note:
 This library is not affiliated with or endorsed by Apple
