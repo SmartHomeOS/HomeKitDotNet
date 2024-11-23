@@ -5,7 +5,8 @@ namespace HomeKitDotNet.Models
 {
     public class StringCharacteristic : CharacteristicBase
     {
-        public event EventHandler<string?>? Updated;
+        public delegate Task AsyncEventHandler(Service service, StringCharacteristic characteristic, string? newValue);
+        public event AsyncEventHandler? Updated;
         protected StringCharacteristic(Service service, CharacteristicJSON json) : base(service, json)
         {
             LastValue = MapValue(json.Value);
@@ -53,7 +54,7 @@ namespace HomeKitDotNet.Models
         {
             string? newVal = MapValue(value);
             if (Updated != null)
-                Updated.Invoke(this, newVal);
+                Updated.Invoke(service, this, newVal);
             LastValue = newVal;
         }
 

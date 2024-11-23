@@ -42,10 +42,11 @@ internal class Program
         Console.ReadLine();
     }
 
-    private static void ConfiguredName_Updated(object? sender, string? newValue)
+    private static Task ConfiguredName_Updated(Service service, StringCharacteristic characteristic, string? newValue)
     {
-        Console.WriteLine("Previous Name: " + ((ConfiguredName)sender!).LastValue);
+        Console.WriteLine("Previous Name: " + ((ConfiguredName)characteristic).LastValue);
         Console.WriteLine("New Value: " + newValue);
         //After this event is handled, LastValue is set to newValue
+        return Task.CompletedTask;
     }
 }

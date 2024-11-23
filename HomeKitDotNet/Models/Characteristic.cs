@@ -17,7 +17,8 @@ namespace HomeKitDotNet.Models
 {
     public class Characteristic<T> : CharacteristicBase where T : struct
     {
-        public event EventHandler<T?>? Updated;
+        public delegate Task AsyncEventHandler<TEventArgs>(Service service, Characteristic<TEventArgs> characteristic, TEventArgs? newValue) where TEventArgs : struct;
+        public event AsyncEventHandler<T>? Updated;
         protected Characteristic(Service service, CharacteristicJSON json) : base(service, json)
         {
             this.LastValue = MapValue(json.Value);
@@ -52,6 +53,8 @@ namespace HomeKitDotNet.Models
         {
             if (value.HasValue)
             {
+                if (typeof(T).IsEnum && Enum.GetUnderlyingType(typeof(T)) == typeof(byte) && value.Value.ValueKind == JsonValueKind.Number)
+                    return (T)(object)value.Value.GetByte();
                 if (typeof(T) == typeof(float) && value.Value.ValueKind == JsonValueKind.Number)
                     return (T)(object)value.Value.GetSingle();
                 else if (typeof(T) == typeof(int) && value.Value.ValueKind == JsonValueKind.Number)
@@ -81,7 +84,7 @@ namespace HomeKitDotNet.Models
         {
             T? newVal = MapValue(value);
             if (Updated != null)
-                Updated.Invoke(this, newVal);
+                Updated.Invoke(service, this, newVal);
             LastValue = newVal;
         }
 
