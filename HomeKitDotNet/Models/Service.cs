@@ -16,14 +16,18 @@ namespace HomeKitDotNet.Models
 {
     public class Service : IService
     {
-        protected Service(Accessory accessory, string type)
+        protected Service(Accessory accessory, ServiceJSON json)
         {
-            this.Type = type;
-            this.Accessory = accessory;
+            Accessory = accessory;
+            Type = json.Type;
+            Primary = json.PrimaryService;
+            Hidden = json.HiddenService;
         }
 
         public string Type { get; init; }
         public Accessory Accessory { get; init; }
+        public bool Primary { get; init; }
+        public bool Hidden { get; init; }
 
         protected CharacteristicBase? GetCharacteristic(string type, ServiceJSON service)
         {

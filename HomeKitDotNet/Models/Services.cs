@@ -19,7 +19,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class AccessCode : Service
     {
-        public AccessCode(Accessory accessory, ServiceJSON json) : base(accessory, "260")
+        public AccessCode(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.AccessCodeControlPoint = (AccessCodeControlPoint)GetCharacteristic("262", json)!;
             this.AccessCodeSupportedConfiguration = (AccessCodeSupportedConfiguration)GetCharacteristic("261", json)!;
@@ -37,7 +37,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class AccessControl : Service
     {
-        public AccessControl(Accessory accessory, ServiceJSON json) : base(accessory, "DA")
+        public AccessControl(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.AccessControlLevel = (AccessControlLevel)GetCharacteristic("E5", json)!;
             this.PasswordSetting = (PasswordSetting?)GetCharacteristic("E4", json)!;
@@ -54,7 +54,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class AccessoryInformation : Service
     {
-        public AccessoryInformation(Accessory accessory, ServiceJSON json) : base(accessory, "3E")
+        public AccessoryInformation(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Identify = (Identify)GetCharacteristic("14", json)!;
             this.Manufacturer = (Manufacturer)GetCharacteristic("20", json)!;
@@ -93,7 +93,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class AccessoryMetrics : Service
     {
-        public AccessoryMetrics(Accessory accessory, ServiceJSON json) : base(accessory, "270")
+        public AccessoryMetrics(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Active = (Active)GetCharacteristic("B0", json)!;
             this.MetricsBufferFullState = (MetricsBufferFullState)GetCharacteristic("272", json)!;
@@ -111,7 +111,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class AccessoryRuntimeInformation : Service
     {
-        public AccessoryRuntimeInformation(Accessory accessory, ServiceJSON json) : base(accessory, "239")
+        public AccessoryRuntimeInformation(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Ping = (Ping)GetCharacteristic("23C", json)!;
             this.ActivityInterval = (ActivityInterval?)GetCharacteristic("23B", json)!;
@@ -132,7 +132,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class AirPurifier : Service
     {
-        public AirPurifier(Accessory accessory, ServiceJSON json) : base(accessory, "BB")
+        public AirPurifier(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Active = (Active)GetCharacteristic("B0", json)!;
             this.CurrentAirPurifierState = (CurrentAirPurifierState)GetCharacteristic("A9", json)!;
@@ -159,7 +159,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class AirQualitySensor : Service
     {
-        public AirQualitySensor(Accessory accessory, ServiceJSON json) : base(accessory, "8D")
+        public AirQualitySensor(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.AirQuality = (AirQuality)GetCharacteristic("95", json)!;
             this.NitrogenDioxideDensity = (NitrogenDioxideDensity?)GetCharacteristic("C4", json)!;
@@ -196,7 +196,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class AssetUpdate : Service
     {
-        public AssetUpdate(Accessory accessory, ServiceJSON json) : base(accessory, "267")
+        public AssetUpdate(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.AssetUpdateReadiness = (AssetUpdateReadiness)GetCharacteristic("269", json)!;
             this.SupportedAssetTypes = (SupportedAssetTypes)GetCharacteristic("268", json)!;
@@ -212,7 +212,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Assistant : Service
     {
-        public Assistant(Accessory accessory, ServiceJSON json) : base(accessory, "26A")
+        public Assistant(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Active = (Active)GetCharacteristic("B0", json)!;
             this.Identifier = (Identifier)GetCharacteristic("E6", json)!;
@@ -230,7 +230,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class AudioStreamManagement : Service
     {
-        public AudioStreamManagement(Accessory accessory, ServiceJSON json) : base(accessory, "127")
+        public AudioStreamManagement(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.SupportedAudioStreamConfiguration = (SupportedAudioStreamConfiguration)GetCharacteristic("115", json)!;
             this.SelectedAudioStreamConfiguration = (SelectedAudioStreamConfiguration)GetCharacteristic("128", json)!;
@@ -246,7 +246,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Battery : Service
     {
-        public Battery(Accessory accessory, ServiceJSON json) : base(accessory, "96")
+        public Battery(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.StatusLowBattery = (StatusLowBattery)GetCharacteristic("79", json)!;
             this.BatteryLevel = (BatteryLevel?)GetCharacteristic("68", json)!;
@@ -267,7 +267,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class CameraOperatingMode : Service
     {
-        public CameraOperatingMode(Accessory accessory, ServiceJSON json) : base(accessory, "21A")
+        public CameraOperatingMode(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.EventSnapshotsActive = (EventSnapshotsActive)GetCharacteristic("223", json)!;
             this.HomeKitCameraActive = (HomeKitCameraActive)GetCharacteristic("21B", json)!;
@@ -296,7 +296,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class CameraRecordingManagement : Service
     {
-        public CameraRecordingManagement(Accessory accessory, ServiceJSON json) : base(accessory, "204")
+        public CameraRecordingManagement(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Active = (Active)GetCharacteristic("B0", json)!;
             this.SelectedCameraRecordingConfiguration = (SelectedCameraRecordingConfiguration)GetCharacteristic("209", json)!;
@@ -321,7 +321,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class CameraRTPStreamManagement : Service
     {
-        public CameraRTPStreamManagement(Accessory accessory, ServiceJSON json) : base(accessory, "110")
+        public CameraRTPStreamManagement(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.SelectedRTPStreamConfiguration = (SelectedRTPStreamConfiguration)GetCharacteristic("117", json)!;
             this.SetupEndpoints = (SetupEndpoints)GetCharacteristic("118", json)!;
@@ -348,7 +348,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class CarbonDioxideSensor : Service
     {
-        public CarbonDioxideSensor(Accessory accessory, ServiceJSON json) : base(accessory, "97")
+        public CarbonDioxideSensor(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CarbonDioxideDetected = (CarbonDioxideDetected)GetCharacteristic("92", json)!;
             this.CarbonDioxideLevel = (CarbonDioxideLevel?)GetCharacteristic("93", json)!;
@@ -377,7 +377,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class CarbonMonoxideSensor : Service
     {
-        public CarbonMonoxideSensor(Accessory accessory, ServiceJSON json) : base(accessory, "7F")
+        public CarbonMonoxideSensor(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CarbonMonoxideDetected = (CarbonMonoxideDetected)GetCharacteristic("69", json)!;
             this.CarbonMonoxideLevel = (CarbonMonoxideLevel?)GetCharacteristic("90", json)!;
@@ -406,7 +406,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class CloudRelay : Service
     {
-        public CloudRelay(Accessory accessory, ServiceJSON json) : base(accessory, "5A")
+        public CloudRelay(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.RelayControlPoint = (RelayControlPoint)GetCharacteristic("5E", json)!;
             this.RelayState = (RelayState)GetCharacteristic("5C", json)!;
@@ -424,7 +424,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class ContactSensor : Service
     {
-        public ContactSensor(Accessory accessory, ServiceJSON json) : base(accessory, "80")
+        public ContactSensor(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.ContactSensorState = (ContactSensorState)GetCharacteristic("6A", json)!;
             this.Name = (Name?)GetCharacteristic("23", json)!;
@@ -449,7 +449,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class DataStreamTransportManagement : Service
     {
-        public DataStreamTransportManagement(Accessory accessory, ServiceJSON json) : base(accessory, "129")
+        public DataStreamTransportManagement(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.SetupDataStreamTransport = (SetupDataStreamTransport)GetCharacteristic("131", json)!;
             this.SupportedDataStreamTransportConfiguration = (SupportedDataStreamTransportConfiguration)GetCharacteristic("130", json)!;
@@ -467,7 +467,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Diagnostics : Service
     {
-        public Diagnostics(Accessory accessory, ServiceJSON json) : base(accessory, "237")
+        public Diagnostics(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.SupportedDiagnosticsSnapshot = (SupportedDiagnosticsSnapshot)GetCharacteristic("238", json)!;
             this.SelectedDiagnosticsModes = (SelectedDiagnosticsModes?)GetCharacteristic("24D", json)!;
@@ -486,7 +486,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Door : Service
     {
-        public Door(Accessory accessory, ServiceJSON json) : base(accessory, "81")
+        public Door(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CurrentPosition = (CurrentPosition)GetCharacteristic("6D", json)!;
             this.PositionState = (PositionState)GetCharacteristic("72", json)!;
@@ -511,7 +511,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Doorbell : Service
     {
-        public Doorbell(Accessory accessory, ServiceJSON json) : base(accessory, "121")
+        public Doorbell(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.ProgrammableSwitchEvent = (ProgrammableSwitchEvent)GetCharacteristic("73", json)!;
             this.Brightness = (Brightness?)GetCharacteristic("8", json)!;
@@ -536,7 +536,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Fan : Service
     {
-        public Fan(Accessory accessory, ServiceJSON json) : base(accessory, "40")
+        public Fan(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.On = (On)GetCharacteristic("25", json)!;
             this.Name = (Name?)GetCharacteristic("23", json)!;
@@ -557,7 +557,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Fanv2 : Service
     {
-        public Fanv2(Accessory accessory, ServiceJSON json) : base(accessory, "B7")
+        public Fanv2(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Active = (Active)GetCharacteristic("B0", json)!;
             this.CurrentFanState = (CurrentFanState?)GetCharacteristic("AF", json)!;
@@ -586,7 +586,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Faucet : Service
     {
-        public Faucet(Accessory accessory, ServiceJSON json) : base(accessory, "D7")
+        public Faucet(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Active = (Active)GetCharacteristic("B0", json)!;
             this.Name = (Name?)GetCharacteristic("23", json)!;
@@ -605,7 +605,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class FilterMaintenance : Service
     {
-        public FilterMaintenance(Accessory accessory, ServiceJSON json) : base(accessory, "BA")
+        public FilterMaintenance(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.FilterChangeIndication = (FilterChangeIndication)GetCharacteristic("AC", json)!;
             this.FilterLifeLevel = (FilterLifeLevel?)GetCharacteristic("AB", json)!;
@@ -626,7 +626,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class FirmwareUpdate : Service
     {
-        public FirmwareUpdate(Accessory accessory, ServiceJSON json) : base(accessory, "236")
+        public FirmwareUpdate(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.FirmwareUpdateReadiness = (FirmwareUpdateReadiness)GetCharacteristic("234", json)!;
             this.FirmwareUpdateStatus = (FirmwareUpdateStatus)GetCharacteristic("235", json)!;
@@ -647,7 +647,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class GarageDoorOpener : Service
     {
-        public GarageDoorOpener(Accessory accessory, ServiceJSON json) : base(accessory, "41")
+        public GarageDoorOpener(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CurrentDoorState = (CurrentDoorState)GetCharacteristic("E", json)!;
             this.TargetDoorState = (TargetDoorState)GetCharacteristic("32", json)!;
@@ -672,7 +672,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class HeaterCooler : Service
     {
-        public HeaterCooler(Accessory accessory, ServiceJSON json) : base(accessory, "BC")
+        public HeaterCooler(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Active = (Active)GetCharacteristic("B0", json)!;
             this.CurrentHeaterCoolerState = (CurrentHeaterCoolerState)GetCharacteristic("B1", json)!;
@@ -707,7 +707,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class HumidifierDehumidifier : Service
     {
-        public HumidifierDehumidifier(Accessory accessory, ServiceJSON json) : base(accessory, "BD")
+        public HumidifierDehumidifier(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Active = (Active)GetCharacteristic("B0", json)!;
             this.CurrentHumidifierDehumidifierState = (CurrentHumidifierDehumidifierState)GetCharacteristic("B3", json)!;
@@ -742,7 +742,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class HumiditySensor : Service
     {
-        public HumiditySensor(Accessory accessory, ServiceJSON json) : base(accessory, "82")
+        public HumiditySensor(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CurrentRelativeHumidity = (CurrentRelativeHumidity)GetCharacteristic("10", json)!;
             this.Name = (Name?)GetCharacteristic("23", json)!;
@@ -767,7 +767,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class InputSource : Service
     {
-        public InputSource(Accessory accessory, ServiceJSON json) : base(accessory, "D9")
+        public InputSource(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.ConfiguredName = (ConfiguredName)GetCharacteristic("E3", json)!;
             this.InputSourceType = (InputSourceType)GetCharacteristic("DB", json)!;
@@ -796,7 +796,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class IrrigationSystem : Service
     {
-        public IrrigationSystem(Accessory accessory, ServiceJSON json) : base(accessory, "CF")
+        public IrrigationSystem(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Active = (Active)GetCharacteristic("B0", json)!;
             this.ProgramMode = (ProgramMode)GetCharacteristic("D1", json)!;
@@ -821,7 +821,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class LeakSensor : Service
     {
-        public LeakSensor(Accessory accessory, ServiceJSON json) : base(accessory, "83")
+        public LeakSensor(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.LeakDetected = (LeakDetected)GetCharacteristic("70", json)!;
             this.Name = (Name?)GetCharacteristic("23", json)!;
@@ -846,7 +846,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Lightbulb : Service
     {
-        public Lightbulb(Accessory accessory, ServiceJSON json) : base(accessory, "43")
+        public Lightbulb(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.On = (On)GetCharacteristic("25", json)!;
             this.Brightness = (Brightness?)GetCharacteristic("8", json)!;
@@ -877,7 +877,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class LightSensor : Service
     {
-        public LightSensor(Accessory accessory, ServiceJSON json) : base(accessory, "84")
+        public LightSensor(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CurrentAmbientLightLevel = (CurrentAmbientLightLevel)GetCharacteristic("6B", json)!;
             this.Name = (Name?)GetCharacteristic("23", json)!;
@@ -902,7 +902,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class LockManagement : Service
     {
-        public LockManagement(Accessory accessory, ServiceJSON json) : base(accessory, "44")
+        public LockManagement(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.LockControlPoint = (LockControlPoint)GetCharacteristic("19", json)!;
             this.Version = (Version)GetCharacteristic("37", json)!;
@@ -933,7 +933,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class LockMechanism : Service
     {
-        public LockMechanism(Accessory accessory, ServiceJSON json) : base(accessory, "45")
+        public LockMechanism(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.LockCurrentState = (LockCurrentState)GetCharacteristic("1D", json)!;
             this.LockTargetState = (LockTargetState)GetCharacteristic("1E", json)!;
@@ -952,7 +952,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Microphone : Service
     {
-        public Microphone(Accessory accessory, ServiceJSON json) : base(accessory, "112")
+        public Microphone(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Mute = (Mute)GetCharacteristic("11A", json)!;
             this.Volume = (Volume?)GetCharacteristic("119", json)!;
@@ -969,7 +969,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class MotionSensor : Service
     {
-        public MotionSensor(Accessory accessory, ServiceJSON json) : base(accessory, "85")
+        public MotionSensor(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.MotionDetected = (MotionDetected)GetCharacteristic("22", json)!;
             this.Name = (Name?)GetCharacteristic("23", json)!;
@@ -994,7 +994,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class NFCAccess : Service
     {
-        public NFCAccess(Accessory accessory, ServiceJSON json) : base(accessory, "266")
+        public NFCAccess(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.ConfigurationState = (ConfigurationState)GetCharacteristic("263", json)!;
             this.NFCAccessControlPoint = (NFCAccessControlPoint)GetCharacteristic("264", json)!;
@@ -1012,7 +1012,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class OccupancySensor : Service
     {
-        public OccupancySensor(Accessory accessory, ServiceJSON json) : base(accessory, "86")
+        public OccupancySensor(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.OccupancyDetected = (OccupancyDetected)GetCharacteristic("71", json)!;
             this.Name = (Name?)GetCharacteristic("23", json)!;
@@ -1037,7 +1037,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Outlet : Service
     {
-        public Outlet(Accessory accessory, ServiceJSON json) : base(accessory, "47")
+        public Outlet(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.On = (On)GetCharacteristic("25", json)!;
             this.Name = (Name?)GetCharacteristic("23", json)!;
@@ -1056,7 +1056,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Pairing : Service
     {
-        public Pairing(Accessory accessory, ServiceJSON json) : base(accessory, "55")
+        public Pairing(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.ListPairings = (ListPairings)GetCharacteristic("50", json)!;
             this.PairSetup = (PairSetup)GetCharacteristic("4C", json)!;
@@ -1076,7 +1076,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class PowerManagement : Service
     {
-        public PowerManagement(Accessory accessory, ServiceJSON json) : base(accessory, "221")
+        public PowerManagement(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.WakeConfiguration = (WakeConfiguration)GetCharacteristic("222", json)!;
             this.SelectedSleepConfiguration = (SelectedSleepConfiguration?)GetCharacteristic("252", json)!;
@@ -1095,7 +1095,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class ProtocolInformation : Service
     {
-        public ProtocolInformation(Accessory accessory, ServiceJSON json) : base(accessory, "A2")
+        public ProtocolInformation(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Version = (Version)GetCharacteristic("37", json)!;
         }
@@ -1109,7 +1109,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class SecuritySystem : Service
     {
-        public SecuritySystem(Accessory accessory, ServiceJSON json) : base(accessory, "7E")
+        public SecuritySystem(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.SecuritySystemCurrentState = (SecuritySystemCurrentState)GetCharacteristic("66", json)!;
             this.SecuritySystemTargetState = (SecuritySystemTargetState)GetCharacteristic("67", json)!;
@@ -1134,7 +1134,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class ServiceLabel : Service
     {
-        public ServiceLabel(Accessory accessory, ServiceJSON json) : base(accessory, "CC")
+        public ServiceLabel(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.ServiceLabelNamespace = (ServiceLabelNamespace)GetCharacteristic("CD", json)!;
         }
@@ -1148,7 +1148,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Siri : Service
     {
-        public Siri(Accessory accessory, ServiceJSON json) : base(accessory, "133")
+        public Siri(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.SiriInputType = (SiriInputType)GetCharacteristic("132", json)!;
             this.MultifunctionButton = (MultifunctionButton?)GetCharacteristic("26B", json)!;
@@ -1175,7 +1175,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class SiriEndpoint : Service
     {
-        public SiriEndpoint(Accessory accessory, ServiceJSON json) : base(accessory, "253")
+        public SiriEndpoint(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.SiriEndpointSessionStatus = (SiriEndpointSessionStatus)GetCharacteristic("254", json)!;
             this.Version = (Version)GetCharacteristic("37", json)!;
@@ -1196,7 +1196,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Slats : Service
     {
-        public Slats(Accessory accessory, ServiceJSON json) : base(accessory, "B9")
+        public Slats(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CurrentSlatState = (CurrentSlatState)GetCharacteristic("AA", json)!;
             this.SlatType = (SlatType)GetCharacteristic("C0", json)!;
@@ -1221,7 +1221,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class SmartSpeaker : Service
     {
-        public SmartSpeaker(Accessory accessory, ServiceJSON json) : base(accessory, "228")
+        public SmartSpeaker(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CurrentMediaState = (CurrentMediaState)GetCharacteristic("E0", json)!;
             this.TargetMediaState = (TargetMediaState)GetCharacteristic("137", json)!;
@@ -1248,7 +1248,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class SmokeSensor : Service
     {
-        public SmokeSensor(Accessory accessory, ServiceJSON json) : base(accessory, "87")
+        public SmokeSensor(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.SmokeDetected = (SmokeDetected)GetCharacteristic("76", json)!;
             this.Name = (Name?)GetCharacteristic("23", json)!;
@@ -1273,7 +1273,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Speaker : Service
     {
-        public Speaker(Accessory accessory, ServiceJSON json) : base(accessory, "113")
+        public Speaker(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Mute = (Mute)GetCharacteristic("11A", json)!;
             this.Active = (Active?)GetCharacteristic("B0", json)!;
@@ -1292,7 +1292,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class StatefulProgrammableSwitch : Service
     {
-        public StatefulProgrammableSwitch(Accessory accessory, ServiceJSON json) : base(accessory, "88")
+        public StatefulProgrammableSwitch(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.ProgrammableSwitchEvent = (ProgrammableSwitchEvent)GetCharacteristic("73", json)!;
             this.ProgrammableSwitchOutputState = (ProgrammableSwitchOutputState)GetCharacteristic("74", json)!;
@@ -1311,7 +1311,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class StatelessProgrammableSwitch : Service
     {
-        public StatelessProgrammableSwitch(Accessory accessory, ServiceJSON json) : base(accessory, "89")
+        public StatelessProgrammableSwitch(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.ProgrammableSwitchEvent = (ProgrammableSwitchEvent)GetCharacteristic("73", json)!;
             this.Name = (Name?)GetCharacteristic("23", json)!;
@@ -1330,7 +1330,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Switch : Service
     {
-        public Switch(Accessory accessory, ServiceJSON json) : base(accessory, "49")
+        public Switch(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.On = (On)GetCharacteristic("25", json)!;
             this.Name = (Name?)GetCharacteristic("23", json)!;
@@ -1347,7 +1347,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class TapManagement : Service
     {
-        public TapManagement(Accessory accessory, ServiceJSON json) : base(accessory, "22E")
+        public TapManagement(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Active = (Active)GetCharacteristic("B0", json)!;
             this.CryptoHash = (CryptoHash)GetCharacteristic("250", json)!;
@@ -1367,7 +1367,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class TargetControl : Service
     {
-        public TargetControl(Accessory accessory, ServiceJSON json) : base(accessory, "125")
+        public TargetControl(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Active = (Active)GetCharacteristic("B0", json)!;
             this.ActiveIdentifier = (ActiveIdentifier)GetCharacteristic("E7", json)!;
@@ -1388,7 +1388,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class TargetControlManagement : Service
     {
-        public TargetControlManagement(Accessory accessory, ServiceJSON json) : base(accessory, "122")
+        public TargetControlManagement(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.TargetControlSupportedConfiguration = (TargetControlSupportedConfiguration)GetCharacteristic("123", json)!;
             this.TargetControlList = (TargetControlList)GetCharacteristic("124", json)!;
@@ -1404,7 +1404,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Television : Service
     {
-        public Television(Accessory accessory, ServiceJSON json) : base(accessory, "D8")
+        public Television(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Active = (Active)GetCharacteristic("B0", json)!;
             this.ActiveIdentifier = (ActiveIdentifier)GetCharacteristic("E7", json)!;
@@ -1443,7 +1443,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class TelevisionSpeaker : Service
     {
-        public TelevisionSpeaker(Accessory accessory, ServiceJSON json) : base(accessory, "113")
+        public TelevisionSpeaker(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Mute = (Mute)GetCharacteristic("11A", json)!;
             this.Active = (Active?)GetCharacteristic("B0", json)!;
@@ -1466,7 +1466,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class TemperatureSensor : Service
     {
-        public TemperatureSensor(Accessory accessory, ServiceJSON json) : base(accessory, "8A")
+        public TemperatureSensor(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CurrentTemperature = (CurrentTemperature)GetCharacteristic("11", json)!;
             this.Name = (Name?)GetCharacteristic("23", json)!;
@@ -1491,7 +1491,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Thermostat : Service
     {
-        public Thermostat(Accessory accessory, ServiceJSON json) : base(accessory, "4A")
+        public Thermostat(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CurrentHeatingCoolingState = (CurrentHeatingCoolingState)GetCharacteristic("F", json)!;
             this.TargetHeatingCoolingState = (TargetHeatingCoolingState)GetCharacteristic("33", json)!;
@@ -1524,7 +1524,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class ThreadTransport : Service
     {
-        public ThreadTransport(Accessory accessory, ServiceJSON json) : base(accessory, "701")
+        public ThreadTransport(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CurrentTransport = (CurrentTransport)GetCharacteristic("22B", json)!;
             this.ThreadControlPoint = (ThreadControlPoint)GetCharacteristic("704", json)!;
@@ -1569,7 +1569,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class TransferTransportManagement : Service
     {
-        public TransferTransportManagement(Accessory accessory, ServiceJSON json) : base(accessory, "203")
+        public TransferTransportManagement(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.SupportedTransferTransportConfiguration = (SupportedTransferTransportConfiguration)GetCharacteristic("202", json)!;
             this.SetupTransferTransport = (SetupTransferTransport)GetCharacteristic("201", json)!;
@@ -1585,7 +1585,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Tunnel : Service
     {
-        public Tunnel(Accessory accessory, ServiceJSON json) : base(accessory, "56")
+        public Tunnel(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.AccessoryIdentifier = (AccessoryIdentifier)GetCharacteristic("57", json)!;
             this.TunnelConnectionTimeout = (TunnelConnectionTimeout)GetCharacteristic("61", json)!;
@@ -1607,7 +1607,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Valve : Service
     {
-        public Valve(Accessory accessory, ServiceJSON json) : base(accessory, "D0")
+        public Valve(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.Active = (Active)GetCharacteristic("B0", json)!;
             this.InUse = (InUse)GetCharacteristic("D2", json)!;
@@ -1638,7 +1638,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class WiFiRouter : Service
     {
-        public WiFiRouter(Accessory accessory, ServiceJSON json) : base(accessory, "20A")
+        public WiFiRouter(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.ConfiguredName = (ConfiguredName)GetCharacteristic("E3", json)!;
             this.ManagedNetworkEnable = (ManagedNetworkEnable)GetCharacteristic("215", json)!;
@@ -1668,7 +1668,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class WiFiSatellite : Service
     {
-        public WiFiSatellite(Accessory accessory, ServiceJSON json) : base(accessory, "20F")
+        public WiFiSatellite(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.WiFiSatelliteStatus = (WiFiSatelliteStatus)GetCharacteristic("21E", json)!;
         }
@@ -1682,7 +1682,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class WiFiTransport : Service
     {
-        public WiFiTransport(Accessory accessory, ServiceJSON json) : base(accessory, "22A")
+        public WiFiTransport(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CurrentTransport = (CurrentTransport)GetCharacteristic("22B", json)!;
             this.WiFiCapabilities = (WiFiCapabilities)GetCharacteristic("22C", json)!;
@@ -1701,7 +1701,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class Window : Service
     {
-        public Window(Accessory accessory, ServiceJSON json) : base(accessory, "8B")
+        public Window(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CurrentPosition = (CurrentPosition)GetCharacteristic("6D", json)!;
             this.PositionState = (PositionState)GetCharacteristic("72", json)!;
@@ -1726,7 +1726,7 @@ namespace HomeKitDotNet.Models
     /// 
     public class WindowCovering : Service
     {
-        public WindowCovering(Accessory accessory, ServiceJSON json) : base(accessory, "8C")
+        public WindowCovering(Accessory accessory, ServiceJSON json) : base(accessory, json)
         {
             this.CurrentPosition = (CurrentPosition)GetCharacteristic("6D", json)!;
             this.PositionState = (PositionState)GetCharacteristic("72", json)!;
