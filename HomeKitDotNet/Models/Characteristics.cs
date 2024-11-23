@@ -38,13 +38,14 @@ namespace HomeKitDotNet.Models
         public async Task<bool> SetValue(ushort value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
-    public enum AccessoryFlagsType : uint { REQUIRES_ADDITIONAL_SETUP_BIT_MASK = 1, }
     // 
     // Accessory Flags
     // 
     public class AccessoryFlags(Service service, CharacteristicJSON json) : Characteristic<uint>(service, json), IService
     {
-        public async Task<AccessoryFlagsType?> GetValue() { return (AccessoryFlagsType?)(await Read()); }
+        public const uint REQUIRES_ADDITIONAL_SETUP_BIT_MASK = 1;
+
+        public async Task<uint?> GetValue() { return await Read(); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -58,10 +59,10 @@ namespace HomeKitDotNet.Models
     // 
     // Active
     // 
-    public class Active(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class Active(Service service, CharacteristicJSON json) : Characteristic<ActiveType>(service, json), IService
     {
-        public async Task<ActiveType?> GetValue() { return (ActiveType?)(await Read()); }
-        public async Task<bool> SetValue(ActiveType value) { return await Write((byte)value); }
+        public async Task<ActiveType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(ActiveType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -102,9 +103,9 @@ namespace HomeKitDotNet.Models
     // 
     // Air Particulate Size
     // 
-    public class AirParticulateSize(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class AirParticulateSize(Service service, CharacteristicJSON json) : Characteristic<AirParticulateSizeType>(service, json), IService
     {
-        public async Task<AirParticulateSizeType?> GetValue() { return (AirParticulateSizeType?)(await Read()); }
+        public async Task<AirParticulateSizeType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -120,9 +121,9 @@ namespace HomeKitDotNet.Models
     // 
     // Air Quality
     // 
-    public class AirQuality(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class AirQuality(Service service, CharacteristicJSON json) : Characteristic<AirQualityType>(service, json), IService
     {
-        public async Task<AirQualityType?> GetValue() { return (AirQualityType?)(await Read()); }
+        public async Task<AirQualityType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -187,9 +188,9 @@ namespace HomeKitDotNet.Models
     // 
     // Carbon Dioxide Detected
     // 
-    public class CarbonDioxideDetected(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class CarbonDioxideDetected(Service service, CharacteristicJSON json) : Characteristic<CarbonDioxideDetectedType>(service, json), IService
     {
-        public async Task<CarbonDioxideDetectedType?> GetValue() { return (CarbonDioxideDetectedType?)(await Read()); }
+        public async Task<CarbonDioxideDetectedType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -212,9 +213,9 @@ namespace HomeKitDotNet.Models
     // 
     // Carbon Monoxide Detected
     // 
-    public class CarbonMonoxideDetected(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class CarbonMonoxideDetected(Service service, CharacteristicJSON json) : Characteristic<CarbonMonoxideDetectedType>(service, json), IService
     {
-        public async Task<CarbonMonoxideDetectedType?> GetValue() { return (CarbonMonoxideDetectedType?)(await Read()); }
+        public async Task<CarbonMonoxideDetectedType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -267,19 +268,19 @@ namespace HomeKitDotNet.Models
     // 
     // Charging State
     // 
-    public class ChargingState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class ChargingState(Service service, CharacteristicJSON json) : Characteristic<ChargingStateType>(service, json), IService
     {
-        public async Task<ChargingStateType?> GetValue() { return (ChargingStateType?)(await Read()); }
+        public async Task<ChargingStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum ClosedCaptionsType : byte { DISABLED = 0, ENABLED = 1, }
     // 
     // Closed Captions
     // 
-    public class ClosedCaptions(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class ClosedCaptions(Service service, CharacteristicJSON json) : Characteristic<ClosedCaptionsType>(service, json), IService
     {
-        public async Task<ClosedCaptionsType?> GetValue() { return (ClosedCaptionsType?)(await Read()); }
-        public async Task<bool> SetValue(ClosedCaptionsType value) { return await Write((byte)value); }
+        public async Task<ClosedCaptionsType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(ClosedCaptionsType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -312,9 +313,9 @@ namespace HomeKitDotNet.Models
     // 
     // Contact Sensor State
     // 
-    public class ContactSensorState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class ContactSensorState(Service service, CharacteristicJSON json) : Characteristic<ContactSensorStateType>(service, json), IService
     {
-        public async Task<ContactSensorStateType?> GetValue() { return (ContactSensorStateType?)(await Read()); }
+        public async Task<ContactSensorStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -337,9 +338,9 @@ namespace HomeKitDotNet.Models
     // 
     // Current Air Purifier State
     // 
-    public class CurrentAirPurifierState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class CurrentAirPurifierState(Service service, CharacteristicJSON json) : Characteristic<CurrentAirPurifierStateType>(service, json), IService
     {
-        public async Task<CurrentAirPurifierStateType?> GetValue() { return (CurrentAirPurifierStateType?)(await Read()); }
+        public async Task<CurrentAirPurifierStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -354,36 +355,36 @@ namespace HomeKitDotNet.Models
     // 
     // Current Door State
     // 
-    public class CurrentDoorState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class CurrentDoorState(Service service, CharacteristicJSON json) : Characteristic<CurrentDoorStateType>(service, json), IService
     {
-        public async Task<CurrentDoorStateType?> GetValue() { return (CurrentDoorStateType?)(await Read()); }
+        public async Task<CurrentDoorStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CurrentFanStateType : byte { INACTIVE = 0, IDLE = 1, BLOWING_AIR = 2, }
     // 
     // Current Fan State
     // 
-    public class CurrentFanState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class CurrentFanState(Service service, CharacteristicJSON json) : Characteristic<CurrentFanStateType>(service, json), IService
     {
-        public async Task<CurrentFanStateType?> GetValue() { return (CurrentFanStateType?)(await Read()); }
+        public async Task<CurrentFanStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CurrentHeaterCoolerStateType : byte { INACTIVE = 0, IDLE = 1, HEATING = 2, COOLING = 3, }
     // 
     // Current Heater-Cooler State
     // 
-    public class CurrentHeaterCoolerState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class CurrentHeaterCoolerState(Service service, CharacteristicJSON json) : Characteristic<CurrentHeaterCoolerStateType>(service, json), IService
     {
-        public async Task<CurrentHeaterCoolerStateType?> GetValue() { return (CurrentHeaterCoolerStateType?)(await Read()); }
+        public async Task<CurrentHeaterCoolerStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CurrentHeatingCoolingStateType : byte { OFF = 0, HEAT = 1, COOL = 2, }
     // 
     // Current Heating Cooling State
     // 
-    public class CurrentHeatingCoolingState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class CurrentHeatingCoolingState(Service service, CharacteristicJSON json) : Characteristic<CurrentHeatingCoolingStateType>(service, json), IService
     {
-        public async Task<CurrentHeatingCoolingStateType?> GetValue() { return (CurrentHeatingCoolingStateType?)(await Read()); }
+        public async Task<CurrentHeatingCoolingStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -398,18 +399,18 @@ namespace HomeKitDotNet.Models
     // 
     // Current Humidifier-Dehumidifier State
     // 
-    public class CurrentHumidifierDehumidifierState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class CurrentHumidifierDehumidifierState(Service service, CharacteristicJSON json) : Characteristic<CurrentHumidifierDehumidifierStateType>(service, json), IService
     {
-        public async Task<CurrentHumidifierDehumidifierStateType?> GetValue() { return (CurrentHumidifierDehumidifierStateType?)(await Read()); }
+        public async Task<CurrentHumidifierDehumidifierStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum CurrentMediaStateType : byte { PLAY = 0, PAUSE = 1, STOP = 2, LOADING = 4, INTERRUPTED = 5, }
     // 
     // Current Media State
     // 
-    public class CurrentMediaState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class CurrentMediaState(Service service, CharacteristicJSON json) : Characteristic<CurrentMediaStateType>(service, json), IService
     {
-        public async Task<CurrentMediaStateType?> GetValue() { return (CurrentMediaStateType?)(await Read()); }
+        public async Task<CurrentMediaStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -432,9 +433,9 @@ namespace HomeKitDotNet.Models
     // 
     // Current Slat State
     // 
-    public class CurrentSlatState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class CurrentSlatState(Service service, CharacteristicJSON json) : Characteristic<CurrentSlatStateType>(service, json), IService
     {
-        public async Task<CurrentSlatStateType?> GetValue() { return (CurrentSlatStateType?)(await Read()); }
+        public async Task<CurrentSlatStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -472,9 +473,9 @@ namespace HomeKitDotNet.Models
     // 
     // Current Visibility State
     // 
-    public class CurrentVisibilityState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class CurrentVisibilityState(Service service, CharacteristicJSON json) : Characteristic<CurrentVisibilityStateType>(service, json), IService
     {
-        public async Task<CurrentVisibilityStateType?> GetValue() { return (CurrentVisibilityStateType?)(await Read()); }
+        public async Task<CurrentVisibilityStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -530,10 +531,10 @@ namespace HomeKitDotNet.Models
     // 
     // Event Snapshots Active
     // 
-    public class EventSnapshotsActive(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class EventSnapshotsActive(Service service, CharacteristicJSON json) : Characteristic<EventSnapshotsActiveType>(service, json), IService
     {
-        public async Task<EventSnapshotsActiveType?> GetValue() { return (EventSnapshotsActiveType?)(await Read()); }
-        public async Task<bool> SetValue(EventSnapshotsActiveType value) { return await Write((byte)value); }
+        public async Task<EventSnapshotsActiveType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(EventSnapshotsActiveType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -547,9 +548,9 @@ namespace HomeKitDotNet.Models
     // 
     // Filter Change Indication
     // 
-    public class FilterChangeIndication(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class FilterChangeIndication(Service service, CharacteristicJSON json) : Characteristic<FilterChangeIndicationType>(service, json), IService
     {
-        public async Task<FilterChangeIndicationType?> GetValue() { return (FilterChangeIndicationType?)(await Read()); }
+        public async Task<FilterChangeIndicationType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -625,10 +626,10 @@ namespace HomeKitDotNet.Models
     // 
     // HomeKit Camera Active
     // 
-    public class HomeKitCameraActive(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class HomeKitCameraActive(Service service, CharacteristicJSON json) : Characteristic<HomeKitCameraActiveType>(service, json), IService
     {
-        public async Task<HomeKitCameraActiveType?> GetValue() { return (HomeKitCameraActiveType?)(await Read()); }
-        public async Task<bool> SetValue(HomeKitCameraActiveType value) { return await Write((byte)value); }
+        public async Task<HomeKitCameraActiveType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(HomeKitCameraActiveType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -676,46 +677,46 @@ namespace HomeKitDotNet.Models
     // 
     // Input Device Type
     // 
-    public class InputDeviceType(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class InputDeviceType(Service service, CharacteristicJSON json) : Characteristic<InputDeviceTypeType>(service, json), IService
     {
-        public async Task<InputDeviceTypeType?> GetValue() { return (InputDeviceTypeType?)(await Read()); }
+        public async Task<InputDeviceTypeType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum InputSourceTypeType : byte { OTHER = 0, HOME_SCREEN = 1, TUNER = 2, HDMI = 3, COMPOSITE_VIDEO = 4, S_VIDEO = 5, COMPONENT_VIDEO = 6, DVI = 7, AIRPLAY = 8, USB = 9, APPLICATION = 10, }
     // 
     // Input Source Type
     // 
-    public class InputSourceType(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class InputSourceType(Service service, CharacteristicJSON json) : Characteristic<InputSourceTypeType>(service, json), IService
     {
-        public async Task<InputSourceTypeType?> GetValue() { return (InputSourceTypeType?)(await Read()); }
+        public async Task<InputSourceTypeType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum InUseType : byte { NOT_IN_USE = 0, IN_USE = 1, }
     // 
     // In Use
     // 
-    public class InUse(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class InUse(Service service, CharacteristicJSON json) : Characteristic<InUseType>(service, json), IService
     {
-        public async Task<InUseType?> GetValue() { return (InUseType?)(await Read()); }
+        public async Task<InUseType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum IsConfiguredType : byte { NOT_CONFIGURED = 0, CONFIGURED = 1, }
     // 
     // Is Configured
     // 
-    public class IsConfigured(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class IsConfigured(Service service, CharacteristicJSON json) : Characteristic<IsConfiguredType>(service, json), IService
     {
-        public async Task<IsConfiguredType?> GetValue() { return (IsConfiguredType?)(await Read()); }
-        public async Task<bool> SetValue(IsConfiguredType value) { return await Write((byte)value); }
+        public async Task<IsConfiguredType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(IsConfiguredType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum LeakDetectedType : byte { LEAK_NOT_DETECTED = 0, LEAK_DETECTED = 1, }
     // 
     // Leak Detected
     // 
-    public class LeakDetected(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class LeakDetected(Service service, CharacteristicJSON json) : Characteristic<LeakDetectedType>(service, json), IService
     {
-        public async Task<LeakDetectedType?> GetValue() { return (LeakDetectedType?)(await Read()); }
+        public async Task<LeakDetectedType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -737,18 +738,18 @@ namespace HomeKitDotNet.Models
     // 
     // Lock Current State
     // 
-    public class LockCurrentState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class LockCurrentState(Service service, CharacteristicJSON json) : Characteristic<LockCurrentStateType>(service, json), IService
     {
-        public async Task<LockCurrentStateType?> GetValue() { return (LockCurrentStateType?)(await Read()); }
+        public async Task<LockCurrentStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum LockLastKnownActionType : byte { SECURED_PHYSICALLY_INTERIOR = 0, UNSECURED_PHYSICALLY_INTERIOR = 1, SECURED_PHYSICALLY_EXTERIOR = 2, UNSECURED_PHYSICALLY_EXTERIOR = 3, SECURED_BY_KEYPAD = 4, UNSECURED_BY_KEYPAD = 5, SECURED_REMOTELY = 6, UNSECURED_REMOTELY = 7, SECURED_BY_AUTO_SECURE_TIMEOUT = 8, SECURED_PHYSICALLY = 9, UNSECURED_PHYSICALLY = 10, }
     // 
     // Lock Last Known Action
     // 
-    public class LockLastKnownAction(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class LockLastKnownAction(Service service, CharacteristicJSON json) : Characteristic<LockLastKnownActionType>(service, json), IService
     {
-        public async Task<LockLastKnownActionType?> GetValue() { return (LockLastKnownActionType?)(await Read()); }
+        public async Task<LockLastKnownActionType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -764,20 +765,20 @@ namespace HomeKitDotNet.Models
     // 
     // Lock Physical Controls
     // 
-    public class LockPhysicalControls(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class LockPhysicalControls(Service service, CharacteristicJSON json) : Characteristic<LockPhysicalControlsType>(service, json), IService
     {
-        public async Task<LockPhysicalControlsType?> GetValue() { return (LockPhysicalControlsType?)(await Read()); }
-        public async Task<bool> SetValue(LockPhysicalControlsType value) { return await Write((byte)value); }
+        public async Task<LockPhysicalControlsType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(LockPhysicalControlsType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum LockTargetStateType : byte { UNSECURED = 0, SECURED = 1, }
     // 
     // Lock Target State
     // 
-    public class LockTargetState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class LockTargetState(Service service, CharacteristicJSON json) : Characteristic<LockTargetStateType>(service, json), IService
     {
-        public async Task<LockTargetStateType?> GetValue() { return (LockTargetStateType?)(await Read()); }
-        public async Task<bool> SetValue(LockTargetStateType value) { return await Write((byte)value); }
+        public async Task<LockTargetStateType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(LockTargetStateType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -806,10 +807,10 @@ namespace HomeKitDotNet.Models
     // 
     // Managed Network Enable
     // 
-    public class ManagedNetworkEnable(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class ManagedNetworkEnable(Service service, CharacteristicJSON json) : Characteristic<ManagedNetworkEnableType>(service, json), IService
     {
-        public async Task<ManagedNetworkEnableType?> GetValue() { return (ManagedNetworkEnableType?)(await Read()); }
-        public async Task<bool> SetValue(ManagedNetworkEnableType value) { return await Write((byte)value); }
+        public async Task<ManagedNetworkEnableType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(ManagedNetworkEnableType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -951,9 +952,9 @@ namespace HomeKitDotNet.Models
     // 
     // Occupancy Detected
     // 
-    public class OccupancyDetected(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class OccupancyDetected(Service service, CharacteristicJSON json) : Characteristic<OccupancyDetectedType>(service, json), IService
     {
-        public async Task<OccupancyDetectedType?> GetValue() { return (OccupancyDetectedType?)(await Read()); }
+        public async Task<OccupancyDetectedType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1034,20 +1035,20 @@ namespace HomeKitDotNet.Models
     // 
     // Periodic Snapshots Active
     // 
-    public class PeriodicSnapshotsActive(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class PeriodicSnapshotsActive(Service service, CharacteristicJSON json) : Characteristic<PeriodicSnapshotsActiveType>(service, json), IService
     {
-        public async Task<PeriodicSnapshotsActiveType?> GetValue() { return (PeriodicSnapshotsActiveType?)(await Read()); }
-        public async Task<bool> SetValue(PeriodicSnapshotsActiveType value) { return await Write((byte)value); }
+        public async Task<PeriodicSnapshotsActiveType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(PeriodicSnapshotsActiveType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum PictureModeType : byte { OTHER = 0, STANDARD = 1, CALIBRATED = 2, CALIBRATED_DARK = 3, VIVID = 4, GAME = 5, COMPUTER = 6, CUSTOM = 7, }
     // 
     // Picture Mode
     // 
-    public class PictureMode(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class PictureMode(Service service, CharacteristicJSON json) : Characteristic<PictureModeType>(service, json), IService
     {
-        public async Task<PictureModeType?> GetValue() { return (PictureModeType?)(await Read()); }
-        public async Task<bool> SetValue(PictureModeType value) { return await Write((byte)value); }
+        public async Task<PictureModeType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(PictureModeType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1077,18 +1078,18 @@ namespace HomeKitDotNet.Models
     // 
     // Position State
     // 
-    public class PositionState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class PositionState(Service service, CharacteristicJSON json) : Characteristic<PositionStateType>(service, json), IService
     {
-        public async Task<PositionStateType?> GetValue() { return (PositionStateType?)(await Read()); }
+        public async Task<PositionStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum PowerModeSelectionType : byte { SHOW = 0, HIDE = 1, }
     // 
     // Power Mode Selection
     // 
-    public class PowerModeSelection(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class PowerModeSelection(Service service, CharacteristicJSON json) : Characteristic<PowerModeSelectionType>(service, json), IService
     {
-        public async Task<bool> SetValue(PowerModeSelectionType value) { return await Write((byte)value); }
+        public async Task<bool> SetValue(PowerModeSelectionType value) { return await Write(value); }
     }
     // 
     // Product Data
@@ -1101,9 +1102,9 @@ namespace HomeKitDotNet.Models
     // 
     // Programmable Switch Event
     // 
-    public class ProgrammableSwitchEvent(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class ProgrammableSwitchEvent(Service service, CharacteristicJSON json) : Characteristic<ProgrammableSwitchEventType>(service, json), IService
     {
-        public async Task<ProgrammableSwitchEventType?> GetValue() { return (ProgrammableSwitchEventType?)(await Read()); }
+        public async Task<ProgrammableSwitchEventType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1119,9 +1120,9 @@ namespace HomeKitDotNet.Models
     // 
     // Program Mode
     // 
-    public class ProgramMode(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class ProgramMode(Service service, CharacteristicJSON json) : Characteristic<ProgramModeType>(service, json), IService
     {
-        public async Task<ProgramModeType?> GetValue() { return (ProgramModeType?)(await Read()); }
+        public async Task<ProgramModeType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1142,10 +1143,10 @@ namespace HomeKitDotNet.Models
     // 
     // Recording Audio Active
     // 
-    public class RecordingAudioActive(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class RecordingAudioActive(Service service, CharacteristicJSON json) : Characteristic<RecordingAudioActiveType>(service, json), IService
     {
-        public async Task<RecordingAudioActiveType?> GetValue() { return (RecordingAudioActiveType?)(await Read()); }
-        public async Task<bool> SetValue(RecordingAudioActiveType value) { return await Write((byte)value); }
+        public async Task<RecordingAudioActiveType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(RecordingAudioActiveType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1204,9 +1205,9 @@ namespace HomeKitDotNet.Models
     // 
     // Remote Key
     // 
-    public class RemoteKey(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class RemoteKey(Service service, CharacteristicJSON json) : Characteristic<RemoteKeyType>(service, json), IService
     {
-        public async Task<bool> SetValue(RemoteKeyType value) { return await Write((byte)value); }
+        public async Task<bool> SetValue(RemoteKeyType value) { return await Write(value); }
     }
     // 
     // Reset Filter Indication
@@ -1219,10 +1220,10 @@ namespace HomeKitDotNet.Models
     // 
     // Rotation Direction
     // 
-    public class RotationDirection(Service service, CharacteristicJSON json) : Characteristic<int>(service, json), IService
+    public class RotationDirection(Service service, CharacteristicJSON json) : Characteristic<RotationDirectionType>(service, json), IService
     {
-        public async Task<RotationDirectionType?> GetValue() { return (RotationDirectionType?)(await Read()); }
-        public async Task<bool> SetValue(RotationDirectionType value) { return await Write((int)value); }
+        public async Task<RotationDirectionType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(RotationDirectionType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1238,9 +1239,9 @@ namespace HomeKitDotNet.Models
     // 
     // Router Status
     // 
-    public class RouterStatus(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class RouterStatus(Service service, CharacteristicJSON json) : Characteristic<RouterStatusType>(service, json), IService
     {
-        public async Task<RouterStatusType?> GetValue() { return (RouterStatusType?)(await Read()); }
+        public async Task<RouterStatusType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1264,19 +1265,19 @@ namespace HomeKitDotNet.Models
     // 
     // Security System Current State
     // 
-    public class SecuritySystemCurrentState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class SecuritySystemCurrentState(Service service, CharacteristicJSON json) : Characteristic<SecuritySystemCurrentStateType>(service, json), IService
     {
-        public async Task<SecuritySystemCurrentStateType?> GetValue() { return (SecuritySystemCurrentStateType?)(await Read()); }
+        public async Task<SecuritySystemCurrentStateType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum SecuritySystemTargetStateType : byte { STAY_ARM = 0, AWAY_ARM = 1, NIGHT_ARM = 2, DISARM = 3, }
     // 
     // Security System Target State
     // 
-    public class SecuritySystemTargetState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class SecuritySystemTargetState(Service service, CharacteristicJSON json) : Characteristic<SecuritySystemTargetStateType>(service, json), IService
     {
-        public async Task<SecuritySystemTargetStateType?> GetValue() { return (SecuritySystemTargetStateType?)(await Read()); }
-        public async Task<bool> SetValue(SecuritySystemTargetStateType value) { return await Write((byte)value); }
+        public async Task<SecuritySystemTargetStateType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(SecuritySystemTargetStateType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1339,9 +1340,9 @@ namespace HomeKitDotNet.Models
     // 
     // Service Label Namespace
     // 
-    public class ServiceLabelNamespace(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class ServiceLabelNamespace(Service service, CharacteristicJSON json) : Characteristic<ServiceLabelNamespaceType>(service, json), IService
     {
-        public async Task<ServiceLabelNamespaceType?> GetValue() { return (ServiceLabelNamespaceType?)(await Read()); }
+        public async Task<ServiceLabelNamespaceType?> GetValue() { return (await Read()); }
     }
     // 
     // Set Duration
@@ -1406,13 +1407,14 @@ namespace HomeKitDotNet.Models
     {
         public async Task<string?> GetValue() { return await Read(); }
     }
-    public enum SiriInputTypeType : byte { PUSH_BUTTON_TRIGGERED_APPLE_TV = 0, }
     // 
     // Siri Input Type
     // 
     public class SiriInputType(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
     {
-        public async Task<SiriInputTypeType?> GetValue() { return (SiriInputTypeType?)(await Read()); }
+        public const byte PUSH_BUTTON_TRIGGERED_APPLE_TV = 0;
+
+        public async Task<byte?> GetValue() { return await Read(); }
     }
     // 
     // Siri Light On Use
@@ -1445,17 +1447,17 @@ namespace HomeKitDotNet.Models
     // 
     // Slat Type
     // 
-    public class SlatType(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class SlatType(Service service, CharacteristicJSON json) : Characteristic<SlatTypeType>(service, json), IService
     {
-        public async Task<SlatTypeType?> GetValue() { return (SlatTypeType?)(await Read()); }
+        public async Task<SlatTypeType?> GetValue() { return (await Read()); }
     }
     public enum SleepDiscoveryModeType : byte { NOT_DISCOVERABLE = 0, ALWAYS_DISCOVERABLE = 1, }
     // 
     // Sleep Discovery Mode
     // 
-    public class SleepDiscoveryMode(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class SleepDiscoveryMode(Service service, CharacteristicJSON json) : Characteristic<SleepDiscoveryModeType>(service, json), IService
     {
-        public async Task<SleepDiscoveryModeType?> GetValue() { return (SleepDiscoveryModeType?)(await Read()); }
+        public async Task<SleepDiscoveryModeType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1470,9 +1472,9 @@ namespace HomeKitDotNet.Models
     // 
     // Smoke Detected
     // 
-    public class SmokeDetected(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class SmokeDetected(Service service, CharacteristicJSON json) : Characteristic<SmokeDetectedType>(service, json), IService
     {
-        public async Task<SmokeDetectedType?> GetValue() { return (SmokeDetectedType?)(await Read()); }
+        public async Task<SmokeDetectedType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1502,36 +1504,36 @@ namespace HomeKitDotNet.Models
     // 
     // Status Fault
     // 
-    public class StatusFault(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class StatusFault(Service service, CharacteristicJSON json) : Characteristic<StatusFaultType>(service, json), IService
     {
-        public async Task<StatusFaultType?> GetValue() { return (StatusFaultType?)(await Read()); }
+        public async Task<StatusFaultType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum StatusJammedType : byte { NOT_JAMMED = 0, JAMMED = 1, }
     // 
     // Status Jammed
     // 
-    public class StatusJammed(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class StatusJammed(Service service, CharacteristicJSON json) : Characteristic<StatusJammedType>(service, json), IService
     {
-        public async Task<StatusJammedType?> GetValue() { return (StatusJammedType?)(await Read()); }
+        public async Task<StatusJammedType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum StatusLowBatteryType : byte { BATTERY_LEVEL_NORMAL = 0, BATTERY_LEVEL_LOW = 1, }
     // 
     // Status Low Battery
     // 
-    public class StatusLowBattery(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class StatusLowBattery(Service service, CharacteristicJSON json) : Characteristic<StatusLowBatteryType>(service, json), IService
     {
-        public async Task<StatusLowBatteryType?> GetValue() { return (StatusLowBatteryType?)(await Read()); }
+        public async Task<StatusLowBatteryType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum StatusTamperedType : byte { NOT_TAMPERED = 0, TAMPERED = 1, }
     // 
     // Status Tampered
     // 
-    public class StatusTampered(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class StatusTampered(Service service, CharacteristicJSON json) : Characteristic<StatusTamperedType>(service, json), IService
     {
-        public async Task<StatusTamperedType?> GetValue() { return (StatusTamperedType?)(await Read()); }
+        public async Task<StatusTamperedType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1670,10 +1672,10 @@ namespace HomeKitDotNet.Models
     // 
     // Swing Mode
     // 
-    public class SwingMode(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class SwingMode(Service service, CharacteristicJSON json) : Characteristic<SwingModeType>(service, json), IService
     {
-        public async Task<SwingModeType?> GetValue() { return (SwingModeType?)(await Read()); }
-        public async Task<bool> SetValue(SwingModeType value) { return await Write((byte)value); }
+        public async Task<SwingModeType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(SwingModeType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1687,10 +1689,10 @@ namespace HomeKitDotNet.Models
     // 
     // Target Air Purifier State
     // 
-    public class TargetAirPurifierState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class TargetAirPurifierState(Service service, CharacteristicJSON json) : Characteristic<TargetAirPurifierStateType>(service, json), IService
     {
-        public async Task<TargetAirPurifierStateType?> GetValue() { return (TargetAirPurifierStateType?)(await Read()); }
-        public async Task<bool> SetValue(TargetAirPurifierStateType value) { return await Write((byte)value); }
+        public async Task<TargetAirPurifierStateType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(TargetAirPurifierStateType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1712,40 +1714,40 @@ namespace HomeKitDotNet.Models
     // 
     // Target Door State
     // 
-    public class TargetDoorState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class TargetDoorState(Service service, CharacteristicJSON json) : Characteristic<TargetDoorStateType>(service, json), IService
     {
-        public async Task<TargetDoorStateType?> GetValue() { return (TargetDoorStateType?)(await Read()); }
-        public async Task<bool> SetValue(TargetDoorStateType value) { return await Write((byte)value); }
+        public async Task<TargetDoorStateType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(TargetDoorStateType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum TargetFanStateType : byte { MANUAL = 0, AUTO = 1, }
     // 
     // Target Fan State
     // 
-    public class TargetFanState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class TargetFanState(Service service, CharacteristicJSON json) : Characteristic<TargetFanStateType>(service, json), IService
     {
-        public async Task<TargetFanStateType?> GetValue() { return (TargetFanStateType?)(await Read()); }
-        public async Task<bool> SetValue(TargetFanStateType value) { return await Write((byte)value); }
+        public async Task<TargetFanStateType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(TargetFanStateType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum TargetHeaterCoolerStateType : byte { AUTO = 0, HEAT = 1, COOL = 2, }
     // 
     // Target Heater-Cooler State
     // 
-    public class TargetHeaterCoolerState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class TargetHeaterCoolerState(Service service, CharacteristicJSON json) : Characteristic<TargetHeaterCoolerStateType>(service, json), IService
     {
-        public async Task<TargetHeaterCoolerStateType?> GetValue() { return (TargetHeaterCoolerStateType?)(await Read()); }
-        public async Task<bool> SetValue(TargetHeaterCoolerStateType value) { return await Write((byte)value); }
+        public async Task<TargetHeaterCoolerStateType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(TargetHeaterCoolerStateType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum TargetHeatingCoolingStateType : byte { OFF = 0, HEAT = 1, COOL = 2, AUTO = 3, }
     // 
     // Target Heating Cooling State
     // 
-    public class TargetHeatingCoolingState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class TargetHeatingCoolingState(Service service, CharacteristicJSON json) : Characteristic<TargetHeatingCoolingStateType>(service, json), IService
     {
-        public async Task<TargetHeatingCoolingStateType?> GetValue() { return (TargetHeatingCoolingStateType?)(await Read()); }
-        public async Task<bool> SetValue(TargetHeatingCoolingStateType value) { return await Write((byte)value); }
+        public async Task<TargetHeatingCoolingStateType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(TargetHeatingCoolingStateType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1761,20 +1763,20 @@ namespace HomeKitDotNet.Models
     // 
     // Target Humidifier-Dehumidifier State
     // 
-    public class TargetHumidifierDehumidifierState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class TargetHumidifierDehumidifierState(Service service, CharacteristicJSON json) : Characteristic<TargetHumidifierDehumidifierStateType>(service, json), IService
     {
-        public async Task<TargetHumidifierDehumidifierStateType?> GetValue() { return (TargetHumidifierDehumidifierStateType?)(await Read()); }
-        public async Task<bool> SetValue(TargetHumidifierDehumidifierStateType value) { return await Write((byte)value); }
+        public async Task<TargetHumidifierDehumidifierStateType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(TargetHumidifierDehumidifierStateType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum TargetMediaStateType : byte { PLAY = 0, PAUSE = 1, STOP = 2, }
     // 
     // Target Media State
     // 
-    public class TargetMediaState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class TargetMediaState(Service service, CharacteristicJSON json) : Characteristic<TargetMediaStateType>(service, json), IService
     {
-        public async Task<TargetMediaStateType?> GetValue() { return (TargetMediaStateType?)(await Read()); }
-        public async Task<bool> SetValue(TargetMediaStateType value) { return await Write((byte)value); }
+        public async Task<TargetMediaStateType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(TargetMediaStateType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1826,29 +1828,29 @@ namespace HomeKitDotNet.Models
     // 
     // Target Visibility State
     // 
-    public class TargetVisibilityState(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class TargetVisibilityState(Service service, CharacteristicJSON json) : Characteristic<TargetVisibilityStateType>(service, json), IService
     {
-        public async Task<TargetVisibilityStateType?> GetValue() { return (TargetVisibilityStateType?)(await Read()); }
-        public async Task<bool> SetValue(TargetVisibilityStateType value) { return await Write((byte)value); }
+        public async Task<TargetVisibilityStateType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(TargetVisibilityStateType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum TemperatureDisplayUnitsType : byte { CELSIUS = 0, FAHRENHEIT = 1, }
     // 
     // Temperature Display Units
     // 
-    public class TemperatureDisplayUnits(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class TemperatureDisplayUnits(Service service, CharacteristicJSON json) : Characteristic<TemperatureDisplayUnitsType>(service, json), IService
     {
-        public async Task<TemperatureDisplayUnitsType?> GetValue() { return (TemperatureDisplayUnitsType?)(await Read()); }
-        public async Task<bool> SetValue(TemperatureDisplayUnitsType value) { return await Write((byte)value); }
+        public async Task<TemperatureDisplayUnitsType?> GetValue() { return (await Read()); }
+        public async Task<bool> SetValue(TemperatureDisplayUnitsType value) { return await Write(value); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum ThirdPartyCameraActiveType : byte { OFF = 0, ON = 1, }
     // 
     // Third Party Camera Active
     // 
-    public class ThirdPartyCameraActive(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class ThirdPartyCameraActive(Service service, CharacteristicJSON json) : Characteristic<ThirdPartyCameraActiveType>(service, json), IService
     {
-        public async Task<ThirdPartyCameraActiveType?> GetValue() { return (ThirdPartyCameraActiveType?)(await Read()); }
+        public async Task<ThirdPartyCameraActiveType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1933,9 +1935,9 @@ namespace HomeKitDotNet.Models
     // 
     // Valve Type
     // 
-    public class ValveType(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class ValveType(Service service, CharacteristicJSON json) : Characteristic<ValveTypeType>(service, json), IService
     {
-        public async Task<ValveTypeType?> GetValue() { return (ValveTypeType?)(await Read()); }
+        public async Task<ValveTypeType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     // 
@@ -1975,18 +1977,18 @@ namespace HomeKitDotNet.Models
     // 
     // Volume Control Type
     // 
-    public class VolumeControlType(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class VolumeControlType(Service service, CharacteristicJSON json) : Characteristic<VolumeControlTypeType>(service, json), IService
     {
-        public async Task<VolumeControlTypeType?> GetValue() { return (VolumeControlTypeType?)(await Read()); }
+        public async Task<VolumeControlTypeType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
     public enum VolumeSelectorType : byte { INCREMENT = 0, DECREMENT = 1, }
     // 
     // Volume Selector
     // 
-    public class VolumeSelector(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class VolumeSelector(Service service, CharacteristicJSON json) : Characteristic<VolumeSelectorType>(service, json), IService
     {
-        public async Task<bool> SetValue(VolumeSelectorType value) { return await Write((byte)value); }
+        public async Task<bool> SetValue(VolumeSelectorType value) { return await Write(value); }
     }
     // 
     // Wake Configuration
@@ -2039,9 +2041,9 @@ namespace HomeKitDotNet.Models
     // 
     // Wi-Fi Satellite Status
     // 
-    public class WiFiSatelliteStatus(Service service, CharacteristicJSON json) : Characteristic<byte>(service, json), IService
+    public class WiFiSatelliteStatus(Service service, CharacteristicJSON json) : Characteristic<WiFiSatelliteStatusType>(service, json), IService
     {
-        public async Task<WiFiSatelliteStatusType?> GetValue() { return (WiFiSatelliteStatusType?)(await Read()); }
+        public async Task<WiFiSatelliteStatusType?> GetValue() { return (await Read()); }
         public async Task<bool> ToggleNotifications(bool subscribe) { return await Events(subscribe); }
     }
 }
