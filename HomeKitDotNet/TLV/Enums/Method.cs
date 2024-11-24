@@ -19,6 +19,7 @@ namespace HomeKitDotNet.TLV.Enums
         PairVerify = 0x2,
         AddPairing = 0x3,
         RemovePairing = 0x4,
-        ListPairings = 0x5
+        ListPairings = 0x5,
+        PairResume = 0x6,
     }
 }
