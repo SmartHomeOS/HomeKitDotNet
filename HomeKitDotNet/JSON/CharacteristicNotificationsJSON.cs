@@ -16,16 +16,16 @@ namespace HomeKitDotNet.JSON
 {
     public record CharacteristicNotificationsJSON
     {
-        public CharacteristicNotificationsJSON(int aid, int iid)
+        public CharacteristicNotificationsJSON(ulong aid, ulong iid)
         {
             this.AccessoryID = aid;
             this.InstanceID = iid;
         }
 
         [JsonPropertyName("aid")]
-        public int AccessoryID { get; init; }
+        public ulong AccessoryID { get; init; }
         [JsonPropertyName("iid")]
-        public int InstanceID { get; init; }
+        public ulong InstanceID { get; init; }
         [JsonPropertyName("ev")]
         public bool EventNotifications { get; set; }
     }

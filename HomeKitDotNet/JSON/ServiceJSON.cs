@@ -20,7 +20,7 @@ namespace HomeKitDotNet.JSON
         [JsonPropertyName("type")]
         public string Type { get; init; }
         [JsonPropertyName("iid")]
-        public int InstanceID {  get; init; }
+        public ulong InstanceID {  get; init; }
         [JsonPropertyName("characteristics")]
         public CharacteristicJSON[] Characteristics { get; init; }
         [JsonPropertyName("hidden")]

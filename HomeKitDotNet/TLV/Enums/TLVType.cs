@@ -28,6 +28,7 @@ namespace HomeKitDotNet.TLV.Enums
         kTLVType_Permissions = 0xB,
         kTLVType_FragmentData = 0xC,
         kTLVType_FragmentLast = 0xD,
+        kTLVType_SessionID = 0xE,
         kTLVType_Flags = 0x13,
         kTLVType_Separator = 0xFF
     }

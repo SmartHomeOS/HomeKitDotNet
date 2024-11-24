@@ -18,9 +18,9 @@ namespace HomeKitDotNet.JSON
     public record CharacteristicEventJSON
     {
         [JsonPropertyName("aid")]
-        public int AccessoryID { get; init; }
+        public ulong AccessoryID { get; init; }
         [JsonPropertyName("iid")]
-        public int InstanceID { get; init; }
+        public ulong InstanceID { get; init; }
         [JsonPropertyName("value")]
         public JsonElement? Value { get; init; }
     }

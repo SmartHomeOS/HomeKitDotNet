@@ -18,7 +18,7 @@ namespace HomeKitDotNet.JSON
     {
         #pragma warning disable CS8618
         [JsonPropertyName("aid")]
-        public int AccessoryInstanceID {  get; init; }
+        public ulong AccessoryInstanceID {  get; init; }
         [JsonPropertyName("services")]
         public ServiceJSON[] Services { get; init; }
         #pragma warning restore CS8618

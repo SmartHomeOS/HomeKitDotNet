@@ -16,7 +16,7 @@ namespace HomeKitDotNet.Models
 {
     public class Accessory
     {
-        private Dictionary<int, CharacteristicBase> instanceTable = new Dictionary<int, CharacteristicBase>();
+        private Dictionary<ulong, CharacteristicBase> instanceTable = new Dictionary<ulong, CharacteristicBase>();
         internal Accessory(HomeKitEndPoint endPoint, AccessoryJSON json)
         {
             this.EndPoint = endPoint;
@@ -32,7 +32,7 @@ namespace HomeKitDotNet.Models
         }
 
         public Service[] Services { get; init; }
-        public int ID { get; init; }
+        public ulong ID { get; init; }
         public HomeKitEndPoint EndPoint { get; init; }
 
         protected IService? GetService(string type, ServiceJSON service)
@@ -189,7 +189,7 @@ namespace HomeKitDotNet.Models
             return null;
         }
 
-        internal void RegisterCharacteristic(int instance, CharacteristicBase characteristic)
+        internal void RegisterCharacteristic(ulong instance, CharacteristicBase characteristic)
         {
             instanceTable.TryAdd(instance, characteristic);
         }

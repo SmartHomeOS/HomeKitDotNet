@@ -17,15 +17,15 @@ namespace HomeKitDotNet.JSON
 {
     public record CharacteristicValueJSON
     {
-        public CharacteristicValueJSON(int aid, int iid)
+        public CharacteristicValueJSON(ulong aid, ulong iid)
         {
             this.AccessoryID = aid;
             this.InstanceID = iid;
         }
         [JsonPropertyName("aid")]
-        public int AccessoryID { get; init; }
+        public ulong AccessoryID { get; init; }
         [JsonPropertyName("iid")]
-        public int InstanceID { get; init; }
+        public ulong InstanceID { get; init; }
         [JsonPropertyName("value")]
         public JsonElement? Value { get; set; }
     }

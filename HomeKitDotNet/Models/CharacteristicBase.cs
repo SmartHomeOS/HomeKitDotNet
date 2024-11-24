@@ -29,7 +29,7 @@ namespace HomeKitDotNet.Models
         internal abstract void FireUpdate(JsonElement? value);
 
         public string Type { get; init; }
-        public int InstanceID => _json.InstanceID;
+        public ulong InstanceID => _json.InstanceID;
         public string? Description => _json.Description;
         public string? Unit => _json.Unit;
         public CharacteristicPermission[] Permissions => _json.Permissions;

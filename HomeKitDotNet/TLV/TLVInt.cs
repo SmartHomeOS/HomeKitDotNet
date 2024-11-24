@@ -12,6 +12,8 @@ namespace HomeKitDotNet.TLV
             this.type = type;
             if (data <= byte.MaxValue)
                 len = 1;
+            else if (len <= ushort.MaxValue)
+                len = 2;
             else
                 len = 4;
             this.data = data;

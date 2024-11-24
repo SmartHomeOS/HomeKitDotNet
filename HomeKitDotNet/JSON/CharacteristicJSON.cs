@@ -21,7 +21,7 @@ namespace HomeKitDotNet.JSON
         [JsonPropertyName("type")]
         public string Type { get; init; }
         [JsonPropertyName("iid")]
-        public int InstanceID { get; init; }
+        public ulong InstanceID { get; init; }
         [JsonPropertyName("value")]
         public JsonElement? Value { get; init; }
         [JsonPropertyName("perms")]
