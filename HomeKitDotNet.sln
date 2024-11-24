@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeKitDotNet", "HomeKitDot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleClient", "ExampleClient\ExampleClient.csproj", "{DED4AEF1-B9E5-4E92-B64F-49FA6D4C6AD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{295A77A1-B55C-4FFF-92A7-55F0F4B6666A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DED4AEF1-B9E5-4E92-B64F-49FA6D4C6AD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DED4AEF1-B9E5-4E92-B64F-49FA6D4C6AD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DED4AEF1-B9E5-4E92-B64F-49FA6D4C6AD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{295A77A1-B55C-4FFF-92A7-55F0F4B6666A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{295A77A1-B55C-4FFF-92A7-55F0F4B6666A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{295A77A1-B55C-4FFF-92A7-55F0F4B6666A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{295A77A1-B55C-4FFF-92A7-55F0F4B6666A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

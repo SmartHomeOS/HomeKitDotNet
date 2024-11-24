@@ -10,7 +10,7 @@ internal class Program
     {
         //Detect accessory on the network and grab the QR code
         IPEndPoint ep = new IPEndPoint(IPAddress.Parse("10.20.30.40"), 21067);
-        QRParser parser = new QRParser("X-HM://00UQ3OYGA9CTI");
+        QRParser parser = new QRParser("X-HM://00UQ3OYGA7OSX");
 
         //Randomly generate keys and keep them in a safe place (or let the controller do it for you using the other Controller constructor)
         byte[] DeviceID = Encoding.UTF8.GetBytes(Guid.Parse("cafef517-351a-4280-93f6-995d3b881587").ToString("D", CultureInfo.InvariantCulture));
