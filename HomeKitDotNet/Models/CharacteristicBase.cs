@@ -15,7 +15,7 @@ namespace HomeKitDotNet.Models
             this.service = service;
         }
 
-        protected async Task<bool> Events(bool subscribe)
+        protected async Task<bool> Events(bool subscribe, CancellationToken token = default)
         {
             if (!CanSubscribe)
                 throw new InvalidOperationException("Subscriptions are prohibited");
@@ -23,7 +23,7 @@ namespace HomeKitDotNet.Models
             write.EventNotifications = subscribe;
             Dictionary<string, CharacteristicNotificationsJSON[]> dict = new Dictionary<string, CharacteristicNotificationsJSON[]>();
             dict.Add("characteristics", [write]);
-            return (await service.Accessory.EndPoint.Connection.Put("/characteristics", JsonSerializer.SerializeToUtf8Bytes(dict))).StatusCode == System.Net.HttpStatusCode.NoContent;
+            return (await service.Accessory.EndPoint.Connection.Put("/characteristics", JsonSerializer.SerializeToUtf8Bytes(dict), token)).StatusCode == System.Net.HttpStatusCode.NoContent;
         }
 
         internal abstract void FireUpdate(JsonElement? value);

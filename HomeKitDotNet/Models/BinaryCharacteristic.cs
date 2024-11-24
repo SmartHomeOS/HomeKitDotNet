@@ -13,7 +13,7 @@ namespace HomeKitDotNet.Models
             LastValue = MapValue(json.Value);
         }
 
-        protected async Task<bool> Write(byte[] value)
+        protected async Task<bool> Write(byte[] value, CancellationToken token = default)
         {
             if (!CanWrite)
                 throw new InvalidOperationException("Writing is prohibited");
@@ -21,14 +21,14 @@ namespace HomeKitDotNet.Models
             write.Value = JsonSerializer.SerializeToElement(Convert.ToBase64String(value));
             Dictionary<string, CharacteristicValueJSON[]> dict = new Dictionary<string, CharacteristicValueJSON[]>();
             dict.Add("characteristics", [write]);
-            return (await service.Accessory.EndPoint.Connection.Put("/characteristics", JsonSerializer.SerializeToUtf8Bytes(dict))).StatusCode == System.Net.HttpStatusCode.NoContent;
+            return (await service.Accessory.EndPoint.Connection.Put("/characteristics", JsonSerializer.SerializeToUtf8Bytes(dict), token)).StatusCode == System.Net.HttpStatusCode.NoContent;
         }
 
-        protected async Task<byte[]> Read()
+        protected async Task<byte[]> Read(CancellationToken token = default)
         {
             if (!CanRead)
                 throw new InvalidOperationException("Reading is prohibited");
-            HttpResponseMessage msg = await service.Accessory.EndPoint.Connection.Get($"/characteristics?id={service.Accessory.ID}.{InstanceID}");
+            HttpResponseMessage msg = await service.Accessory.EndPoint.Connection.Get($"/characteristics?id={service.Accessory.ID}.{InstanceID}", token);
             if (!msg.IsSuccessStatusCode)
                 return Array.Empty<byte>();
             CharacteristicsJSON? chars = JsonSerializer.Deserialize<CharacteristicsJSON>(msg.Content.ReadAsStream());
