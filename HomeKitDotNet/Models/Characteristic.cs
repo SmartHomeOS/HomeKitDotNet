@@ -66,15 +66,15 @@ namespace HomeKitDotNet.Models
                 else if (typeof(T) == typeof(ushort) && value.Value.ValueKind == JsonValueKind.Number)
                     return (T)(object)value.Value.GetUInt16();
                 else if (typeof(T) == typeof(uint) && value.Value.ValueKind == JsonValueKind.Number)
-                    return   (T)(object)value.Value.GetUInt32();
+                    return (T)(object)value.Value.GetUInt32();
                 else if (typeof(T) == typeof(ulong) && value.Value.ValueKind == JsonValueKind.Number)
                     return (T)(object)value.Value.GetUInt64();
                 else if (typeof(T) == typeof(bool) && (value.Value.ValueKind == JsonValueKind.True || value.Value.ValueKind == JsonValueKind.False))
                     return (T)(object)value.Value.GetBoolean();
-                else if (typeof(T) == typeof(Enum) && value.Value.ValueKind == JsonValueKind.Number)
-                    return (T)(object)value.Value.GetUInt32();
+                else if (typeof(T) == typeof(bool) && (value.Value.ValueKind == JsonValueKind.Number))
+                    return (T)(object)(value.Value.GetByte() != 0);
                 else
-                    throw new ArgumentException("Value Mismatch " + value);
+                    throw new ArgumentException("Value Mismatch " + typeof(T));
             }
             else
                 return null;
