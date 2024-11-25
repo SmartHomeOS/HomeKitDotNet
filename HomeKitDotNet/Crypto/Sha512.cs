@@ -26,13 +26,6 @@ namespace HomeKitDotNet.Crypto
             _totalBytes = 0;
         }
 
-        public void Update(ArraySegment<byte> data)
-        {
-            if (data.Array == null)
-                throw new ArgumentNullException("data.Array");
-            Update(data.Array, data.Offset, data.Count);
-        }
-
         public void Update(byte[] data, int offset, int count)
         {
             if (data == null)
@@ -117,11 +110,6 @@ namespace HomeKitDotNet.Crypto
             var result = new byte[64];
             Finish(new ArraySegment<byte>(result));
             return result;
-        }
-
-        public static byte[] Hash(byte[] data)
-        {
-            return Hash(data, 0, data.Length);
         }
 
         public static byte[] Hash(byte[] data, int offset, int count)
