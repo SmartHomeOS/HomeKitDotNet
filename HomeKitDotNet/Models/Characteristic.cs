@@ -32,7 +32,7 @@ namespace HomeKitDotNet.Models
             write.Value = JsonSerializer.SerializeToElement(value);
             Dictionary<string, CharacteristicValueJSON[]> dict = new Dictionary<string, CharacteristicValueJSON[]>();
             dict.Add("characteristics", [write]);
-            return (await service.Accessory.EndPoint.Connection.Put("/characteristics", JsonSerializer.SerializeToUtf8Bytes(dict), token)).StatusCode == System.Net.HttpStatusCode.NoContent;
+            return (await service.Accessory.EndPoint.Connection.PutJson("/characteristics", JsonSerializer.SerializeToUtf8Bytes(dict), token)).StatusCode == System.Net.HttpStatusCode.NoContent;
         }
 
         protected async Task<T?> Read(CancellationToken token = default)

@@ -13,7 +13,7 @@
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<RepositoryUrl>https://github.com/SmartHomeOS/HomeKitDotNet/</RepositoryUrl>
 	<PackageTags>homekit; homekit-controller; smarthome; dotnet;</PackageTags>
-	<PackageReleaseNotes>First Release</PackageReleaseNotes>
+	<PackageReleaseNotes>See github for the full changelog</PackageReleaseNotes>
 	<Version>0.7</Version>
 	<PackageIcon>logo.png</PackageIcon>
 	<GenerateDocumentationFile>True</GenerateDocumentationFile>

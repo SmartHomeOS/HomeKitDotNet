@@ -23,7 +23,7 @@ namespace HomeKitDotNet.Models
             write.EventNotifications = subscribe;
             Dictionary<string, CharacteristicNotificationsJSON[]> dict = new Dictionary<string, CharacteristicNotificationsJSON[]>();
             dict.Add("characteristics", [write]);
-            return (await service.Accessory.EndPoint.Connection.Put("/characteristics", JsonSerializer.SerializeToUtf8Bytes(dict), token)).StatusCode == System.Net.HttpStatusCode.NoContent;
+            return (await service.Accessory.EndPoint.Connection.PutJson("/characteristics", JsonSerializer.SerializeToUtf8Bytes(dict), token)).StatusCode == System.Net.HttpStatusCode.NoContent;
         }
 
         internal abstract void FireUpdate(JsonElement? value);

@@ -34,7 +34,7 @@ namespace HomeKitDotNet
             this.encrypter = encrypter;
         }
 
-        public async Task WriteAsync(byte[] payload)
+        public async Task WriteAsync(byte[] payload, CancellationToken token)
         {
             int len, readPos = 0;
             while (readPos < payload.Length)
@@ -43,30 +43,30 @@ namespace HomeKitDotNet
                 Array.Copy(payload, readPos, buffer, writePos, len);
                 readPos += len;
                 writePos += len;
-                await flushIfNeeded();
+                await flushIfNeeded(token);
             }
         }
 
-        public async Task WriteAsync(Stream stream)
+        public async Task WriteAsync(Stream stream, CancellationToken token)
         {
             while (stream.Position < stream.Length)
             {
                 writePos += stream.Read(buffer, writePos, buffer.Length - writePos);
-                await flushIfNeeded();
+                await flushIfNeeded(token);
             }
         }
 
-        private async Task flushIfNeeded()
+        private async Task flushIfNeeded(CancellationToken token)
         {
             if (writePos == buffer.Length)
-                await FlushAsync();
+                await FlushAsync(token);
         }
 
-        public async Task FlushAsync()
+        public async Task FlushAsync(CancellationToken token)
         {
             if (encrypter == null)
             {
-                await stream.WriteAsync(buffer, 0, writePos);
+                await stream.WriteAsync(buffer, 0, writePos, token);
             }
             else
             {
@@ -76,8 +76,8 @@ namespace HomeKitDotNet
                 BinaryPrimitives.WriteUInt64LittleEndian(nonce.AsSpan().Slice(4), counter++);
                 encrypter.Encrypt(nonce, buffer.AsSpan().Slice(0, writePos), buffer.AsSpan().Slice(0, writePos), tag, len);
                 stream.Write(len);
-                await stream.WriteAsync(buffer, 0, writePos);
-                await stream.WriteAsync(tag);
+                await stream.WriteAsync(buffer, 0, writePos, token);
+                await stream.WriteAsync(tag, token);
             }
             writePos = 0;
         }

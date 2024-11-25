@@ -32,7 +32,7 @@ namespace HomeKitDotNet
         public async Task<string> ReadLineAsync(CancellationToken token)
         {
             int newLine = -1;
-            if (decrypter != null && buffEnd <= readPos)
+            if (decrypter != null && readPos >= buffEnd)
                 await ReadEncrypted(token);
             if (buffEnd > 0)
                 newLine = FindReturn(buffer.Slice(readPos, buffEnd - readPos).Span);
@@ -60,32 +60,50 @@ namespace HomeKitDotNet
             return ret;
         }
 
-        public async Task ReadBytesAsync(byte[] bytes, CancellationToken token)
+        public async Task Seek(int offset, CancellationToken token)
+        {
+            int len, writePos = 0;
+            if (readPos != buffEnd)
+            {
+                len = Math.Min(offset, buffEnd - readPos);
+                writePos += len;
+                readPos += len;
+            }
+            while (writePos < offset)
+            {
+                await ReadEncrypted(token);
+                len = Math.Min(offset - writePos, buffEnd);
+                writePos += len;
+                readPos += len;
+            }
+        }
+
+        public async Task ReadBytesAsync(byte[] bytes, int contentLength, CancellationToken token)
         {
             if (decrypter == null)
-                await ReadBytesStream(bytes, token);
+                await ReadUnencryptedStream(bytes, contentLength, token);
             else
             {
                 int len, writePos = 0;
                 if (readPos != buffEnd)
                 {
-                    len = Math.Min(bytes.Length, buffEnd - readPos);
+                    len = Math.Min(contentLength, buffEnd - readPos);
                     buffer.Slice(readPos, len).CopyTo(bytes);
                     writePos += len;
                     readPos += len;
                 }
-                while (writePos < bytes.Length)
+                while (writePos < contentLength)
                 {
                     await ReadEncrypted(token);
-                    len = Math.Min(bytes.Length - writePos, buffEnd);
-                    buffer.Slice(0, buffEnd).Span.CopyTo(bytes.AsSpan().Slice(writePos));
+                    len = Math.Min(contentLength - writePos, buffEnd);
+                    buffer.Slice(0, len).Span.CopyTo(bytes.AsSpan().Slice(writePos));
                     writePos += len;
                     readPos += len;
                 }
             }
         }
 
-        private async Task ReadBytesStream(byte[] bytes, CancellationToken token)
+        private async Task ReadUnencryptedStream(byte[] bytes, int contentLength, CancellationToken token)
         {
             int pos = 0;
             if (readPos != buffEnd)
@@ -95,8 +113,8 @@ namespace HomeKitDotNet
                 buffEnd = 0;
                 readPos = 0;
             }
-            while (pos < bytes.Length - 1)
-                pos += await stream.ReadAsync(bytes, pos, bytes.Length - pos, token);
+            while (pos < contentLength - 1)
+                pos += await stream.ReadAsync(bytes, pos, contentLength - pos, token);
         }
 
         private async Task ReadEncrypted(CancellationToken token) //read line
