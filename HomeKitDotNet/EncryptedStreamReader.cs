@@ -124,7 +124,12 @@ namespace HomeKitDotNet
             await stream.ReadExactlyAsync(buffer.Slice(2, len + 16), token);
             byte[] nonce = new byte[12];
             BinaryPrimitives.WriteUInt64LittleEndian(nonce.AsSpan().Slice(4), counter++);
-            decrypter!.Decrypt(nonce.AsSpan(), buffer.Slice(2, len).Span, buffer.Slice(2 + len, 16).Span, buffer.Slice(0, len).Span, buffer.Slice(0, 2).Span);
+
+            // Avoid overlapping input and output buffers, which OpenSSL does not support.
+            byte[] plaintext = new byte[len];
+            decrypter!.Decrypt(nonce.AsSpan(), buffer.Slice(2, len).Span, buffer.Slice(2 + len, 16).Span, plaintext.AsSpan(), buffer.Slice(0, 2).Span);
+            plaintext.AsSpan().CopyTo(buffer.Slice(0, len).Span);
+            
             buffEnd = len;
             readPos = 0;
         }
