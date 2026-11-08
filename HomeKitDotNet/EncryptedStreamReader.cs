@@ -106,15 +106,17 @@ namespace HomeKitDotNet
         private async Task ReadUnencryptedStream(byte[] bytes, int contentLength, CancellationToken token)
         {
             int pos = 0;
+
             if (readPos != buffEnd)
             {
-                buffer.Slice(readPos, buffEnd - readPos).CopyTo(bytes);
-                pos += (buffEnd - readPos);
-                buffEnd = 0;
-                readPos = 0;
+                // Consume only the requested bytes, preserving buffered data for subsequent reads.
+                pos = Math.Min(contentLength, buffEnd - readPos);
+                buffer.Slice(readPos, pos).CopyTo(bytes);
+                readPos += pos;
             }
-            while (pos < contentLength - 1)
-                pos += await stream.ReadAsync(bytes, pos, contentLength - pos, token);
+
+            // Read the complete payload and throw if the stream closes prematurely.
+            await stream.ReadExactlyAsync(bytes.AsMemory(pos, contentLength - pos), token);
         }
 
         private async Task ReadEncrypted(CancellationToken token) //read line
