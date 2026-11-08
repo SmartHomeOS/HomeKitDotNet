@@ -88,84 +88,111 @@ namespace HomeKitDotNet
             var keyPair = session.GenerateKeyPair();
 
             Connection con = new Connection();
-            await con.ConnectAsync(destination, token);
+            // Release incomplete sessions on cancellation, authentication or catalog failure.
+            using CancellationTokenRegistration pRegistration = token.Register(con.Dispose);
+            bool bConnected = false;
 
-            //Step 1
-            HttpResponseMessage msg = await con.PostTLVs("/pair-verify", token, new TLVInt(TLVType.kTLVType_State, (byte)PairingState.M1), new TLVBytes(TLVType.kTLVType_PublicKey, keyPair.Public));
-            if (!msg.IsSuccessStatusCode)
+            try
             {
-                con.Dispose();
-                throw new IOException($"Pair Step 1 Failed with {msg.StatusCode}: {msg.ReasonPhrase}");
-            }
+                await con.ConnectAsync(destination, token);
 
-            List<TLVValue> responseTLVs = TLVValue.CollectionFromStream(msg.Content.ReadAsStream());
-            byte[] AccessorySessionPK = TLVValue.Concat(TLVType.kTLVType_PublicKey, responseTLVs);
-            ArraySegment<byte> encrypted = (responseTLVs.Find(t => t.Type == TLVType.kTLVType_EncryptedData) as TLVBytes)!.Value;
-            byte[] payload = new byte[encrypted.Count - 16];
-            byte[] sharedSecret = session.GetSharedSecret(AccessorySessionPK);
-
-            byte[] sessionKey = HKDF.DeriveKey(HashAlgorithmName.SHA512, sharedSecret, 32, Encoding.UTF8.GetBytes("Pair-Verify-Encrypt-Salt"), Encoding.UTF8.GetBytes("Pair-Verify-Encrypt-Info"));
-
-            ChaCha20Poly1305 decrypter = new ChaCha20Poly1305(sessionKey);
-            decrypter.Decrypt(Encoding.ASCII.GetBytes("\0\0\0\0PV-Msg02"), encrypted.Slice(0, encrypted.Count - 16), encrypted.Slice(encrypted.Count - 16, 16), payload);
-            responseTLVs = TLVValue.CollectionFromStream(new MemoryStream(payload));
-
-            byte[] AccessoryInfo = BufferUtil.Concat(AccessorySessionPK, accessoryID, keyPair.Public);
-            byte[] accessorySignature = (responseTLVs.Find(t => t.Type == TLVType.kTLVType_Signature) as TLVBytes)!.Value;
-            if (!Ed25519.Verify(accessorySignature, AccessoryInfo, accessoryLTPK))
-            {
-                con.Dispose();
-                throw new IOException("Accessory returned invalid signature");
-            }
-
-            byte[] iOSDeviceInfo = BufferUtil.Concat(keyPair.Public, DeviceID, AccessorySessionPK);
-            byte[] iOSDeviceSignature = Ed25519.Sign(iOSDeviceInfo, LTSK);
-            byte[] encryptedPayload;
-            using (MemoryStream encryptionPayload = new MemoryStream())
-            {
-                TLVValue.WriteCollection([
-                    new TLVBytes(TLVType.kTLVType_Signature, iOSDeviceSignature),
-                    new TLVBytes(TLVType.kTLVType_Identifier, DeviceID)
-                ], encryptionPayload);
-                ChaCha20Poly1305 encrypter = new ChaCha20Poly1305(sessionKey);
-                encryptedPayload = new byte[encryptionPayload.Length + 16];
-                encrypter.Encrypt(Encoding.ASCII.GetBytes("\0\0\0\0PV-Msg03"), encryptionPayload.ToArray(), encryptedPayload.AsSpan().Slice(0, (int)encryptionPayload.Length), encryptedPayload.AsSpan().Slice((int)encryptionPayload.Length, 16));
-            }
-
-            msg = await con.PostTLVs("/pair-verify", token, 
-                new TLVInt(TLVType.kTLVType_State, (byte)PairingState.M3),
-                new TLVBytes(TLVType.kTLVType_EncryptedData, encryptedPayload)
-                );
-            if (!msg.IsSuccessStatusCode)
-            {
-                con.Dispose();
-                string content = new StreamReader(msg.Content.ReadAsStream()).ReadToEnd();
-                throw new IOException($"Verify Step 3 Failed with {msg.StatusCode}: {msg.ReasonPhrase}: {content}");
-            }
-            responseTLVs = TLVValue.CollectionFromStream(msg.Content.ReadAsStream());
-
-            bool error = responseTLVs.Any(t => t.Type == TLVType.kTLVType_Error);
-
-            if (!error)
-            {
-                byte[] readKey = HKDF.DeriveKey(HashAlgorithmName.SHA512, sharedSecret, 32, Encoding.UTF8.GetBytes("Control-Salt"), Encoding.UTF8.GetBytes("Control-Read-Encryption-Key"));
-                byte[] writeKey = HKDF.DeriveKey(HashAlgorithmName.SHA512, sharedSecret, 32, Encoding.UTF8.GetBytes("Control-Salt"), Encoding.UTF8.GetBytes("Control-Write-Encryption-Key"));
-                await con.EnableEncryption(writeKey, readKey);
-
-                HttpResponseMessage resp = await con.Get("/accessories", token);
-                AccessoriesJSON? accessories = JsonSerializer.Deserialize<AccessoriesJSON>(resp.Content.ReadAsStream(token));
-                HomeKitEndPoint ep;
-                if (accessories != null)
+                //Step 1
+                HttpResponseMessage msg = await con.PostTLVs("/pair-verify", token, new TLVInt(TLVType.kTLVType_State, (byte)PairingState.M1), new TLVBytes(TLVType.kTLVType_PublicKey, keyPair.Public));
+                if (!msg.IsSuccessStatusCode)
                 {
-                    ep = new HomeKitEndPoint(con, accessories);
-                    endpoints.Add(ep);
-                    return ep;
+                    con.Dispose();
+                    throw new IOException($"Pair Step 1 Failed with {msg.StatusCode}: {msg.ReasonPhrase}");
+                }
+
+                List<TLVValue> responseTLVs = TLVValue.CollectionFromStream(msg.Content.ReadAsStream());
+                byte[] AccessorySessionPK = TLVValue.Concat(TLVType.kTLVType_PublicKey, responseTLVs);
+                ArraySegment<byte> encrypted = (responseTLVs.Find(t => t.Type == TLVType.kTLVType_EncryptedData) as TLVBytes)!.Value;
+                byte[] payload = new byte[encrypted.Count - 16];
+                byte[] sharedSecret = session.GetSharedSecret(AccessorySessionPK);
+
+                byte[] sessionKey = HKDF.DeriveKey(HashAlgorithmName.SHA512, sharedSecret, 32, Encoding.UTF8.GetBytes("Pair-Verify-Encrypt-Salt"), Encoding.UTF8.GetBytes("Pair-Verify-Encrypt-Info"));
+
+                ChaCha20Poly1305 decrypter = new ChaCha20Poly1305(sessionKey);
+                decrypter.Decrypt(Encoding.ASCII.GetBytes("\0\0\0\0PV-Msg02"), encrypted.Slice(0, encrypted.Count - 16), encrypted.Slice(encrypted.Count - 16, 16), payload);
+                responseTLVs = TLVValue.CollectionFromStream(new MemoryStream(payload));
+
+                byte[] AccessoryInfo = BufferUtil.Concat(AccessorySessionPK, accessoryID, keyPair.Public);
+                byte[] accessorySignature = (responseTLVs.Find(t => t.Type == TLVType.kTLVType_Signature) as TLVBytes)!.Value;
+                if (!Ed25519.Verify(accessorySignature, AccessoryInfo, accessoryLTPK))
+                {
+                    con.Dispose();
+                    throw new IOException("Accessory returned invalid signature");
+                }
+
+                byte[] iOSDeviceInfo = BufferUtil.Concat(keyPair.Public, DeviceID, AccessorySessionPK);
+                byte[] iOSDeviceSignature = Ed25519.Sign(iOSDeviceInfo, LTSK);
+                byte[] encryptedPayload;
+                using (MemoryStream encryptionPayload = new MemoryStream())
+                {
+                    TLVValue.WriteCollection([
+                        new TLVBytes(TLVType.kTLVType_Signature, iOSDeviceSignature),
+                        new TLVBytes(TLVType.kTLVType_Identifier, DeviceID)
+                    ], encryptionPayload);
+                    ChaCha20Poly1305 encrypter = new ChaCha20Poly1305(sessionKey);
+                    encryptedPayload = new byte[encryptionPayload.Length + 16];
+                    encrypter.Encrypt(Encoding.ASCII.GetBytes("\0\0\0\0PV-Msg03"), encryptionPayload.ToArray(), encryptedPayload.AsSpan().Slice(0, (int)encryptionPayload.Length), encryptedPayload.AsSpan().Slice((int)encryptionPayload.Length, 16));
+                }
+
+                msg = await con.PostTLVs("/pair-verify", token,
+                    new TLVInt(TLVType.kTLVType_State, (byte)PairingState.M3),
+                    new TLVBytes(TLVType.kTLVType_EncryptedData, encryptedPayload)
+                    );
+                if (!msg.IsSuccessStatusCode)
+                {
+                    con.Dispose();
+                    string content = new StreamReader(msg.Content.ReadAsStream()).ReadToEnd();
+                    throw new IOException($"Verify Step 3 Failed with {msg.StatusCode}: {msg.ReasonPhrase}: {content}");
+                }
+                responseTLVs = TLVValue.CollectionFromStream(msg.Content.ReadAsStream());
+
+                bool error = responseTLVs.Any(t => t.Type == TLVType.kTLVType_Error);
+
+                // Require M4 before enabling encrypted traffic.
+                bool bConfirmed = false;
+
+                foreach (TLVValue pValue in responseTLVs)
+                {
+                    if (pValue is TLVInt pState && pState.Type == TLVType.kTLVType_State && pState.Value == (byte)PairingState.M4)
+                        bConfirmed = true;
+                }
+
+                if (!error && bConfirmed)
+                {
+                    byte[] readKey = HKDF.DeriveKey(HashAlgorithmName.SHA512, sharedSecret, 32, Encoding.UTF8.GetBytes("Control-Salt"), Encoding.UTF8.GetBytes("Control-Read-Encryption-Key"));
+                    byte[] writeKey = HKDF.DeriveKey(HashAlgorithmName.SHA512, sharedSecret, 32, Encoding.UTF8.GetBytes("Control-Salt"), Encoding.UTF8.GetBytes("Control-Write-Encryption-Key"));
+                    await con.EnableEncryption(writeKey, readKey);
+
+                    // Reject HTTP errors before deserializing the accessory catalog.
+                    using HttpResponseMessage resp = await con.Get("/accessories", token);
+
+                    if (!resp.IsSuccessStatusCode)
+                        throw new IOException($"GET /accessories: HTTP {(int)resp.StatusCode} {resp.ReasonPhrase}.");
+
+                    AccessoriesJSON? accessories = JsonSerializer.Deserialize<AccessoriesJSON>(resp.Content.ReadAsStream(token));
+                    HomeKitEndPoint ep;
+                    if (accessories != null)
+                    {
+                        ep = new HomeKitEndPoint(con, accessories);
+                        endpoints.Add(ep);
+                        bConnected = true;
+                        return ep;
+                    }
+                    con.Dispose();
+                    throw new IOException("Empty Accessory List Received");
                 }
                 con.Dispose();
-                throw new IOException("Empty Accessory List Received");
+                throw new UnauthorizedAccessException("Failed to Connect - Authentication Error");
             }
-            con.Dispose();
-            throw new UnauthorizedAccessException("Failed to Connect - Authentication Error");
+            finally
+            {
+                if (!bConnected)
+                    con.Dispose();
+            }
         }
 
         /// <summary>
@@ -178,7 +205,7 @@ namespace HomeKitDotNet
         public async Task<bool> UnPair(HomeKitEndPoint endpoint, CancellationToken token = default)
         {
             ArgumentNullException.ThrowIfNull(endpoint, nameof(endpoint));
-            HttpResponseMessage msg = await endpoint.Connection.PostTLVs("/pair-setup", token,
+            using HttpResponseMessage msg = await endpoint.Connection.PostTLVs("/pairings", token,
                                                                       new TLVInt(TLVType.kTLVType_State, (byte)PairingState.M1), 
                                                                       new TLVInt(TLVType.kTLVType_Method, (byte)Method.RemovePairing),
                                                                       new TLVBytes(TLVType.kTLVType_Identifier, DeviceID));
@@ -188,9 +215,22 @@ namespace HomeKitDotNet
             if (responseTLVs.Any(t => t.Type == TLVType.kTLVType_Error))
                 return false;
 
-            endpoints.Remove(endpoint);
-            endpoint.Connection.Dispose();
-            return true;
+            // Remove the local endpoint only after an M2 acknowledgment.
+            bool bConfirmed = false;
+
+            foreach (TLVValue pValue in responseTLVs)
+            {
+                if (pValue is TLVInt pState && pState.Type == TLVType.kTLVType_State && pState.Value == (byte)PairingState.M2)
+                    bConfirmed = true;
+            }
+
+            if (bConfirmed)
+            {
+                endpoints.Remove(endpoint);
+                endpoint.Connection.Dispose();
+            }
+
+            return bConfirmed;
         }
 
         /// <summary>
@@ -246,7 +286,19 @@ namespace HomeKitDotNet
                     throw new IOException($"Pair Step 3 Failed - Public key is missing");
 
                 BigInteger B = new BigInteger(accessoryPK, true, true);
-                byte[] s = (responseTLVs.Find(t => t.Type == TLVType.kTLVType_Salt) as TLVBytes)!.Value;
+                // Validate the salt before using the Pair Setup response.
+                TLVBytes? pSalt = null;
+
+                foreach (TLVValue pValue in responseTLVs)
+                {
+                    if (pValue is TLVBytes pBytes && pBytes.Type == TLVType.kTLVType_Salt)
+                        pSalt = pBytes;
+                }
+
+                if (pSalt == null)
+                    throw new IOException("Pair Setup response does not contain a salt.");
+
+                byte[] s = pSalt.Value;
                 SRP srp = new SRP();
                 BigInteger A = srp.GenerateAValues();
                 BigInteger K = srp.ComputeSessionKey(I, P, s, B);

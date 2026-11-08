@@ -11,12 +11,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Security.Cryptography;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Security;
 
 namespace HomeKitDotNet.Crypto
 {
     public class X25519
     {
-        ECDiffieHellman ecc = ECDiffieHellman.Create(Curve25519);
+        private X25519PrivateKeyParameters? m_pPrivateKey;
         internal static ECCurve Curve25519 = new ECCurve()
         {
             CurveType = ECCurve.ECCurveType.PrimeMontgomery,
@@ -34,28 +36,42 @@ namespace HomeKitDotNet.Crypto
 
         public (byte[] Public, byte[] Private) GenerateKeyPair()
         {
-            ecc.GenerateKey(Curve25519);
-            var p = ecc.ExportParameters(true);
-            return (p.Q.X!, p.D!);
+            // Generate keys independently of the operating-system cryptographic provider.
+            X25519PrivateKeyParameters pPrivateKey = new X25519PrivateKeyParameters(new SecureRandom());
+            m_pPrivateKey = pPrivateKey;
+            return (pPrivateKey.GeneratePublicKey().GetEncoded(), pPrivateKey.GetEncoded());
         }
 
         public void LoadKeys(byte[] @public, byte[] @private)
         {
-            ecc.ImportParameters(new ECParameters()
-            {
-                Curve = Curve25519,
-                D = @private,
-                Q = new ECPoint()
-                {
-                    X = @public,
-                    Y = new byte[32]
-                }
-            });
+            ArgumentNullException.ThrowIfNull(@public);
+            ArgumentNullException.ThrowIfNull(@private);
+
+            if (@private.Length != X25519PrivateKeyParameters.KeySize)
+                throw new ArgumentException("Invalid X25519 private key length.", nameof(@private));
+
+            // Reject inconsistent key pairs before using them for Pair Verify.
+            X25519PrivateKeyParameters pPrivateKey = new X25519PrivateKeyParameters(@private, 0);
+
+            if (!@public.AsSpan().SequenceEqual(pPrivateKey.GeneratePublicKey().GetEncoded()))
+                throw new ArgumentException("The X25519 public key does not match the private key.", nameof(@public));
+
+            m_pPrivateKey = pPrivateKey;
         }
 
         public byte[] GetSharedSecret(byte[] otherPublic)
         {
-            return ecc.DeriveRawSecretAgreement(new ECCKey(otherPublic));
+            ArgumentNullException.ThrowIfNull(otherPublic);
+
+            if (otherPublic.Length != X25519PublicKeyParameters.KeySize)
+                throw new ArgumentException("Invalid X25519 public key length.", nameof(otherPublic));
+
+            // Derive the same X25519 shared secret on Windows and Linux.
+            X25519PrivateKeyParameters pPrivateKey = m_pPrivateKey ?? throw new InvalidOperationException("No X25519 private key is available.");
+            X25519PublicKeyParameters pPeer = new X25519PublicKeyParameters(otherPublic, 0);
+            byte[] arSecret = new byte[X25519PrivateKeyParameters.SecretSize];
+            pPrivateKey.GenerateSecret(pPeer, arSecret, 0);
+            return arSecret;
         }
     }
 }
