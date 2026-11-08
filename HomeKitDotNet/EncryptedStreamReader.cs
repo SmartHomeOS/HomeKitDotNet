@@ -31,33 +31,45 @@ namespace HomeKitDotNet
 
         public async Task<string> ReadLineAsync(CancellationToken token)
         {
-            int newLine = -1;
-            if (decrypter != null && readPos >= buffEnd)
-                await ReadEncrypted(token);
-            if (buffEnd > 0)
-                newLine = FindReturn(buffer.Slice(readPos, buffEnd - readPos).Span);
-            if (decrypter == null)
+            // Reassemble HTTP lines across TCP reads and encrypted frames.
+            using MemoryStream line = new MemoryStream();
+            bool complete = false;
+
+            while (!complete)
             {
-                while (newLine == -1)
+                if (readPos == buffEnd)
                 {
-                    if (readPos != 0)
+                    readPos = 0;
+
+                    if (decrypter != null)
                     {
-                        if (readPos != buffEnd)
-                            buffer.Slice(readPos, buffEnd - readPos).CopyTo(buffer);
-                        buffEnd -= readPos;
-                        readPos = 0;
+                        await ReadEncrypted(token);
                     }
-                    buffEnd += await stream.ReadAsync(buffer.Slice(buffEnd), token);
-                    newLine = FindReturn(buffer.Slice(readPos, buffEnd - readPos).Span);
+                    else
+                    {
+                        buffEnd = await stream.ReadAsync(buffer, token);
+
+                        if (buffEnd == 0)
+                            throw new EndOfStreamException();
+                    }
                 }
+
+                int newline = FindReturn(buffer.Slice(readPos, buffEnd - readPos).Span);
+                int length = newline >= 0 ? newline : buffEnd - readPos;
+                line.Write(buffer.Slice(readPos, length).Span);
+                readPos += length;
+                complete = newline >= 0;
+
+                if (line.Length > 16384)
+                    throw new InvalidDataException("HAP HTTP header line too long.");
             }
-            else if (newLine == -1)
-            {
-                throw new InvalidDataException("Unable to find newline in decoded data");
-            }
-            string ret = Encoding.UTF8.GetString(buffer.Slice(readPos, newLine - 2).Span);
-            readPos += newLine;
-            return ret;
+
+            byte[] bytes = line.ToArray();
+
+            if (bytes.Length < 2 || bytes[^2] != 13)
+                throw new InvalidDataException("Invalid HAP HTTP line ending.");
+
+            return Encoding.UTF8.GetString(bytes, 0, bytes.Length - 2);
         }
 
         public async Task Seek(int offset, CancellationToken token)
@@ -106,15 +118,17 @@ namespace HomeKitDotNet
         private async Task ReadUnencryptedStream(byte[] bytes, int contentLength, CancellationToken token)
         {
             int pos = 0;
+
             if (readPos != buffEnd)
             {
-                buffer.Slice(readPos, buffEnd - readPos).CopyTo(bytes);
-                pos += (buffEnd - readPos);
-                buffEnd = 0;
-                readPos = 0;
+                // Consume only the requested bytes, preserving buffered data for subsequent reads.
+                pos = Math.Min(contentLength, buffEnd - readPos);
+                buffer.Slice(readPos, pos).CopyTo(bytes);
+                readPos += pos;
             }
-            while (pos < contentLength - 1)
-                pos += await stream.ReadAsync(bytes, pos, contentLength - pos, token);
+
+            // Read the complete payload and throw if the stream closes prematurely.
+            await stream.ReadExactlyAsync(bytes.AsMemory(pos, contentLength - pos), token);
         }
 
         private async Task ReadEncrypted(CancellationToken token) //read line
@@ -124,7 +138,12 @@ namespace HomeKitDotNet
             await stream.ReadExactlyAsync(buffer.Slice(2, len + 16), token);
             byte[] nonce = new byte[12];
             BinaryPrimitives.WriteUInt64LittleEndian(nonce.AsSpan().Slice(4), counter++);
-            decrypter!.Decrypt(nonce.AsSpan(), buffer.Slice(2, len).Span, buffer.Slice(2 + len, 16).Span, buffer.Slice(0, len).Span, buffer.Slice(0, 2).Span);
+
+            // Avoid overlapping input and output buffers, which OpenSSL does not support.
+            byte[] plaintext = new byte[len];
+            decrypter!.Decrypt(nonce.AsSpan(), buffer.Slice(2, len).Span, buffer.Slice(2 + len, 16).Span, plaintext.AsSpan(), buffer.Slice(0, 2).Span);
+            plaintext.AsSpan().CopyTo(buffer.Slice(0, len).Span);
+            
             buffEnd = len;
             readPos = 0;
         }

@@ -32,6 +32,8 @@ namespace HomeKitDotNet
         Channel<HttpResponseMessage> responses = Channel.CreateUnbounded<HttpResponseMessage>();
         public event EventHandler<HttpResponseMessage>? EventReceived;
         CancellationTokenSource token = new CancellationTokenSource();
+        private Task m_pReceiveTask = Task.CompletedTask;
+        private int m_nDisposed;
 
         public Connection()
         {
@@ -46,27 +48,34 @@ namespace HomeKitDotNet
             await client.ConnectAsync(ep.Address, ep.Port, cancellationToken);
             writer = new EncryptedStreamWriter(client.GetStream());
             reader = new EncryptedStreamReader(client.GetStream());
-            await Task.Factory.StartNew(ReceiveLoop, token.Token);
+            m_pReceiveTask = Task.Run(ReceiveLoop);
         }
 
         public void Dispose()
         {
-            token.Cancel();
-            token.Dispose();
-            client.Dispose();
+            // Close pending response waits as well as the socket, allowing repeated disposal.
+            if (Interlocked.Exchange(ref m_nDisposed, 1) == 0)
+            {
+                token.Cancel();
+                client.Dispose();
+                responses.Writer.TryComplete(new IOException("The HAP connection was closed."));
+            }
         }
 
         public async Task EnableEncryption(byte[] writeKey, byte[] readKey)
         {
             AssertConnected();
+            // Await the plaintext reader before enabling encrypted framing.
             token.Cancel();
+            await m_pReceiveTask;
+            ObjectDisposedException.ThrowIf(Volatile.Read(ref m_nDisposed) != 0, this);
             token.Dispose();
 
             writer.EnableEncryption(new ChaCha20Poly1305(writeKey));
             reader.EnableDecryption(new ChaCha20Poly1305(readKey));
 
             token = new CancellationTokenSource();
-            await Task.Factory.StartNew(ReceiveLoop, token.Token);
+            m_pReceiveTask = Task.Run(ReceiveLoop);
         }
 
         public async Task<HttpResponseMessage> Get(string path, CancellationToken token)
@@ -98,11 +107,14 @@ namespace HomeKitDotNet
 
         public async Task ReceiveLoop()
         {
+            // Keep the token belonging to this loop during an encryption transition.
+            CancellationToken cancellationToken = token.Token;
+
             try
             {
-                while (!token.IsCancellationRequested)
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    string? line = await reader!.ReadLineAsync(token.Token);
+                    string? line = await reader!.ReadLineAsync(cancellationToken);
                     if (line == null)
                         throw new EndOfStreamException();
                     string[] parts = line.Split(' ', 3);
@@ -122,51 +134,101 @@ namespace HomeKitDotNet
                         if (parts.Length == 2 && parts[0].Equals("Content-Type", StringComparison.InvariantCultureIgnoreCase))
                             type = parts[1];
                         if (parts.Length == 2 && parts[0].Equals("Transfer-Encoding", StringComparison.InvariantCultureIgnoreCase))
-                            chunked = parts[1].Equals("chunked", StringComparison.InvariantCultureIgnoreCase);
-                        line = await reader.ReadLineAsync(token.Token);
+                        {
+                            foreach (string encoding in parts[1].Split(',', StringSplitOptions.TrimEntries))
+                            {
+                                if (encoding.Equals("chunked", StringComparison.OrdinalIgnoreCase))
+                                    chunked = true;
+                            }
+
+                        }
+                        line = await reader.ReadLineAsync(cancellationToken);
                     }
                     if (line == null)
                         throw new EndOfStreamException();
-                    if (contentLen != 0)
+                    // Chunked framing includes extensions, a final terminator and optional trailers.
+                    if (chunked)
+                    {
+                        response.Content = new ByteArrayContent(await ReadChunkedBodyAsync(cancellationToken));
+                    }
+                    else if (contentLen != 0)
                     {
                         byte[] contentBytes = new byte[contentLen];
-                        await reader.ReadBytesAsync(contentBytes, contentLen, token.Token);
+                        await reader.ReadBytesAsync(contentBytes, contentLen, cancellationToken);
                         response.Content = new ByteArrayContent(contentBytes);
-                        response.Content.Headers.ContentType = new MediaTypeHeaderValue(type);
                     }
-                    else if (chunked)
-                    {
-                        byte[] chunk = new byte[1024];
-                        MemoryStream ms = new MemoryStream();
-                        if (!int.TryParse((await reader.ReadLineAsync(token.Token)).Split(' ')[0], NumberStyles.HexNumber, null, out int chunkSize))
-                            throw new EndOfStreamException("Truncated chunk read");
-                        
-                        while (chunkSize > 0)
-                        {
-                            if (chunkSize > chunk.Length)
-                                chunk = new byte[chunkSize];
-                            await reader.ReadBytesAsync(chunk, chunkSize, token.Token);
-                            ms.Write(chunk, 0, chunkSize);
-                            await reader.Seek(2, token.Token); //CRLF after chunk
-                            if (!int.TryParse((await reader.ReadLineAsync(token.Token)).Split(' ')[0], NumberStyles.HexNumber, null, out chunkSize))
-                                throw new EndOfStreamException("Truncated chunk read");
-                        }
 
-                        await reader.Seek(2, token.Token); //CRLF after chunk
-                        response.Content = new ByteArrayContent(ms.ToArray());
-                        response.Content.Headers.ContentType = new MediaTypeHeaderValue(type);
-                    }
+                    if (MediaTypeHeaderValue.TryParse(type, out MediaTypeHeaderValue? contentType))
+                        response.Content.Headers.ContentType = contentType;
+
                     if (protocol == "EVENT/1.0")
-                        EventReceived?.Invoke(this, response);
+                    {
+                        // Subscribers read from the beginning; the connection owns the response.
+                        try
+                        {
+                            Delegate[] arHandlers = EventReceived?.GetInvocationList() ?? [];
+
+                            foreach (Delegate pHandler in arHandlers)
+                            {
+                                Stream pContent = response.Content.ReadAsStream();
+                                pContent.Position = 0;
+                                ((EventHandler<HttpResponseMessage>)pHandler).Invoke(this, response);
+                            }
+
+                        }
+                        finally
+                        {
+                            response.Dispose();
+                        }
+                    }
                     else
+                    {
                         responses.Writer.TryWrite(response);
+                    }
                 }
             }
-            catch (OperationCanceledException) { } // Ignore
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { } // Ignore
             catch (Exception e)
             {
-                Console.WriteLine("Error: " + e.ToString());
+                // Propagate reader failures instead of leaving requests waiting indefinitely.
+                responses.Writer.TryComplete(e);
+                Dispose();
             }
+        }
+
+        private async Task<byte[]> ReadChunkedBodyAsync(CancellationToken cancellationToken)
+        {
+            // Reassemble chunks and consume trailers before reading the next response.
+            const int nMaxBodyLength = 16 * 1024 * 1024;
+            using MemoryStream pBody = new MemoryStream();
+            int nLength;
+
+            do
+            {
+                string sLine = await reader!.ReadLineAsync(cancellationToken);
+                int nExtension = sLine.IndexOf(';');
+                string sSize = nExtension >= 0 ? sLine.Substring(0, nExtension) : sLine;
+
+                if (!int.TryParse(sSize, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out nLength) || nLength < 0 || nLength > nMaxBodyLength - pBody.Length)
+                    throw new InvalidDataException("Invalid HAP HTTP chunk size.");
+
+                if (nLength > 0)
+                {
+                    byte[] arChunk = new byte[nLength];
+                    await reader.ReadBytesAsync(arChunk, nLength, cancellationToken);
+                    pBody.Write(arChunk);
+
+                    if ((await reader.ReadLineAsync(cancellationToken)).Length != 0)
+                        throw new InvalidDataException("Invalid HAP HTTP chunk terminator.");
+                }
+            }
+            while (nLength != 0);
+
+            while ((await reader!.ReadLineAsync(cancellationToken)).Length != 0)
+            {
+            }
+
+            return pBody.ToArray();
         }
 
         protected async Task<HttpResponseMessage> SendAsync(HttpMethod method, string path, ByteArrayContent? content, CancellationToken token)
@@ -187,13 +249,23 @@ namespace HomeKitDotNet
                 msg.Append($"Content-Type: {content.Headers.ContentType}\r\n");
             }
             msg.Append("\r\n");
-            await semaphore.WaitAsync(token);
+            // Cancelled or timed-out requests must not leave a reusable, desynchronized session.
+            using CancellationTokenSource pLifetime = CancellationTokenSource.CreateLinkedTokenSource(token, this.token.Token);
+            await semaphore.WaitAsync(pLifetime.Token);
+            pLifetime.CancelAfter(TimeSpan.FromSeconds(15));
+            using CancellationTokenRegistration pRegistration = pLifetime.Token.Register(Dispose);
+
             try{
-                await writer.WriteAsync(Encoding.UTF8.GetBytes(msg.ToString()), token);
+                await writer.WriteAsync(Encoding.UTF8.GetBytes(msg.ToString()), pLifetime.Token);
                 if (contentStream != null)
-                    await writer.WriteAsync(contentStream, token);
-                await writer.FlushAsync(token);
-                return await responses.Reader.ReadAsync(token);
+                    await writer.WriteAsync(contentStream, pLifetime.Token);
+                await writer.FlushAsync(pLifetime.Token);
+                return await responses.Reader.ReadAsync(pLifetime.Token);
+            }
+            catch
+            {
+                Dispose();
+                throw;
             }
             finally
             {
